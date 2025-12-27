@@ -54,7 +54,8 @@ brew install gcc
 brew install gdb
 
 # Install other useful tools
-brew install make cmake wget
+brew install make cmake wget 
+# make is gmake on macOS
 ```
 
 ### Note on GDB vs LLDB
@@ -236,7 +237,7 @@ clang --version
 lldb --version
 
 # Docker
-docker run --rm gios-prep echo "Docker works!"
+docker run --rm gios-prep echo "Docker works"
 
 # Build a test program
 echo '#include <stdio.h>
