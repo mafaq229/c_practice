@@ -1,0 +1,227 @@
+# ============================================================================
+# CS-6200 Preparation - Module 07: Advanced Makefile
+# ============================================================================
+#
+# This Makefile demonstrates advanced features commonly used in real projects.
+#
+# Features:
+#   - Automatic dependency generation
+#   - Separate build directory
+#   - Multiple build configurations (debug/release)
+#   - Library linking
+#   - Conditional compilation
+#
+
+# ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+# Project name
+PROJECT = myproject
+
+# Directories
+SRC_DIR = src
+INC_DIR = include
+BUILD_DIR = build
+BIN_DIR = bin
+
+# Compiler
+CC = clang
+CXX = clang++
+
+# Base flags
+CFLAGS_BASE = -Wall -Wextra -std=c11
+CXXFLAGS_BASE = -Wall -Wextra -std=c++17
+
+# Include paths
+INCLUDES = -I$(INC_DIR)
+
+# Libraries
+LIBS = -lpthread -lm
+
+# Build type (debug or release)
+BUILD_TYPE ?= debug
+
+# Configure based on build type
+ifeq ($(BUILD_TYPE),debug)
+    CFLAGS = $(CFLAGS_BASE) -g -O0 -DDEBUG
+    CXXFLAGS = $(CXXFLAGS_BASE) -g -O0 -DDEBUG
+    BUILD_SUBDIR = debug
+else ifeq ($(BUILD_TYPE),release)
+    CFLAGS = $(CFLAGS_BASE) -O2 -DNDEBUG
+    CXXFLAGS = $(CXXFLAGS_BASE) -O2 -DNDEBUG
+    BUILD_SUBDIR = release
+else
+    $(error Unknown BUILD_TYPE: $(BUILD_TYPE))
+endif
+
+# Final directories
+OBJ_DIR = $(BUILD_DIR)/$(BUILD_SUBDIR)
+OUTPUT_DIR = $(BIN_DIR)/$(BUILD_SUBDIR)
+
+# ============================================================================
+# SOURCE FILES
+# ============================================================================
+
+# Find all source files automatically
+C_SRCS = $(wildcard $(SRC_DIR)/*.c)
+CXX_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+
+# Generate object file names
+C_OBJS = $(C_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+CXX_OBJS = $(CXX_SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+OBJS = $(C_OBJS) $(CXX_OBJS)
+
+# Dependency files (for automatic header dependency tracking)
+DEPS = $(OBJS:.o=.d)
+
+# Target executable
+TARGET = $(OUTPUT_DIR)/$(PROJECT)
+
+# ============================================================================
+# TARGETS
+# ============================================================================
+
+# Default target
+.PHONY: all
+all: $(TARGET)
+
+# Create directories
+$(OBJ_DIR) $(OUTPUT_DIR):
+	mkdir -p $@
+
+# Link executable
+$(TARGET): $(OBJS) | $(OUTPUT_DIR)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+	@echo "Built: $@"
+
+# Compile C files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+# Compile C++ files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+# Include dependency files
+-include $(DEPS)
+
+# ============================================================================
+# UTILITY TARGETS
+# ============================================================================
+
+# Clean build artifacts
+.PHONY: clean
+clean:
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	@echo "Cleaned build artifacts"
+
+# Clean and rebuild
+.PHONY: rebuild
+rebuild: clean all
+
+# Debug build
+.PHONY: debug
+debug:
+	$(MAKE) BUILD_TYPE=debug
+
+# Release build
+.PHONY: release
+release:
+	$(MAKE) BUILD_TYPE=release
+
+# Run the program
+.PHONY: run
+run: $(TARGET)
+	$(TARGET)
+
+# Run with debugger
+.PHONY: gdb
+gdb: debug
+	gdb $(BIN_DIR)/debug/$(PROJECT)
+
+# Run with Valgrind (via Docker on Mac)
+.PHONY: valgrind
+valgrind: debug
+	docker run --rm -v $(PWD):/code -w /code gios-prep \
+		valgrind --leak-check=full $(BIN_DIR)/debug/$(PROJECT)
+
+# ============================================================================
+# TEST TARGETS
+# ============================================================================
+
+TEST_SRCS = $(wildcard tests/*.c)
+TEST_OBJS = $(TEST_SRCS:tests/%.c=$(OBJ_DIR)/test_%.o)
+TEST_TARGET = $(OUTPUT_DIR)/test_$(PROJECT)
+
+.PHONY: test
+test: $(TEST_TARGET)
+	$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_OBJS) $(filter-out $(OBJ_DIR)/main.o,$(OBJS)) | $(OUTPUT_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(OBJ_DIR)/test_%.o: tests/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+# ============================================================================
+# INSTALL TARGET
+# ============================================================================
+
+PREFIX ?= /usr/local
+
+.PHONY: install
+install: release
+	install -d $(PREFIX)/bin
+	install -m 755 $(BIN_DIR)/release/$(PROJECT) $(PREFIX)/bin/
+
+# ============================================================================
+# HELP
+# ============================================================================
+
+.PHONY: help
+help:
+	@echo "$(PROJECT) Makefile"
+	@echo ""
+	@echo "Usage: make [target] [BUILD_TYPE=debug|release]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all      - Build the project (default)"
+	@echo "  debug    - Build with debug symbols"
+	@echo "  release  - Build optimized version"
+	@echo "  clean    - Remove build artifacts"
+	@echo "  rebuild  - Clean and rebuild"
+	@echo "  run      - Build and run"
+	@echo "  gdb      - Build and run with debugger"
+	@echo "  valgrind - Run with memory checker"
+	@echo "  test     - Build and run tests"
+	@echo "  install  - Install to $(PREFIX)/bin"
+	@echo "  help     - Show this help"
+	@echo ""
+	@echo "Current BUILD_TYPE: $(BUILD_TYPE)"
+
+# ============================================================================
+# EXPLANATION OF ADVANCED FEATURES
+# ============================================================================
+#
+# 1. Automatic dependency generation:
+#    -MMD -MP flags tell the compiler to generate .d files
+#    These track which headers each source file depends on
+#    '-include $(DEPS)' reads these files if they exist
+#
+# 2. Separate build directory:
+#    Object files go in build/debug or build/release
+#    Keeps source tree clean
+#    '| $(OBJ_DIR)' is an order-only dependency (creates dir if needed)
+#
+# 3. Build configurations:
+#    BUILD_TYPE variable controls debug vs release
+#    ifeq/else handles conditional settings
+#
+# 4. Wildcard and substitution:
+#    $(wildcard pattern) finds files matching pattern
+#    $(VAR:pattern=replacement) does pattern substitution
+#
+# 5. Recursive make:
+#    $(MAKE) BUILD_TYPE=release calls make again with different variable
+#

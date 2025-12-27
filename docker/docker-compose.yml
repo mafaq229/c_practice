@@ -1,0 +1,49 @@
+# Docker Compose for CS-6200 Preparation Curriculum
+#
+# Usage:
+#   docker-compose up -d      # Start container in background
+#   docker-compose exec dev bash  # Get a shell
+#   docker-compose down       # Stop container
+
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gios-prep
+    container_name: gios-dev
+    volumes:
+      # Mount the entire curriculum directory
+      - ..:/code
+    working_dir: /code
+    # Keep container running
+    tty: true
+    stdin_open: true
+    # For shared memory exercises
+    ipc: host
+    # For networking exercises (optional, use with caution)
+    # network_mode: host
+
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+
+  # Optional: A second container for client-server testing
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gios-prep
+    container_name: gios-client
+    volumes:
+      - ..:/code
+    working_dir: /code
+    tty: true
+    stdin_open: true
+    depends_on:
+      - dev

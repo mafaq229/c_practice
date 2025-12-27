@@ -1,0 +1,95 @@
+# ============================================================================
+# CS-6200 Preparation - Module 07: Basic Makefile
+# ============================================================================
+#
+# This is an example of a basic Makefile.
+# Study this file to understand Makefile syntax.
+#
+# Usage:
+#   make           - Build the default target
+#   make program   - Build specific target
+#   make clean     - Remove build artifacts
+#   make help      - Show help
+#
+
+# ============================================================================
+# VARIABLES
+# ============================================================================
+
+# Compiler and flags
+CC = clang
+CFLAGS = -Wall -Wextra -g
+
+# Target executable name
+TARGET = program
+
+# Source files
+SRCS = main.c utils.c
+
+# Object files (replace .c with .o)
+OBJS = $(SRCS:.c=.o)
+
+# ============================================================================
+# RULES
+# ============================================================================
+
+# Default target - built when you just type 'make'
+# The first target in the file is the default
+all: $(TARGET)
+
+# Link object files to create executable
+# $@ is the target name (program)
+# $^ is all dependencies (main.o utils.o)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Pattern rule: compile any .c file to .o
+# $< is the first dependency (the .c file)
+# $@ is the target (the .o file)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean up build artifacts
+# .PHONY means this target doesn't create a file named 'clean'
+.PHONY: clean
+clean:
+	rm -f $(TARGET) $(OBJS)
+
+# Help target
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo "  all     - Build the program (default)"
+	@echo "  clean   - Remove build artifacts"
+	@echo "  help    - Show this help message"
+
+# ============================================================================
+# EXPLANATION
+# ============================================================================
+#
+# Makefile syntax:
+#
+#   target: dependencies
+#   	command
+#
+# IMPORTANT: The command line MUST start with a TAB, not spaces!
+#
+# Variables:
+#   CC       - C compiler
+#   CFLAGS   - Compiler flags
+#   SRCS     - Source files
+#   OBJS     - Object files
+#
+# Automatic variables:
+#   $@       - Target name
+#   $<       - First dependency
+#   $^       - All dependencies
+#   $*       - Stem of pattern match
+#
+# Pattern rules:
+#   %.o: %.c - Match any .c file and produce corresponding .o file
+#
+# .PHONY targets:
+#   These are not real files; they're just command names.
+#   Declaring them as .PHONY ensures make always runs them.
+#

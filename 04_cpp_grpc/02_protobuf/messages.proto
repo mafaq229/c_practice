@@ -1,0 +1,74 @@
+/*
+ * CS-6200 Preparation - Module 02: Protocol Buffers
+ *
+ * Protocol Buffers (.proto) file defines message structures.
+ * These are compiled to generate C++ classes for serialization.
+ *
+ * Generate C++ code:
+ *   protoc --cpp_out=. messages.proto
+ */
+
+syntax = "proto3";
+
+package gios_prep;
+
+// Simple message types
+message Person {
+    string name = 1;
+    int32 age = 2;
+    string email = 3;
+}
+
+// Message with repeated field (array)
+message AddressBook {
+    repeated Person people = 1;
+}
+
+// Message with nested type
+message Course {
+    string code = 1;
+    string name = 2;
+
+    // Nested message
+    message Assignment {
+        string name = 1;
+        int32 points = 2;
+        bool completed = 3;
+    }
+
+    repeated Assignment assignments = 3;
+}
+
+// Message with enum
+message FileInfo {
+    string path = 1;
+    int64 size = 2;
+
+    enum FileType {
+        UNKNOWN = 0;
+        REGULAR = 1;
+        DIRECTORY = 2;
+        SYMLINK = 3;
+    }
+
+    FileType type = 3;
+}
+
+// Message with optional field (all fields are optional in proto3)
+message FileRequest {
+    string path = 1;
+    int64 offset = 2;    // Optional: default is 0
+    int64 length = 3;    // Optional: default is 0
+}
+
+// Message with bytes field (for binary data)
+message FileChunk {
+    bytes data = 1;
+    int64 offset = 2;
+    bool is_last = 3;
+}
+
+// Message with map
+message FileCache {
+    map<string, FileInfo> files = 1;
+}
