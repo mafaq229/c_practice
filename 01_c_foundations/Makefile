@@ -70,14 +70,14 @@ gdb:
 
 # Testing
 .PHONY: test
-test:
+test: environment
 	@echo "Running Project 1 Tests..."
 	@echo "========================="
 	@echo "Testing environment setup..."
 	@./01_environment/test_setup && echo "Environment: PASS" || echo "Environment: FAIL"
 	@echo ""
 	@echo "Note: Other tests depend on completing the exercises."
-	@echo "Run individual executables to test your implementations."
+	@echo "Run 'make all' to build all modules, then run individual executables."
 
 # Clean
 .PHONY: clean

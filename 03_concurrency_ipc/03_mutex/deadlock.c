@@ -322,8 +322,8 @@ void exercise5_timed_locks(void) {
      * pthread_mutex_timedlock() waits up to a timeout.
      * Can be used to detect potential deadlocks.
      *
-     * Note: Requires proper initialization with PTHREAD_MUTEX_TIMED_NP
-     * or using default attributes.
+     * Note: pthread_mutex_timedlock is not available on macOS.
+     * We'll use pthread_mutex_trylock in a loop as a workaround.
      */
 
     pthread_mutex_t mutex;
@@ -333,20 +333,27 @@ void exercise5_timed_locks(void) {
     pthread_mutex_lock(&mutex);
     printf("Mutex locked by main thread\n");
 
-    /* Try to lock with timeout (will fail since we already hold it) */
-    struct timespec timeout;
-    clock_gettime(CLOCK_REALTIME, &timeout);
-    timeout.tv_sec += 2;  /* 2 second timeout */
+    printf("Trying to lock again (will demonstrate deadlock detection)...\n");
 
-    printf("Trying timed lock (should timeout in 2 seconds)...\n");
-
-    int result = pthread_mutex_timedlock(&mutex, &timeout);
+    /*
+     * macOS-compatible workaround: use trylock with sleep
+     * On Linux, you could use pthread_mutex_timedlock() instead.
+     */
+    int result = -1;
+    for (int attempts = 0; attempts < 4; attempts++) {
+        result = pthread_mutex_trylock(&mutex);
+        if (result == 0) {
+            break;  /* Got the lock */
+        }
+        printf("  Attempt %d: lock busy, waiting...\n", attempts + 1);
+        usleep(500000);  /* Wait 0.5 second */
+    }
 
     if (result == 0) {
-        printf("Got the lock (shouldn't happen for recursive case)\n");
+        printf("Got the lock (shouldn't happen for non-recursive mutex)\n");
         pthread_mutex_unlock(&mutex);
     } else {
-        printf("Timed out! Potential deadlock detected.\n");
+        printf("Gave up after 2 seconds! Potential deadlock detected.\n");
     }
 
     pthread_mutex_unlock(&mutex);

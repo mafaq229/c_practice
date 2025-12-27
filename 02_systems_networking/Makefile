@@ -35,15 +35,16 @@ file_transfer:
 	$(CC) $(CFLAGS) 05_file_transfer/ft_server.c -o 05_file_transfer/ft_server
 	$(CC) $(CFLAGS) 05_file_transfer/ft_client.c -o 05_file_transfer/ft_client
 
-# Test
+# Test (builds first, then runs tests)
 .PHONY: test
-test:
+test: all
 	@echo "Running Project 2 tests..."
+	@echo "========================="
 	@echo "File I/O tests:"
-	@cd 02_file_io && ./file_copy 2>/dev/null || echo "  file_copy: TODO"
+	@cd 02_file_io && ./file_copy 2>/dev/null || echo "  file_copy: TODO (implement the exercises)"
 	@echo ""
 	@echo "Socket tests require manual testing."
-	@echo "Run: ./tcp_server & ./tcp_client"
+	@echo "Run: ./03_sockets_basics/tcp_server & ./03_sockets_basics/tcp_client"
 
 # Clean
 .PHONY: clean

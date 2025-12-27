@@ -118,9 +118,11 @@ void benchmark_mutex(void) {
 
 /* ============================================================================
  * APPROACH 3: Spin lock (busy waiting)
+ * NOTE: pthread_spinlock_t is Linux-only. Not available on macOS.
  * ============================================================================
  */
 
+#ifdef __linux__
 int counter_spin = 0;
 pthread_spinlock_t spinlock;
 
@@ -163,6 +165,13 @@ void benchmark_spinlock(void) {
 
     pthread_spin_destroy(&spinlock);
 }
+#else
+void benchmark_spinlock(void) {
+    printf("\n--- Approach 3: Spinlock ---\n");
+    printf("NOTE: pthread_spinlock_t is not available on macOS.\n");
+    printf("Run in Docker/Linux to test spinlocks.\n");
+}
+#endif
 
 /* ============================================================================
  * APPROACH 4: Atomic operations (fast and correct)

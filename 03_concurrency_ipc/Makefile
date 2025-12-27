@@ -128,6 +128,26 @@ $(MQ_DIR)/mq_priority: $(MQ_DIR)/mq_priority.c
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS_IPC)
 
 # =============================================================================
+# Testing
+# =============================================================================
+
+.PHONY: test
+test: all
+	@echo "Running Project 3 tests..."
+	@echo "========================="
+	@echo "Testing processes..."
+	@$(PROC_DIR)/fork_basics && echo "  fork_basics: PASS" || echo "  fork_basics: Check output"
+	@echo ""
+	@echo "Testing threads..."
+	@$(THREAD_DIR)/thread_create && echo "  thread_create: PASS" || echo "  thread_create: Check output"
+	@echo ""
+	@echo "Testing mutex..."
+	@$(MUTEX_DIR)/mutex_fix && echo "  mutex_fix: PASS" || echo "  mutex_fix: Check output"
+	@echo ""
+	@echo "Note: Many tests produce output for manual verification."
+	@echo "Run individual executables to see behavior."
+
+# =============================================================================
 # Cleanup
 # =============================================================================
 

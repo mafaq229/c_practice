@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <pthread.h>
 
 /* ============================================================================
@@ -190,7 +191,7 @@ void *early_exit_thread(void *arg) {
     printf("Thread: Processing...\n");
 
     /* pthread_exit is equivalent to returning */
-    pthread_exit((void *)(long)*value * 2);
+    pthread_exit((void *)(long)(*value * 2));
 }
 
 void exercise4_pthread_exit(void) {
