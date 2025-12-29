@@ -61,6 +61,7 @@ void exercise1_double_pointer_basics(void) {
 
     /* TODO: Modify x using the double pointer */
     /* Uncomment and observe: **dptr = 100; */
+    **dptr = 100;
 
     printf("After **dptr = 100, x = %d (expected: 100)\n", x);
 }
@@ -150,7 +151,23 @@ int create_array(int **arr, int n, int init_value) {
      * 3. If yes, store pointer in *arr and initialize values
      * 4. Return 0 on success, -1 on failure
      */
-    return -1;  /* TODO: Fix this */
+    if (n <= 0) {
+        *arr = NULL;
+        return -1;
+    }
+
+    int *tmp = malloc(sizeof(int) * n);
+    if (tmp == NULL) {
+        *arr = NULL;
+        return -1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        tmp[i] = init_value;
+    }
+
+    *arr = tmp;
+    return 0;  /* TODO: Fix this */
 }
 
 /*
@@ -164,6 +181,9 @@ void destroy_array(int **arr) {
      * 1. Free the memory at *arr
      * 2. Set *arr to NULL
      */
+    if (arr == NULL) return;
+    free(*arr);
+    *arr = NULL;
 }
 
 void exercise3_double_pointer_functions(void) {
@@ -215,7 +235,20 @@ int **create_matrix(int rows, int cols) {
      * 2. For each row, allocate memory for 'cols' integers
      * 3. Handle allocation failures (free everything and return NULL)
      */
-    return NULL;  /* TODO: Fix this */
+    if (rows <= 0 || cols <= 0) return NULL;
+    int **matrix = malloc(rows * sizeof(int *));
+    if (matrix == NULL) return NULL;
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = malloc(cols * sizeof(int));
+        if (matrix[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(matrix[j]);
+            }
+            free(matrix);
+            return NULL;
+        }
+    }
+    return matrix;  /* TODO: Fix this */
 }
 
 /*
@@ -228,6 +261,12 @@ void free_matrix(int **matrix, int rows) {
      * 1. Free each row
      * 2. Free the array of pointers
      */
+    if (matrix == NULL) return;
+    for (int i = 0; i < rows; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
+    return;
 }
 
 /*
@@ -236,6 +275,13 @@ void free_matrix(int **matrix, int rows) {
  */
 void init_matrix(int **matrix, int rows, int cols) {
     /* TODO: Implement this function */
+    if (matrix == NULL) return;
+    for (int i = 0; i < rows; i++) {
+        int *row = matrix[i];
+        for (int j = 0; j < cols; j++) {
+            row[j] = i * cols + j;
+        }
+    }
 }
 
 /*
@@ -298,10 +344,18 @@ void exercise5_string_array(void) {
     char **dynamic_names = NULL;  /* TODO: Allocate this */
     int dynamic_count = 3;
 
+    dynamic_names = malloc(sizeof(*dynamic_names) * dynamic_count);
+    if (dynamic_names == NULL) {
+        return;
+    }
     /* TODO: Allocate and copy strings */
     /* dynamic_names[0] = strdup("Eve"); */
     /* dynamic_names[1] = strdup("Frank"); */
     /* dynamic_names[2] = strdup("Grace"); */
+
+    dynamic_names[0] = strdup("Eve");
+    dynamic_names[1] = strdup("Frank");
+    dynamic_names[2] = strdup("Grace");
 
     printf("\nDynamic string array (TODO: implement):\n");
     if (dynamic_names != NULL) {
@@ -314,6 +368,8 @@ void exercise5_string_array(void) {
         /* TODO: Free all strings and the array */
         /* for (int i = 0; i < dynamic_count; i++) { free(dynamic_names[i]); } */
         /* free(dynamic_names); */
+        for (int i = 0; i < dynamic_count; i++) { free(dynamic_names[i]); }
+        free(dynamic_names);
     }
 }
 
@@ -342,6 +398,11 @@ void insert_at_head(Node **head, int data) {
      * 3. Set new node's next to current head (*head)
      * 4. Update head to point to new node (*head = new_node)
      */
+    Node *new_node = malloc(sizeof(*new_node));
+    if (new_node == NULL) return;
+    new_node->data = data;
+    new_node->next = *head;
+    *head = new_node;
 }
 
 /*
@@ -363,6 +424,16 @@ void delete_node(Node **head, int data) {
      *     current = &((*current)->next);
      * }
      */
+    Node **current = head;
+    while (*current != NULL) {
+        if ((*current)->data == data) {
+            Node *to_delete = *current;
+            *current = (*current)->next;
+            free(to_delete);
+            return;
+        }
+        current = &((*current)->next);
+    }
 }
 
 void print_list(Node *head) {

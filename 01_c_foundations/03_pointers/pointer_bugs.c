@@ -9,7 +9,7 @@
  *
  * For memory checking (use Docker on M4 Mac):
  *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *       valgrind --leak-check=full ./pointer_bugs
+ *      sh -c "clang -Wall -Wextra -g pointer_bugs.c -o pointer_bugs && valgrind --leak-check=full ./pointer_bugs"
  *
  * Topics covered:
  *   - Null pointer dereference
@@ -35,6 +35,9 @@
  */
 int get_value_bug1(int *ptr) {
     /* BUG: No NULL check before dereference */
+    if (ptr == NULL) {
+        return 0;
+    }
     return *ptr;
 
     /* TODO: Fix this function */
@@ -71,10 +74,14 @@ void use_after_free_bug2(void) {
     printf("Before free: *ptr = %d\n", *ptr);
 
     free(ptr);
-
+    ptr = NULL;
     /* BUG: Using ptr after it's been freed! */
     /* This is undefined behavior - might work, might crash, might corrupt data */
-    printf("After free: *ptr = %d (UNDEFINED BEHAVIOR!)\n", *ptr);
+    if (ptr != NULL) {
+        printf("After free: *ptr = %d (UNDEFINED BEHAVIOR!)\n", *ptr);
+    } else {
+        printf("After free: ptr is NULL (safe)\n");
+    }
 
     /* TODO: Fix this bug
      * HINT: Set ptr to NULL after free, and check before use
@@ -88,20 +95,14 @@ void use_after_free_bug2(void) {
  * TODO: Fix this function to avoid memory leak.
  */
 int *create_array_bug3(int size) {
-    int *arr1 = malloc(size * sizeof(int));
-    if (arr1 == NULL) return NULL;
-
-    /* BUG: We overwrite arr1 without freeing it first! */
-    int *arr2 = malloc(size * sizeof(int));
-    if (arr2 == NULL) return NULL;
-
-    /* The memory from arr1 is now leaked! */
+    int *arr = malloc(size * sizeof(int));
+    if (arr == NULL) return NULL;
 
     for (int i = 0; i < size; i++) {
-        arr2[i] = i * 2;
+        arr[i] = i * 2;
     }
 
-    return arr2;
+    return arr;
 
     /* TODO: Fix this function
      * HINT: Either free arr1, or don't allocate it in the first place
@@ -117,8 +118,7 @@ void test_bug3(void) {
         free(arr);
     }
 
-    printf("Memory leak exists! Run with Valgrind to see.\n");
-    printf("TODO: Fix create_array_bug3 to avoid the leak.\n");
+    printf("No memory leak expected.\n");
 }
 
 /* ============================================================================
@@ -129,7 +129,9 @@ void test_bug3(void) {
  */
 void string_copy_bug4(char *dest, const char *src, size_t dest_size) {
     /* BUG: strcpy doesn't check bounds! */
-    strcpy(dest, src);
+    if (dest == NULL || src == NULL || dest_size == 0) return;
+    strncpy(dest, src, dest_size - 1);
+    dest[dest_size - 1] = '\0';
 
     /* TODO: Fix this function to use strncpy or manual bound checking
      * REMEMBER: strncpy might not null-terminate if src is too long
@@ -142,12 +144,8 @@ void test_bug4(void) {
     char small_buffer[10];
     const char *long_string = "This is a very long string that will overflow!";
 
-    /* This will overflow! */
-    /* string_copy_bug4(small_buffer, long_string, sizeof(small_buffer)); */
-    /* printf("Buffer: %s\n", small_buffer); */
-
-    printf("TODO: Fix string_copy_bug4, then uncomment the test.\n");
-    printf("Currently skipped to avoid crash.\n");
+    string_copy_bug4(small_buffer, long_string, sizeof(small_buffer));
+    printf("Buffer: %s\n", small_buffer);
 }
 
 /* ============================================================================
@@ -159,14 +157,18 @@ void test_bug4(void) {
 void uninitialized_bug5(void) {
     printf("\n=== Bug 5: Uninitialized Pointer ===\n");
 
-    int *ptr;  /* BUG: Uninitialized pointer! */
+    int *ptr = malloc(sizeof(*ptr));
+    if (ptr == NULL) {
+        printf("Allocation failed\n");
+        return;
+    }
 
     /* Using an uninitialized pointer is undefined behavior */
     /* It might point anywhere in memory */
-    /* *ptr = 42;  // This could crash or corrupt data! */
-
-    printf("TODO: Initialize ptr (to NULL or to valid memory)\n");
-    printf("Currently skipped to avoid crash.\n");
+    *ptr = 42;
+    printf("Initialized ptr: *ptr = %d\n", *ptr);
+    free(ptr);
+    ptr = NULL;
 
     /* TODO: Fix by either:
      * 1. ptr = NULL; and then check before use
@@ -190,6 +192,7 @@ void double_free_bug6(void) {
     printf("Value: %d\n", *ptr);
 
     free(ptr);
+    ptr = NULL;
     /* BUG: Freeing the same memory twice! */
     /* free(ptr);  // This is undefined behavior! */
 
@@ -207,8 +210,13 @@ void double_free_bug6(void) {
  * TODO: Fix this function - returning address of local variable is wrong!
  */
 int *get_value_bug7(int value) {
-    int local = value;  /* Local variable on the stack */
-    return &local;  /* BUG: Returning address of local variable! */
+    //int local = value;  /* Local variable on the stack */
+    //return &local;  /* BUG: Returning address of local variable! */
+
+    int *heap_value = malloc(sizeof(*heap_value));
+    if (heap_value == NULL) return NULL;
+    *heap_value = value;
+    return heap_value;
 
     /* When the function returns, 'local' is destroyed,
      * so the returned pointer points to invalid memory */
@@ -223,12 +231,11 @@ int *get_value_bug7(int value) {
 void test_bug7(void) {
     printf("\n=== Bug 7: Returning Pointer to Local ===\n");
 
-    /* This is undefined behavior - the memory is no longer valid */
-    /* int *ptr = get_value_bug7(42); */
-    /* printf("Value: %d (UNDEFINED!)\n", *ptr); */
-
-    printf("TODO: Fix get_value_bug7, then uncomment the test.\n");
-    printf("Currently skipped to avoid undefined behavior.\n");
+    int *ptr = get_value_bug7(42);
+    if (ptr != NULL) {
+        printf("Value: %d\n", *ptr);
+        free(ptr);
+    }
 }
 
 /* ============================================================================
@@ -239,7 +246,7 @@ void test_bug7(void) {
  */
 void fill_array_bug8(int *arr, int size) {
     /* BUG: Loop goes one past the end of the array! */
-    for (int i = 0; i <= size; i++) {  /* Should be i < size */
+    for (int i = 0; i < size; i++) {  /* Should be i < size */
         arr[i] = i * 10;
     }
 
@@ -252,11 +259,8 @@ void test_bug8(void) {
     int arr[5] = {0};
     int canary = 9999;  /* This might get corrupted */
 
-    /* Commenting out to avoid memory corruption */
-    /* fill_array_bug8(arr, 5); */
-
-    printf("TODO: Fix fill_array_bug8 loop condition.\n");
-    printf("HINT: Use i < size, not i <= size\n");
+    fill_array_bug8(arr, 5);
+    printf("Canary: %d\n", canary);
 }
 
 /* ============================================================================
@@ -300,7 +304,7 @@ void type_confusion_bug9(void) {
 int *allocate_array_bug10(int size) {
     int *arr = malloc(size * sizeof(int));
     /* BUG: No check for malloc failure! */
-
+    if (arr == NULL) return NULL;
     /* If malloc returns NULL, this will crash: */
     for (int i = 0; i < size; i++) {
         arr[i] = 0;

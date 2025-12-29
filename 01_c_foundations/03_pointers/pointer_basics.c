@@ -34,7 +34,7 @@ void exercise1_pointer_basics(void) {
     int *ptr;  /* Declare a pointer to int */
 
     /* TODO: Make ptr point to x using the address-of operator (&) */
-    ptr = NULL;  /* TODO: Replace NULL with the correct expression */
+    ptr = &x;  /* TODO: Replace NULL with the correct expression */
 
     printf("Value of x: %d\n", x);
     printf("Address of x: %p\n", (void*)&x);
@@ -42,11 +42,11 @@ void exercise1_pointer_basics(void) {
 
     /* TODO: Print the value ptr points to using the dereference operator (*) */
     /* printf("Value ptr points to: %d\n", ???); */
-    printf("Value ptr points to: ??? (TODO: fix this line)\n");
+    printf("Value ptr points to: %d\n", *ptr);
 
     /* TODO: Change the value of x through ptr */
     /* Uncomment and fix: *ptr = 100; */
-
+    *ptr = 100;
     printf("After modification through ptr, x = %d (expected: 100)\n", x);
 
     /*
@@ -78,8 +78,8 @@ void exercise2_pointer_arithmetic(void) {
     printf("*(ptr + 2) = %d (third element)\n", *(ptr + 2));
 
     /* TODO: Complete these using pointer arithmetic */
-    int fourth = 0;  /* TODO: Get fourth element using *(ptr + ?) */
-    int fifth = 0;   /* TODO: Get fifth element using *(ptr + ?) */
+    int fourth = *(ptr + 3);  /* TODO: Get fourth element using *(ptr + ?) */
+    int fifth = *(ptr + 4);   /* TODO: Get fifth element using *(ptr + ?) */
 
     printf("Fourth element: %d (expected: 40)\n", fourth);
     printf("Fifth element: %d (expected: 50)\n", fifth);
@@ -91,6 +91,8 @@ void exercise2_pointer_arithmetic(void) {
         /* TODO: Print *p, then increment p */
         /* printf("arr[%d] = %d\n", i, ???); */
         /* ??? increment p */
+        printf("arr[%d] = %d\n", i, *(p));
+        p++;
     }
 
     /*
@@ -133,6 +135,15 @@ void exercise3_arrays_pointers(void) {
     int *p = arr;
     /* TODO: Implement the loop using pointer arithmetic */
     /* HINT: Use a while loop, increment p, check if p < arr + 5 */
+    while (p < arr + 5) {
+        sum2 += *p;
+        p++;
+    }
+    /*
+    for (p = arr; p < arr + 5; p++) {
+        sum2 += *p;
+    }
+    */
 
     printf("Sum using pointer arithmetic: %d (expected: 15)\n", sum2);
 
@@ -158,6 +169,7 @@ void exercise3_arrays_pointers(void) {
 void set_value(int *ptr, int value) {
     /* TODO: Set the value at the address ptr points to */
     /* HINT: Use the dereference operator */
+    *ptr = value;
 }
 
 /*
@@ -169,6 +181,9 @@ void swap_ints(int *a, int *b) {
      * 2. Set *a = *b
      * 3. Set *b = temp
      */
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 /*
@@ -178,6 +193,16 @@ void swap_ints(int *a, int *b) {
 void find_min_max(int arr[], int size, int *min, int *max) {
     /* TODO: Find min and max, store in *min and *max */
     /* HINT: Initialize *min and *max to arr[0], then iterate */
+    *min = arr[0];
+    *max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (*min > arr[i]) {
+            *min = arr[i];
+        }
+        if (*max < arr[i]) {
+            *max = arr[i];
+        }
+    }
 }
 
 void exercise4_pointer_functions(void) {
@@ -237,7 +262,7 @@ void exercise5_null_comparison(void) {
  */
 int safe_get(int *ptr, int default_value) {
     /* TODO: Implement this function */
-    return 0;  /* TODO: Fix this */
+    return ptr != NULL ? *ptr : default_value;
 }
 
 /* ============================================================================
@@ -281,6 +306,8 @@ void exercise6_const_pointers(void) {
     /* TODO: Declare a const pointer to const int pointing to y */
     /* const int * const ptr3 = ???; */
     /* Neither *ptr3 = value nor ptr3 = &other is allowed */
+    
+    const int * const ptr3 = &y; // throws a warning since not used
 
     printf("\nRemember:\n");
     printf("  'const int *ptr' - value is const, pointer is not\n");
@@ -304,6 +331,26 @@ void reverse_string_ptr(char *str) {
      * 3. Swap characters while start < end
      * 4. Move pointers toward each other
      */
+    if (str == NULL || *str == '\0') {
+        return;
+    }
+
+    char *start = str;
+    char *end = str;
+
+    while (*end != '\0') {
+        end++;
+    }
+    end--;
+
+    while (start < end) {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+        start++;
+        end--;
+    }
+
 }
 
 /* ============================================================================

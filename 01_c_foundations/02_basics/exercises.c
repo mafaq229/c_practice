@@ -48,16 +48,16 @@ void exercise1_data_types(void) {
 
     /* TODO: Declare a string (character array) containing "Hello, C!"
      * and print it using printf */
-    char string_var[] = "???";  /* TODO: Fix this */
+    char string_var[] = "heyyyy!";  /* TODO: Fix this */
     printf("String: %s\n", string_var);
 
     /* TODO: Print the size of each type using sizeof()
      * HINT: sizeof() returns size_t, use %zu format specifier */
     printf("\nSizes:\n");
     printf("  sizeof(int) = %zu bytes\n", sizeof(int));       /* TODO: Complete */
-    printf("  sizeof(float) = ??? bytes\n");   /* TODO: Fix this line */
-    printf("  sizeof(double) = ??? bytes\n");  /* TODO: Fix this line */
-    printf("  sizeof(char) = ??? bytes\n");    /* TODO: Fix this line */
+    printf("  sizeof(float) = %zu bytes\n", sizeof(float));   /* TODO: Fix this line */
+    printf("  sizeof(double) = %zu bytes\n", sizeof(double));  /* TODO: Fix this line */
+    printf("  sizeof(char) = %zu bytes\n", sizeof(char));    /* TODO: Fix this line */
 }
 
 /* ============================================================================
@@ -72,11 +72,11 @@ void exercise2_operators(void) {
     int a = 15, b = 4;
 
     /* TODO: Calculate and print the results of these operations */
-    int sum = 0;        /* TODO: a + b */
-    int diff = 0;       /* TODO: a - b */
-    int product = 0;    /* TODO: a * b */
-    int quotient = 0;   /* TODO: a / b (integer division) */
-    int remainder = 0;  /* TODO: a % b (modulo) */
+    int sum = a + b;        /* TODO: a + b */
+    int diff = a - b;       /* TODO: a - b */
+    int product = a * b;    /* TODO: a * b */
+    int quotient = a / b;   /* TODO: a / b (integer division) */
+    int remainder = a % b;  /* TODO: a % b (modulo) */
 
     printf("a = %d, b = %d\n", a, b);
     printf("Sum: %d\n", sum);
@@ -86,11 +86,11 @@ void exercise2_operators(void) {
     printf("Remainder: %d\n", remainder);
 
     /* TODO: Implement these bitwise operations */
-    int and_result = 0;  /* TODO: a & b (bitwise AND) */
-    int or_result = 0;   /* TODO: a | b (bitwise OR) */
-    int xor_result = 0;  /* TODO: a ^ b (bitwise XOR) */
-    int left_shift = 0;  /* TODO: a << 2 (left shift by 2) */
-    int right_shift = 0; /* TODO: a >> 2 (right shift by 2) */
+    int and_result = a & b;  /* TODO: a & b (bitwise AND) */
+    int or_result = a | b;   /* TODO: a | b (bitwise OR) */
+    int xor_result = a ^ b;  /* TODO: a ^ b (bitwise XOR) */
+    int left_shift = a << 2;  /* TODO: a << 2 (left shift by 2) */
+    int right_shift = a >> 2; /* TODO: a >> 2 (right shift by 2) */
 
     printf("\nBitwise operations:\n");
     printf("a & b = %d\n", and_result);
@@ -113,6 +113,12 @@ void exercise2_operators(void) {
  */
 int absolute_value(int n) {
     /* TODO: Implement using if/else */
+    if (n < 0) {
+        return -n;
+    }
+    else {
+        return n;
+    }
     return 0;  /* TODO: Fix this */
 }
 
@@ -121,7 +127,17 @@ int absolute_value(int n) {
  */
 int max_of_three(int a, int b, int c) {
     /* TODO: Implement this function */
-    return 0;  /* TODO: Fix this */
+    int max = a;
+    if (a < b) {
+        max = b;
+        if (b < c) {
+            max = c;
+        }
+    }
+    else if (a < c) {
+        max = c;
+    }
+    return max;  /* TODO: Fix this */
 }
 
 /*
@@ -136,6 +152,23 @@ int max_of_three(int a, int b, int c) {
  */
 const char* categorize_age(int age) {
     /* TODO: Implement this function */
+    if (age < 13) {
+        return "child";
+    }
+
+    switch (age / 10) {
+        case 1:
+            return "teenager";
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            return "adult";
+        case 6:
+            return (age < 65) ? "adult" : "senior";
+        default:
+            return "senior";
+    }
     return "unknown";  /* TODO: Fix this */
 }
 
@@ -172,7 +205,11 @@ void exercise3_control_flow(void) {
  */
 int sum_to_n(int n) {
     /* TODO: Implement using a for loop */
-    return 0;  /* TODO: Fix this */
+    int sum = 0;
+    for (;n != 0; n--) {
+        sum += n;
+    }
+    return sum;  /* TODO: Fix this */
 }
 
 /*
@@ -182,7 +219,12 @@ int sum_to_n(int n) {
  */
 long factorial(int n) {
     /* TODO: Implement using a while loop */
-    return 0;  /* TODO: Fix this */
+    int factorial = 1;
+    while( n > 1) {
+        factorial *= n;
+        n--;
+    }
+    return factorial;  /* TODO: Fix this */
 }
 
 /*
@@ -193,7 +235,12 @@ long factorial(int n) {
 int count_digits(int n) {
     /* TODO: Implement using a do-while loop */
     if (n < 0) n = -n;
-    return 0;  /* TODO: Fix this */
+    int count = 0;
+    do {
+        count++;
+        n /= 10;
+    } while (n > 0);
+    return count;  /* TODO: Fix this */
 }
 
 void exercise4_loops(void) {
@@ -225,6 +272,16 @@ void reverse_array(int arr[], int size) {
     /* TODO: Implement this function
      * HINT: Swap elements from both ends, moving towards the center
      */
+    int left = 0;
+    int right = size - 1;
+    int temp = 0;
+    while (left < right) {
+        temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+        left++;
+        right--;
+    }
 }
 
 /*
@@ -233,7 +290,14 @@ void reverse_array(int arr[], int size) {
  */
 int find_min(int arr[], int size) {
     /* TODO: Implement this function */
-    return 0;  /* TODO: Fix this */
+    if (size == 0) return 0;
+    int min = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    return min;  /* TODO: Fix this */
 }
 
 /*
@@ -242,7 +306,12 @@ int find_min(int arr[], int size) {
  */
 int is_sorted(int arr[], int size) {
     /* TODO: Implement this function */
-    return 0;  /* TODO: Fix this */
+    for (int i = 0; i < size - 1; i++) {
+        if (arr[i] > arr[i+1]) {
+            return 0;
+        }
+    }
+    return 1;  /* TODO: Fix this */
 }
 
 void print_array(int arr[], int size) {
@@ -295,6 +364,9 @@ void swap(int *a, int *b) {
     /* TODO: Implement swap using pointers
      * HINT: Use a temporary variable
      */
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 /*
@@ -303,6 +375,9 @@ void swap(int *a, int *b) {
  */
 void multiply_array(int arr[], int size, int factor) {
     /* TODO: Implement this function */
+    for (int i = 0; i < size; i++) {
+        arr[i] *= factor;
+    }
 }
 
 void exercise6_functions(void) {
@@ -340,7 +415,16 @@ void fizzbuzz(int n) {
 
     for (int i = 1; i <= n; i++) {
         /* TODO: Implement the logic here */
-        printf("%d ", i);  /* TODO: Replace with correct output */
+        if (i % 3 == 0 && i % 5 == 0) {
+            printf("FizzBuzz: %d\n", i);
+        }
+        else if (i % 3 == 0) {
+            printf("Fizz: %d\n", i);
+        }
+        else if (i % 5 == 0) {
+            printf("Buzz: %d\n", i);
+        }
+        else printf("%d ", i);  /* TODO: Replace with correct output */
     }
     printf("\n");
 }
