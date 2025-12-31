@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 04: Custom Allocator
- *
- * Understanding how memory allocators work helps you understand
- * malloc/free and write more efficient code.
- *
- * This exercise implements a simple memory pool allocator.
- *
- * Compile: clang -Wall -Wextra -g custom_allocator.c -o custom_allocator
- * Run:     ./custom_allocator
- *
- * Difficulty: [HARD] - This is a challenge exercise
- */
+CS-6200 Preparation - Module 04: Custom Allocator
+
+Understanding how memory allocators work helps you understand
+malloc/free and write more efficient code.
+
+This exercise implements a simple memory pool allocator.
+
+Compile: clang -Wall -Wextra -g custom_allocator.c -o custom_allocator
+Run:     ./custom_allocator
+
+Difficulty: [HARD] - This is a challenge exercise
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,30 +18,30 @@
 #include <stdint.h>
 
 /* ============================================================================
- * CONCEPT: Memory Pool Allocator
- * ============================================================================
- *
- * A memory pool pre-allocates a large block and manages it internally.
- *
- * Advantages:
- *   - Faster allocation (no system call per allocation)
- *   - Better cache locality
- *   - Can free all at once
- *   - Avoids fragmentation for fixed-size allocations
- *
- * This is commonly used in:
- *   - Game engines
- *   - Network servers
- *   - Database systems
- *   - Operating systems (GIOS covers this!)
- */
+CONCEPT: Memory Pool Allocator
+============================================================================
+
+A memory pool pre-allocates a large block and manages it internally.
+
+Advantages:
+  - Faster allocation (no system call per allocation)
+  - Better cache locality
+  - Can free all at once
+  - Avoids fragmentation for fixed-size allocations
+
+This is commonly used in:
+  - Game engines
+  - Network servers
+  - Database systems
+  - Operating systems (GIOS covers this!)
+*/
 
 /* ============================================================================
- * EXERCISE 1: Fixed-Size Block Pool [MEDIUM]
- * ============================================================================
- *
- * Allocator for fixed-size blocks. Simple but useful.
- */
+EXERCISE 1: Fixed-Size Block Pool [MEDIUM]
+============================================================================
+
+Allocator for fixed-size blocks. Simple but useful.
+*/
 
 #define BLOCK_SIZE 64
 #define POOL_SIZE 1024  /* 1024 blocks */
@@ -53,9 +53,9 @@ typedef struct {
 } FixedPool;
 
 /*
- * TODO: Initialize the pool.
- * Mark all blocks as free.
- */
+TODO: Initialize the pool.
+Mark all blocks as free.
+*/
 void fixed_pool_init(FixedPool *pool) {
     /* TODO: Implement this function
      *
@@ -66,9 +66,9 @@ void fixed_pool_init(FixedPool *pool) {
 }
 
 /*
- * TODO: Allocate a block from the pool.
- * Returns pointer to block, or NULL if pool is full.
- */
+TODO: Allocate a block from the pool.
+Returns pointer to block, or NULL if pool is full.
+*/
 void *fixed_pool_alloc(FixedPool *pool) {
     /* TODO: Implement this function
      *
@@ -85,8 +85,8 @@ void *fixed_pool_alloc(FixedPool *pool) {
 }
 
 /*
- * TODO: Free a block back to the pool.
- */
+TODO: Free a block back to the pool.
+*/
 void fixed_pool_free(FixedPool *pool, void *ptr) {
     /* TODO: Implement this function
      *
@@ -100,8 +100,8 @@ void fixed_pool_free(FixedPool *pool, void *ptr) {
 }
 
 /*
- * TODO: Get pool statistics.
- */
+TODO: Get pool statistics.
+*/
 int fixed_pool_num_free(FixedPool *pool) {
     return POOL_SIZE - pool->num_allocated;
 }
@@ -142,12 +142,12 @@ void exercise1_fixed_pool(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Arena Allocator (Bump Allocator) [MEDIUM]
- * ============================================================================
- *
- * Simplest possible allocator: just bump a pointer forward.
- * Can only free all at once.
- */
+EXERCISE 2: Arena Allocator (Bump Allocator) [MEDIUM]
+============================================================================
+
+Simplest possible allocator: just bump a pointer forward.
+Can only free all at once.
+*/
 
 typedef struct {
     uint8_t *memory;     /* Base of allocated memory */
@@ -156,8 +156,8 @@ typedef struct {
 } Arena;
 
 /*
- * TODO: Create an arena with given capacity.
- */
+TODO: Create an arena with given capacity.
+*/
 Arena *arena_create(size_t capacity) {
     /* TODO: Implement this function
      *
@@ -172,9 +172,9 @@ Arena *arena_create(size_t capacity) {
 }
 
 /*
- * TODO: Allocate memory from the arena.
- * Returns NULL if not enough space.
- */
+TODO: Allocate memory from the arena.
+Returns NULL if not enough space.
+*/
 void *arena_alloc(Arena *arena, size_t size) {
     /* TODO: Implement this function
      *
@@ -191,15 +191,15 @@ void *arena_alloc(Arena *arena, size_t size) {
 }
 
 /*
- * TODO: Reset the arena (free all allocations at once).
- */
+TODO: Reset the arena (free all allocations at once).
+*/
 void arena_reset(Arena *arena) {
     /* TODO: Just set offset back to 0 */
 }
 
 /*
- * TODO: Destroy the arena.
- */
+TODO: Destroy the arena.
+*/
 void arena_destroy(Arena *arena) {
     /* TODO: Free memory buffer and arena struct */
 }
@@ -246,12 +246,12 @@ void exercise2_arena(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Free List Allocator [HARD]
- * ============================================================================
- *
- * A more sophisticated allocator that maintains a free list.
- * This is closer to how malloc actually works.
- */
+EXERCISE 3: Free List Allocator [HARD]
+============================================================================
+
+A more sophisticated allocator that maintains a free list.
+This is closer to how malloc actually works.
+*/
 
 typedef struct FreeBlock {
     size_t size;
@@ -265,8 +265,8 @@ typedef struct {
 } FreeListAllocator;
 
 /*
- * TODO: Initialize the free list allocator.
- */
+TODO: Initialize the free list allocator.
+*/
 FreeListAllocator *freelist_create(size_t capacity) {
     /* TODO: Implement this function
      *
@@ -282,8 +282,8 @@ FreeListAllocator *freelist_create(size_t capacity) {
 }
 
 /*
- * TODO: Allocate memory using first-fit strategy.
- */
+TODO: Allocate memory using first-fit strategy.
+*/
 void *freelist_alloc(FreeListAllocator *alloc, size_t size) {
     /* TODO: Implement this function
      *
@@ -300,8 +300,8 @@ void *freelist_alloc(FreeListAllocator *alloc, size_t size) {
 }
 
 /*
- * TODO: Free memory back to the allocator.
- */
+TODO: Free memory back to the allocator.
+*/
 void freelist_free(FreeListAllocator *alloc, void *ptr) {
     /* TODO: Implement this function
      *
@@ -350,28 +350,28 @@ void exercise3_freelist(void) {
 }
 
 /* ============================================================================
- * SUMMARY: Allocator Comparison
- * ============================================================================
- *
- * | Allocator     | Alloc Time | Free Time | Individual Free | Fragmentation |
- * |---------------|------------|-----------|-----------------|---------------|
- * | Fixed Pool    | O(n)       | O(1)      | Yes             | None (fixed)  |
- * | Arena/Bump    | O(1)       | O(1)*     | No (all at once)| None          |
- * | Free List     | O(n)       | O(1)      | Yes             | Yes           |
- * | malloc        | Varies     | Varies    | Yes             | Managed       |
- *
- * * Arena free is O(1) but frees everything at once
- *
- * When to use each:
- * - Fixed Pool: Many allocations of same size (e.g., network packets)
- * - Arena: Temporary allocations with known lifetime (e.g., request handling)
- * - Free List: General purpose, like malloc
- */
+SUMMARY: Allocator Comparison
+============================================================================
+
+| Allocator     | Alloc Time | Free Time | Individual Free | Fragmentation |
+|---------------|------------|-----------|-----------------|---------------|
+| Fixed Pool    | O(n)       | O(1)      | Yes             | None (fixed)  |
+| Arena/Bump    | O(1)       | O(1)*     | No (all at once)| None          |
+| Free List     | O(n)       | O(1)      | Yes             | Yes           |
+| malloc        | Varies     | Varies    | Yes             | Managed       |
+
+* Arena free is O(1) but frees everything at once
+
+When to use each:
+- Fixed Pool: Many allocations of same size (e.g., network packets)
+- Arena: Temporary allocations with known lifetime (e.g., request handling)
+- Free List: General purpose, like malloc
+*/
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

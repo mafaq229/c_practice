@@ -1,23 +1,23 @@
 /*
- * CS-6200 Preparation - Module 06: Hash Table
- *
- * Hash tables provide O(1) average lookup. Used in GIOS for
- * caching, file lookups, and many other purposes.
- *
- * Compile: clang -Wall -Wextra -g hash_table.c -o hash_table
- * Run:     ./hash_table
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 06: Hash Table
+
+Hash tables provide O(1) average lookup. Used in GIOS for
+caching, file lookups, and many other purposes.
+
+Compile: clang -Wall -Wextra -g hash_table.c -o hash_table
+Run:     ./hash_table
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * HASH TABLE WITH CHAINING
- * ============================================================================
- */
+HASH TABLE WITH CHAINING
+============================================================================
+*/
 
 #define INITIAL_CAPACITY 16
 #define LOAD_FACTOR_THRESHOLD 0.75
@@ -35,9 +35,9 @@ typedef struct {
 } HashTable;
 
 /*
- * Simple hash function for strings.
- * Uses djb2 algorithm.
- */
+Simple hash function for strings.
+Uses djb2 algorithm.
+*/
 size_t hash_string(const char *str, size_t capacity) {
     size_t hash = 5381;
     int c;
@@ -48,8 +48,8 @@ size_t hash_string(const char *str, size_t capacity) {
 }
 
 /*
- * TODO: Initialize hash table.
- */
+TODO: Initialize hash table.
+*/
 int ht_init(HashTable *ht, size_t capacity) {
     /* TODO: Implement this function
      *
@@ -64,9 +64,9 @@ int ht_init(HashTable *ht, size_t capacity) {
 }
 
 /*
- * TODO: Insert or update a key-value pair.
- * Makes a copy of the key string.
- */
+TODO: Insert or update a key-value pair.
+Makes a copy of the key string.
+*/
 int ht_put(HashTable *ht, const char *key, void *value) {
     /* TODO: Implement this function
      *
@@ -83,9 +83,9 @@ int ht_put(HashTable *ht, const char *key, void *value) {
 }
 
 /*
- * TODO: Get value for key.
- * Returns NULL if key not found.
- */
+TODO: Get value for key.
+Returns NULL if key not found.
+*/
 void *ht_get(HashTable *ht, const char *key) {
     /* TODO: Implement this function
      *
@@ -99,8 +99,8 @@ void *ht_get(HashTable *ht, const char *key) {
 }
 
 /*
- * TODO: Check if key exists.
- */
+TODO: Check if key exists.
+*/
 int ht_contains(HashTable *ht, const char *key) {
     /* TODO: Implement this function */
 
@@ -108,9 +108,9 @@ int ht_contains(HashTable *ht, const char *key) {
 }
 
 /*
- * TODO: Remove key-value pair.
- * Returns 0 if removed, -1 if not found.
- */
+TODO: Remove key-value pair.
+Returns 0 if removed, -1 if not found.
+*/
 int ht_remove(HashTable *ht, const char *key) {
     /* TODO: Implement this function
      *
@@ -121,9 +121,9 @@ int ht_remove(HashTable *ht, const char *key) {
 }
 
 /*
- * TODO: Free the hash table.
- * Frees all keys but NOT values (caller's responsibility).
- */
+TODO: Free the hash table.
+Frees all keys but NOT values (caller's responsibility).
+*/
 void ht_free(HashTable *ht) {
     /* TODO: Implement this function
      *
@@ -134,8 +134,8 @@ void ht_free(HashTable *ht) {
 }
 
 /*
- * Print hash table for debugging.
- */
+Print hash table for debugging.
+*/
 void ht_print(HashTable *ht) {
     printf("HashTable (size=%zu, capacity=%zu):\n", ht->size, ht->capacity);
     for (size_t i = 0; i < ht->capacity; i++) {
@@ -152,13 +152,13 @@ void ht_print(HashTable *ht) {
 }
 
 /* ============================================================================
- * CHALLENGE: Resizing Hash Table [HARD]
- * ============================================================================
- */
+CHALLENGE: Resizing Hash Table [HARD]
+============================================================================
+*/
 
 /*
- * TODO: Resize hash table when load factor is exceeded.
- */
+TODO: Resize hash table when load factor is exceeded.
+*/
 int ht_resize(HashTable *ht, size_t new_capacity) {
     /* TODO: Implement this function
      *
@@ -175,8 +175,8 @@ int ht_resize(HashTable *ht, size_t new_capacity) {
 }
 
 /*
- * Put with automatic resizing.
- */
+Put with automatic resizing.
+*/
 int ht_put_resize(HashTable *ht, const char *key, void *value) {
     /* Check load factor */
     double load_factor = (double)ht->size / ht->capacity;
@@ -189,9 +189,9 @@ int ht_put_resize(HashTable *ht, const char *key, void *value) {
 }
 
 /* ============================================================================
- * INTEGER KEY HASH TABLE [MEDIUM]
- * ============================================================================
- */
+INTEGER KEY HASH TABLE [MEDIUM]
+============================================================================
+*/
 
 typedef struct IntHashEntry {
     int key;
@@ -206,8 +206,8 @@ typedef struct {
 } IntHashTable;
 
 /*
- * TODO: Initialize integer hash table.
- */
+TODO: Initialize integer hash table.
+*/
 int iht_init(IntHashTable *ht, size_t capacity) {
     /* TODO: Implement this function */
 
@@ -215,16 +215,16 @@ int iht_init(IntHashTable *ht, size_t capacity) {
 }
 
 /*
- * Hash function for integers.
- */
+Hash function for integers.
+*/
 size_t hash_int(int key, size_t capacity) {
     /* Simple modulo hash */
     return (size_t)(key >= 0 ? key : -key) % capacity;
 }
 
 /*
- * TODO: Put with linear probing.
- */
+TODO: Put with linear probing.
+*/
 int iht_put(IntHashTable *ht, int key, void *value) {
     /* TODO: Implement this function
      *
@@ -237,8 +237,8 @@ int iht_put(IntHashTable *ht, int key, void *value) {
 }
 
 /*
- * TODO: Get with linear probing.
- */
+TODO: Get with linear probing.
+*/
 void *iht_get(IntHashTable *ht, int key) {
     /* TODO: Implement this function */
 
@@ -252,9 +252,9 @@ void iht_free(IntHashTable *ht) {
 }
 
 /* ============================================================================
- * TEST FUNCTIONS
- * ============================================================================
- */
+TEST FUNCTIONS
+============================================================================
+*/
 
 void test_string_hashtable(void) {
     printf("\n=== String Hash Table ===\n");
@@ -311,9 +311,9 @@ void test_int_hashtable(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

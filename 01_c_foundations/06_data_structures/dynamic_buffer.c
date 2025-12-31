@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 06: Dynamic Buffer
- *
- * A growable byte buffer is essential for network programming.
- * This module creates a reusable buffer for GIOS projects.
- *
- * Compile: clang -Wall -Wextra -g dynamic_buffer.c -o dynamic_buffer
- * Run:     ./dynamic_buffer
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 06: Dynamic Buffer
+
+A growable byte buffer is essential for network programming.
+This module creates a reusable buffer for GIOS projects.
+
+Compile: clang -Wall -Wextra -g dynamic_buffer.c -o dynamic_buffer
+Run:     ./dynamic_buffer
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +17,9 @@
 #include <stdarg.h>
 
 /* ============================================================================
- * DYNAMIC BUFFER IMPLEMENTATION
- * ============================================================================
- */
+DYNAMIC BUFFER IMPLEMENTATION
+============================================================================
+*/
 
 #define BUFFER_INITIAL_CAPACITY 64
 #define BUFFER_GROWTH_FACTOR 2
@@ -31,15 +31,15 @@ typedef struct {
 } Buffer;
 
 /*
- * TODO: Initialize buffer with default capacity.
- */
+TODO: Initialize buffer with default capacity.
+*/
 int buffer_init(Buffer *buf) {
     return buffer_init_capacity(buf, BUFFER_INITIAL_CAPACITY);
 }
 
 /*
- * TODO: Initialize buffer with specific capacity.
- */
+TODO: Initialize buffer with specific capacity.
+*/
 int buffer_init_capacity(Buffer *buf, size_t capacity) {
     /* TODO: Implement this function
      *
@@ -57,22 +57,22 @@ int buffer_init_capacity(Buffer *buf, size_t capacity) {
 }
 
 /*
- * TODO: Free buffer resources.
- */
+TODO: Free buffer resources.
+*/
 void buffer_free(Buffer *buf) {
     /* TODO: Implement this function */
 }
 
 /*
- * TODO: Clear buffer (keep allocation).
- */
+TODO: Clear buffer (keep allocation).
+*/
 void buffer_clear(Buffer *buf) {
     buf->length = 0;
 }
 
 /*
- * TODO: Ensure buffer can hold at least 'size' more bytes.
- */
+TODO: Ensure buffer can hold at least 'size' more bytes.
+*/
 int buffer_ensure_capacity(Buffer *buf, size_t additional) {
     /* TODO: Implement this function
      *
@@ -84,8 +84,8 @@ int buffer_ensure_capacity(Buffer *buf, size_t additional) {
 }
 
 /*
- * TODO: Append raw bytes to buffer.
- */
+TODO: Append raw bytes to buffer.
+*/
 int buffer_append(Buffer *buf, const void *data, size_t len) {
     /* TODO: Implement this function
      *
@@ -100,22 +100,22 @@ int buffer_append(Buffer *buf, const void *data, size_t len) {
 }
 
 /*
- * TODO: Append a single byte.
- */
+TODO: Append a single byte.
+*/
 int buffer_append_byte(Buffer *buf, uint8_t byte) {
     return buffer_append(buf, &byte, 1);
 }
 
 /*
- * TODO: Append null-terminated string.
- */
+TODO: Append null-terminated string.
+*/
 int buffer_append_string(Buffer *buf, const char *str) {
     return buffer_append(buf, str, strlen(str));
 }
 
 /*
- * TODO: Append formatted string (like printf).
- */
+TODO: Append formatted string (like printf).
+*/
 int buffer_appendf(Buffer *buf, const char *format, ...) {
     /* TODO: Implement this function
      *
@@ -133,9 +133,9 @@ int buffer_appendf(Buffer *buf, const char *format, ...) {
 }
 
 /*
- * TODO: Remove bytes from beginning of buffer.
- * (Useful for parsing - consume processed data)
- */
+TODO: Remove bytes from beginning of buffer.
+(Useful for parsing - consume processed data)
+*/
 void buffer_consume(Buffer *buf, size_t len) {
     /* TODO: Implement this function
      *
@@ -147,18 +147,18 @@ void buffer_consume(Buffer *buf, size_t len) {
 }
 
 /*
- * TODO: Get pointer to data at offset.
- * Returns NULL if offset is out of bounds.
- */
+TODO: Get pointer to data at offset.
+Returns NULL if offset is out of bounds.
+*/
 uint8_t *buffer_at(Buffer *buf, size_t offset) {
     if (offset >= buf->length) return NULL;
     return buf->data + offset;
 }
 
 /*
- * TODO: Search for a byte sequence in buffer.
- * Returns offset if found, -1 if not found.
- */
+TODO: Search for a byte sequence in buffer.
+Returns offset if found, -1 if not found.
+*/
 ssize_t buffer_find(Buffer *buf, const void *needle, size_t needle_len) {
     /* TODO: Implement this function
      *
@@ -170,15 +170,15 @@ ssize_t buffer_find(Buffer *buf, const void *needle, size_t needle_len) {
 }
 
 /*
- * TODO: Search for a string in buffer (excludes null terminator).
- */
+TODO: Search for a string in buffer (excludes null terminator).
+*/
 ssize_t buffer_find_string(Buffer *buf, const char *str) {
     return buffer_find(buf, str, strlen(str));
 }
 
 /*
- * Print buffer as hex dump (for debugging).
- */
+Print buffer as hex dump (for debugging).
+*/
 void buffer_hexdump(Buffer *buf) {
     printf("Buffer (%zu bytes):\n", buf->length);
     for (size_t i = 0; i < buf->length; i++) {
@@ -189,16 +189,16 @@ void buffer_hexdump(Buffer *buf) {
 }
 
 /*
- * Print buffer as string (assumes printable characters).
- */
+Print buffer as string (assumes printable characters).
+*/
 void buffer_print_string(Buffer *buf) {
     printf("'%.*s'\n", (int)buf->length, buf->data);
 }
 
 /* ============================================================================
- * TEST FUNCTIONS
- * ============================================================================
- */
+TEST FUNCTIONS
+============================================================================
+*/
 
 void test_basic_operations(void) {
     printf("\n=== Test Basic Operations ===\n");
@@ -307,9 +307,9 @@ void test_binary_data(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

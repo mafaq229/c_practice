@@ -1,18 +1,18 @@
 /*
- * cache_process.c - Separate Cache Process (Part D)
- *
- * A standalone process that manages the file cache and communicates
- * with the proxy via IPC (message queues and shared memory).
- *
- * This demonstrates process separation for:
- * - Fault isolation (cache crash doesn't kill proxy)
- * - Independent scaling
- * - Memory isolation
- *
- * Usage: ./cache_process
- *
- * NOTE: This requires Linux! Use Docker on macOS.
- */
+cache_process.c - Separate Cache Process (Part D)
+
+A standalone process that manages the file cache and communicates
+with the proxy via IPC (message queues and shared memory).
+
+This demonstrates process separation for:
+- Fault isolation (cache crash doesn't kill proxy)
+- Independent scaling
+- Memory isolation
+
+Usage: ./cache_process
+
+NOTE: This requires Linux! Use Docker on macOS.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,8 +36,8 @@ typedef int mqd_t;
 #endif
 
 /* ============================================================================
- * Configuration
- * ============================================================================ */
+Configuration
+============================================================================ */
 
 #define CACHE_SIZE          (10 * 1024 * 1024)  /* 10 MB cache */
 
@@ -50,8 +50,8 @@ static mqd_t mq_to_proxy = -1;
 static cache_t *cache = NULL;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 static void signal_handler(int sig) {
     (void)sig;
@@ -59,8 +59,8 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * IPC Setup
- * ============================================================================ */
+IPC Setup
+============================================================================ */
 
 static int setup_ipc(void) {
     /*
@@ -125,8 +125,8 @@ static void cleanup_ipc(void) {
 }
 
 /* ============================================================================
- * Request Handlers
- * ============================================================================ */
+Request Handlers
+============================================================================ */
 
 static void handle_lookup(const ipc_lookup_request_t *request) {
     /*
@@ -220,8 +220,8 @@ static void handle_stats(uint32_t request_id) {
 }
 
 /* ============================================================================
- * Main Loop
- * ============================================================================ */
+Main Loop
+============================================================================ */
 
 static int run_cache_process(void) {
     /*
@@ -281,8 +281,8 @@ static int run_cache_process(void) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 int main(void) {
 #if !HAS_MQ

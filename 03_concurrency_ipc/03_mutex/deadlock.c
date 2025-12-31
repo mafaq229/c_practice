@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 03: Deadlocks
- *
- * Learn about deadlocks and how to avoid them.
- * Critical for writing correct concurrent code!
- *
- * Compile: clang -Wall -Wextra -g -pthread deadlock.c -o deadlock
- * Run:     ./deadlock
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 03: Deadlocks
+
+Learn about deadlocks and how to avoid them.
+Critical for writing correct concurrent code!
+
+Compile: clang -Wall -Wextra -g -pthread deadlock.c -o deadlock
+Run:     ./deadlock
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,28 +16,28 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Deadlock
- * ============================================================================
- *
- * A DEADLOCK occurs when two or more threads wait for each other forever.
- *
- * Four conditions must hold simultaneously (Coffman conditions):
- * 1. Mutual exclusion - resources can't be shared
- * 2. Hold and wait - holding one resource while waiting for another
- * 3. No preemption - can't forcibly take a resource
- * 4. Circular wait - A waits for B waits for C waits for A
- *
- * Classic example:
- *   Thread A: lock(mutex1), lock(mutex2)
- *   Thread B: lock(mutex2), lock(mutex1)
- *
- * If A gets mutex1 and B gets mutex2, both wait forever!
- */
+CONCEPT: Deadlock
+============================================================================
+
+A DEADLOCK occurs when two or more threads wait for each other forever.
+
+Four conditions must hold simultaneously (Coffman conditions):
+1. Mutual exclusion - resources can't be shared
+2. Hold and wait - holding one resource while waiting for another
+3. No preemption - can't forcibly take a resource
+4. Circular wait - A waits for B waits for C waits for A
+
+Classic example:
+  Thread A: lock(mutex1), lock(mutex2)
+  Thread B: lock(mutex2), lock(mutex1)
+
+If A gets mutex1 and B gets mutex2, both wait forever!
+*/
 
 /* ============================================================================
- * EXERCISE 1: Classic deadlock demonstration
- * ============================================================================
- */
+EXERCISE 1: Classic deadlock demonstration
+============================================================================
+*/
 
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
@@ -102,9 +102,9 @@ void exercise1_classic_deadlock(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Fix deadlock with consistent lock ordering
- * ============================================================================
- */
+EXERCISE 2: Fix deadlock with consistent lock ordering
+============================================================================
+*/
 
 void *fixed_thread_a(void *arg) {
     (void)arg;
@@ -161,9 +161,9 @@ void exercise2_fixed_ordering(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Fix deadlock with trylock
- * ============================================================================
- */
+EXERCISE 3: Fix deadlock with trylock
+============================================================================
+*/
 
 void *trylock_thread_a(void *arg) {
     (void)arg;
@@ -241,9 +241,9 @@ void exercise3_trylock_solution(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Deadlock with more than two resources
- * ============================================================================
- */
+EXERCISE 4: Deadlock with more than two resources
+============================================================================
+*/
 
 #define NUM_RESOURCES 5
 pthread_mutex_t resources[NUM_RESOURCES];
@@ -311,9 +311,9 @@ void exercise4_dining_philosophers(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Detecting potential deadlocks with timed locks
- * ============================================================================
- */
+EXERCISE 5: Detecting potential deadlocks with timed locks
+============================================================================
+*/
 
 void exercise5_timed_locks(void) {
     printf("\n=== Exercise 5: Timed Locks (Deadlock Detection) ===\n");
@@ -361,9 +361,9 @@ void exercise5_timed_locks(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Self-deadlock with non-recursive mutex
- * ============================================================================
- */
+EXERCISE 6: Self-deadlock with non-recursive mutex
+============================================================================
+*/
 
 pthread_mutex_t recursive_test_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -430,9 +430,9 @@ void exercise6_self_deadlock(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

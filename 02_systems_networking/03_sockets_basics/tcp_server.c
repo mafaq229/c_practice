@@ -1,15 +1,15 @@
 /*
- * CS-6200 Preparation - Module 03: TCP Echo Server
- *
- * This is a simple TCP echo server. It receives data from clients
- * and sends it back. This pattern is the foundation for GIOS Project 1.
- *
- * Compile: clang -Wall -Wextra -g tcp_server.c -o tcp_server
- * Run:     ./tcp_server [port]
- * Test:    In another terminal: nc localhost 8080
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 03: TCP Echo Server
+
+This is a simple TCP echo server. It receives data from clients
+and sends it back. This pattern is the foundation for GIOS Project 1.
+
+Compile: clang -Wall -Wextra -g tcp_server.c -o tcp_server
+Run:     ./tcp_server [port]
+Test:    In another terminal: nc localhost 8080
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,8 +29,8 @@
 volatile sig_atomic_t running = 1;
 
 /*
- * Signal handler for graceful shutdown
- */
+Signal handler for graceful shutdown
+*/
 void handle_signal(int sig) {
     (void)sig;
     running = 0;
@@ -38,9 +38,9 @@ void handle_signal(int sig) {
 }
 
 /*
- * TODO: Create and configure a server socket.
- * Returns socket fd on success, -1 on failure.
- */
+TODO: Create and configure a server socket.
+Returns socket fd on success, -1 on failure.
+*/
 int create_server_socket(int port) {
     /* TODO: Implement this function
      *
@@ -81,9 +81,9 @@ int create_server_socket(int port) {
 }
 
 /*
- * TODO: Handle a single client connection.
- * Echo back any data received.
- */
+TODO: Handle a single client connection.
+Echo back any data received.
+*/
 void handle_client(int client_fd, struct sockaddr_in *client_addr) {
     /* TODO: Implement this function
      *
@@ -115,8 +115,8 @@ void handle_client(int client_fd, struct sockaddr_in *client_addr) {
 }
 
 /*
- * Send all data (handles partial sends)
- */
+Send all data (handles partial sends)
+*/
 ssize_t send_all(int fd, const void *buf, size_t len) {
     const char *ptr = buf;
     size_t remaining = len;
@@ -135,8 +135,8 @@ ssize_t send_all(int fd, const void *buf, size_t len) {
 }
 
 /*
- * Main server loop
- */
+Main server loop
+*/
 void run_server(int port) {
     printf("Starting server on port %d...\n", port);
 
@@ -174,8 +174,8 @@ void run_server(int port) {
 }
 
 /*
- * A simpler working example for reference
- */
+A simpler working example for reference
+*/
 void simple_server_example(int port) {
     printf("\n=== Simple Server Example (Reference) ===\n");
     printf("This shows the complete implementation.\n\n");

@@ -1,9 +1,9 @@
 /*
- * Makefile Exercise - Main Program
- *
- * This is the main file for the Makefile exercise.
- * You need to write a Makefile to compile this project.
- */
+Makefile Exercise - Main Program
+
+This is the main file for the Makefile exercise.
+You need to write a Makefile to compile this project.
+*/
 
 #include <stdio.h>
 #include "math_utils.h"

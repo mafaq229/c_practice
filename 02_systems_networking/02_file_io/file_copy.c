@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 02: File Copy
- *
- * Learn low-level file I/O using open/read/write/close.
- * These are the same calls used with sockets!
- *
- * Compile: clang -Wall -Wextra -g file_copy.c -o file_copy
- * Run:     ./file_copy source.txt dest.txt
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 02: File Copy
+
+Learn low-level file I/O using open/read/write/close.
+These are the same calls used with sockets!
+
+Compile: clang -Wall -Wextra -g file_copy.c -o file_copy
+Run:     ./file_copy source.txt dest.txt
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,9 +21,9 @@
 #define BUFFER_SIZE 4096
 
 /*
- * TODO: Copy a file using low-level I/O.
- * Returns 0 on success, -1 on error.
- */
+TODO: Copy a file using low-level I/O.
+Returns 0 on success, -1 on error.
+*/
 int copy_file_lowlevel(const char *src_path, const char *dst_path) {
     /* TODO: Implement this function
      *
@@ -46,8 +46,8 @@ int copy_file_lowlevel(const char *src_path, const char *dst_path) {
 }
 
 /*
- * Helper: Write all bytes (handles partial writes)
- */
+Helper: Write all bytes (handles partial writes)
+*/
 ssize_t write_all(int fd, const void *buf, size_t count) {
     const char *ptr = buf;
     size_t remaining = count;
@@ -66,8 +66,8 @@ ssize_t write_all(int fd, const void *buf, size_t count) {
 }
 
 /*
- * Alternative: Copy using standard C library (fopen, fread, fwrite)
- */
+Alternative: Copy using standard C library (fopen, fread, fwrite)
+*/
 int copy_file_stdio(const char *src_path, const char *dst_path) {
     FILE *src = fopen(src_path, "rb");
     if (src == NULL) {
@@ -108,8 +108,8 @@ int copy_file_stdio(const char *src_path, const char *dst_path) {
 }
 
 /*
- * Get file size
- */
+Get file size
+*/
 off_t get_file_size(const char *path) {
     struct stat st;
     if (stat(path, &st) != 0) {
@@ -119,8 +119,8 @@ off_t get_file_size(const char *path) {
 }
 
 /*
- * Test the implementation
- */
+Test the implementation
+*/
 void run_tests(void) {
     printf("\n=== File Copy Tests ===\n");
 

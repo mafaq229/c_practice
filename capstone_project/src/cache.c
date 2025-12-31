@@ -1,16 +1,16 @@
 /*
- * cache.c - LRU Cache Implementation
- *
- * This implements a thread-safe LRU (Least Recently Used) cache
- * for storing file contents in memory.
- *
- * Key concepts:
- * - Hash table for O(1) lookup
- * - Doubly-linked list for LRU ordering
- * - Read-write lock for concurrent access
- *
- * Used in Part C (Proxy) and Part D (IPC Cache Process).
- */
+cache.c - LRU Cache Implementation
+
+This implements a thread-safe LRU (Least Recently Used) cache
+for storing file contents in memory.
+
+Key concepts:
+- Hash table for O(1) lookup
+- Doubly-linked list for LRU ordering
+- Read-write lock for concurrent access
+
+Used in Part C (Proxy) and Part D (IPC Cache Process).
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,12 +22,12 @@
 #define NUM_BUCKETS     1021
 
 /* ============================================================================
- * Internal Helper Functions
- * ============================================================================ */
+Internal Helper Functions
+============================================================================ */
 
 /*
- * Simple djb2 hash function
- */
+Simple djb2 hash function
+*/
 static unsigned long hash_string(const char *str) {
     unsigned long hash = 5381;
     int c;
@@ -38,15 +38,15 @@ static unsigned long hash_string(const char *str) {
 }
 
 /*
- * cache_hash - Get bucket index for a key
- */
+cache_hash - Get bucket index for a key
+*/
 int cache_hash(cache_t *cache, const char *key) {
     return hash_string(key) % cache->num_buckets;
 }
 
 /*
- * find_entry - Find an entry by key (internal, no locking)
- */
+find_entry - Find an entry by key (internal, no locking)
+*/
 static cache_entry_t *find_entry(cache_t *cache, const char *key) {
     int bucket = cache_hash(cache, key);
     cache_entry_t *entry = cache->buckets[bucket];
@@ -61,12 +61,12 @@ static cache_entry_t *find_entry(cache_t *cache, const char *key) {
 }
 
 /* ============================================================================
- * LRU List Management
- * ============================================================================ */
+LRU List Management
+============================================================================ */
 
 /*
- * cache_move_to_front - Move entry to front of LRU list (most recently used)
- */
+cache_move_to_front - Move entry to front of LRU list (most recently used)
+*/
 void cache_move_to_front(cache_t *cache, cache_entry_t *entry) {
     /*
      * TODO: Implement LRU list manipulation
@@ -101,8 +101,8 @@ void cache_move_to_front(cache_t *cache, cache_entry_t *entry) {
 }
 
 /*
- * remove_from_lru - Remove entry from LRU list (internal)
- */
+remove_from_lru - Remove entry from LRU list (internal)
+*/
 static void remove_from_lru(cache_t *cache, cache_entry_t *entry) {
     /*
      * TODO: Implement removal from LRU list
@@ -121,8 +121,8 @@ static void remove_from_lru(cache_t *cache, cache_entry_t *entry) {
 }
 
 /*
- * add_to_front_lru - Add entry to front of LRU list (internal)
- */
+add_to_front_lru - Add entry to front of LRU list (internal)
+*/
 static void add_to_front_lru(cache_t *cache, cache_entry_t *entry) {
     /*
      * TODO: Add entry to front of LRU list
@@ -135,12 +135,12 @@ static void add_to_front_lru(cache_t *cache, cache_entry_t *entry) {
 }
 
 /* ============================================================================
- * Cache Lifecycle
- * ============================================================================ */
+Cache Lifecycle
+============================================================================ */
 
 /*
- * cache_create - Create a new cache
- */
+cache_create - Create a new cache
+*/
 cache_t *cache_create(size_t max_size) {
     /*
      * TODO: Implement cache creation
@@ -181,8 +181,8 @@ cache_t *cache_create(size_t max_size) {
 }
 
 /*
- * cache_destroy - Destroy cache and free all memory
- */
+cache_destroy - Destroy cache and free all memory
+*/
 void cache_destroy(cache_t *cache) {
     /*
      * TODO: Implement cache destruction
@@ -209,12 +209,12 @@ void cache_destroy(cache_t *cache) {
 }
 
 /* ============================================================================
- * Cache Operations
- * ============================================================================ */
+Cache Operations
+============================================================================ */
 
 /*
- * cache_get - Look up an entry in the cache
- */
+cache_get - Look up an entry in the cache
+*/
 bool cache_get(cache_t *cache, const char *key, char **data, size_t *size) {
     /*
      * TODO: Implement cache lookup
@@ -249,8 +249,8 @@ bool cache_get(cache_t *cache, const char *key, char **data, size_t *size) {
 }
 
 /*
- * cache_get_copy - Look up and return a copy of cached data
- */
+cache_get_copy - Look up and return a copy of cached data
+*/
 bool cache_get_copy(cache_t *cache, const char *key, char **data, size_t *size) {
     /*
      * TODO: Implement cache lookup with copy
@@ -275,8 +275,8 @@ bool cache_get_copy(cache_t *cache, const char *key, char **data, size_t *size) 
 }
 
 /*
- * cache_put - Add an entry to the cache
- */
+cache_put - Add an entry to the cache
+*/
 bool cache_put(cache_t *cache, const char *key, const char *data, size_t size) {
     /*
      * TODO: Implement cache insertion
@@ -327,8 +327,8 @@ bool cache_put(cache_t *cache, const char *key, const char *data, size_t size) {
 }
 
 /*
- * cache_remove - Remove an entry from the cache
- */
+cache_remove - Remove an entry from the cache
+*/
 bool cache_remove(cache_t *cache, const char *key) {
     /*
      * TODO: Implement cache removal
@@ -354,8 +354,8 @@ bool cache_remove(cache_t *cache, const char *key) {
 }
 
 /*
- * cache_evict_lru - Evict the least recently used entry
- */
+cache_evict_lru - Evict the least recently used entry
+*/
 bool cache_evict_lru(cache_t *cache) {
     /*
      * TODO: Implement LRU eviction
@@ -385,8 +385,8 @@ bool cache_evict_lru(cache_t *cache) {
 }
 
 /*
- * cache_clear - Remove all entries from the cache
- */
+cache_clear - Remove all entries from the cache
+*/
 void cache_clear(cache_t *cache) {
     /*
      * TODO: Implement cache clearing
@@ -402,12 +402,12 @@ void cache_clear(cache_t *cache) {
 }
 
 /* ============================================================================
- * Statistics
- * ============================================================================ */
+Statistics
+============================================================================ */
 
 /*
- * cache_get_stats - Get cache statistics
- */
+cache_get_stats - Get cache statistics
+*/
 void cache_get_stats(cache_t *cache, cache_stats_t *stats) {
     /*
      * TODO: Implement statistics retrieval
@@ -434,8 +434,8 @@ void cache_get_stats(cache_t *cache, cache_stats_t *stats) {
 }
 
 /*
- * cache_reset_stats - Reset hit/miss/eviction counters
- */
+cache_reset_stats - Reset hit/miss/eviction counters
+*/
 void cache_reset_stats(cache_t *cache) {
     if (cache == NULL) {
         return;

@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 04: Thread Barrier
- *
- * A barrier makes threads wait until all have reached the same point.
- * Useful for phased computations and synchronization.
- *
- * Compile: clang -Wall -Wextra -g -pthread barrier.c -o barrier
- * Run:     ./barrier
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 04: Thread Barrier
+
+A barrier makes threads wait until all have reached the same point.
+Useful for phased computations and synchronization.
+
+Compile: clang -Wall -Wextra -g -pthread barrier.c -o barrier
+Run:     ./barrier
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,24 +16,24 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Thread Barrier
- * ============================================================================
- *
- * A barrier is a synchronization point where threads must wait
- * until ALL participating threads have arrived.
- *
- * Use cases:
- * - Parallel algorithms with phases (all threads finish phase 1 before phase 2)
- * - Parallel testing (all threads start at the same time)
- * - Data parallel computations
- *
- * POSIX provides pthread_barrier_t, but implementing your own is educational!
- */
+CONCEPT: Thread Barrier
+============================================================================
+
+A barrier is a synchronization point where threads must wait
+until ALL participating threads have arrived.
+
+Use cases:
+- Parallel algorithms with phases (all threads finish phase 1 before phase 2)
+- Parallel testing (all threads start at the same time)
+- Data parallel computations
+
+POSIX provides pthread_barrier_t, but implementing your own is educational!
+*/
 
 /* ============================================================================
- * CUSTOM BARRIER IMPLEMENTATION
- * ============================================================================
- */
+CUSTOM BARRIER IMPLEMENTATION
+============================================================================
+*/
 
 typedef struct {
     pthread_mutex_t mutex;
@@ -44,8 +44,8 @@ typedef struct {
 } Barrier;
 
 /*
- * TODO: Initialize the barrier
- */
+TODO: Initialize the barrier
+*/
 int barrier_init(Barrier *barrier, int num_threads) {
     if (num_threads <= 0) {
         return -1;
@@ -68,19 +68,19 @@ int barrier_init(Barrier *barrier, int num_threads) {
 }
 
 /*
- * TODO: Destroy the barrier
- */
+TODO: Destroy the barrier
+*/
 void barrier_destroy(Barrier *barrier) {
     pthread_mutex_destroy(&barrier->mutex);
     pthread_cond_destroy(&barrier->cond);
 }
 
 /*
- * TODO: Wait at the barrier
- *
- * Returns 1 for the "last" thread (can be used to do cleanup)
- * Returns 0 for all other threads
- */
+TODO: Wait at the barrier
+
+Returns 1 for the "last" thread (can be used to do cleanup)
+Returns 0 for all other threads
+*/
 int barrier_wait(Barrier *barrier) {
     pthread_mutex_lock(&barrier->mutex);
 
@@ -109,9 +109,9 @@ int barrier_wait(Barrier *barrier) {
 }
 
 /* ============================================================================
- * EXERCISE 1: Basic barrier usage
- * ============================================================================
- */
+EXERCISE 1: Basic barrier usage
+============================================================================
+*/
 
 Barrier global_barrier;
 
@@ -160,9 +160,9 @@ void exercise1_basic_barrier(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Multiple barrier phases
- * ============================================================================
- */
+EXERCISE 2: Multiple barrier phases
+============================================================================
+*/
 
 #define PHASES 3
 
@@ -209,9 +209,9 @@ void exercise2_multi_phase(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Using POSIX barrier
- * ============================================================================
- */
+EXERCISE 3: Using POSIX barrier
+============================================================================
+*/
 
 #ifdef __linux__  /* POSIX barriers not available on macOS */
 
@@ -271,9 +271,9 @@ void exercise3_posix_barrier(void) {
 #endif
 
 /* ============================================================================
- * EXERCISE 4: Parallel computation with barrier
- * ============================================================================
- */
+EXERCISE 4: Parallel computation with barrier
+============================================================================
+*/
 
 #define ARRAY_SIZE 1000
 #define COMPUTE_THREADS 4
@@ -353,9 +353,9 @@ void exercise4_parallel_compute(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Race start barrier
- * ============================================================================
- */
+EXERCISE 5: Race start barrier
+============================================================================
+*/
 
 Barrier start_barrier;
 Barrier finish_barrier;
@@ -413,9 +413,9 @@ void exercise5_race_start(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

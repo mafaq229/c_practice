@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 02: Thread Arguments
- *
- * Learn how to properly pass arguments to threads.
- * This is a common source of bugs in threaded programs!
- *
- * Compile: clang -Wall -Wextra -g -pthread thread_args.c -o thread_args
- * Run:     ./thread_args
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 02: Thread Arguments
+
+Learn how to properly pass arguments to threads.
+This is a common source of bugs in threaded programs!
+
+Compile: clang -Wall -Wextra -g -pthread thread_args.c -o thread_args
+Run:     ./thread_args
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,24 +17,24 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Passing Arguments to Threads
- * ============================================================================
- *
- * pthread_create() takes a void* argument.
- * You can pass any data by casting to void*.
- *
- * Common approaches:
- * 1. Pass a primitive by casting (int, long, etc.)
- * 2. Pass a pointer to data
- * 3. Pass a pointer to a struct (most flexible)
- *
- * DANGER: The data must remain valid while the thread uses it!
- */
+CONCEPT: Passing Arguments to Threads
+============================================================================
+
+pthread_create() takes a void* argument.
+You can pass any data by casting to void*.
+
+Common approaches:
+1. Pass a primitive by casting (int, long, etc.)
+2. Pass a pointer to data
+3. Pass a pointer to a struct (most flexible)
+
+DANGER: The data must remain valid while the thread uses it!
+*/
 
 /* ============================================================================
- * EXERCISE 1: The WRONG way (common bug!)
- * ============================================================================
- */
+EXERCISE 1: The WRONG way (common bug!)
+============================================================================
+*/
 
 void *buggy_thread(void *arg) {
     int *value_ptr = (int *)arg;
@@ -69,9 +69,9 @@ void exercise1_wrong_way(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Correct way - separate storage
- * ============================================================================
- */
+EXERCISE 2: Correct way - separate storage
+============================================================================
+*/
 
 void *correct_thread(void *arg) {
     int *value_ptr = (int *)arg;
@@ -101,9 +101,9 @@ void exercise2_separate_storage(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Casting integer directly
- * ============================================================================
- */
+EXERCISE 3: Casting integer directly
+============================================================================
+*/
 
 void *cast_thread(void *arg) {
     /*
@@ -139,9 +139,9 @@ void exercise3_direct_cast(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Passing a struct
- * ============================================================================
- */
+EXERCISE 4: Passing a struct
+============================================================================
+*/
 
 typedef struct {
     int id;
@@ -189,9 +189,9 @@ void exercise4_struct_args(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Dynamically allocated arguments
- * ============================================================================
- */
+EXERCISE 5: Dynamically allocated arguments
+============================================================================
+*/
 
 typedef struct {
     int thread_id;
@@ -250,9 +250,9 @@ void exercise5_dynamic_args(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Multiple arguments via struct
- * ============================================================================
- */
+EXERCISE 6: Multiple arguments via struct
+============================================================================
+*/
 
 typedef struct {
     int start;
@@ -313,9 +313,9 @@ void exercise6_complex_args(void) {
 }
 
 /* ============================================================================
- * EXERCISE 7: String arguments
- * ============================================================================
- */
+EXERCISE 7: String arguments
+============================================================================
+*/
 
 void *string_thread(void *arg) {
     char *message = (char *)arg;
@@ -346,9 +346,9 @@ void exercise7_string_args(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

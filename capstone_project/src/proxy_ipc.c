@@ -1,21 +1,21 @@
 /*
- * proxy_ipc.c - IPC-Based Caching Proxy (Part D)
- *
- * This proxy uses inter-process communication to talk to a separate
- * cache process instead of an in-process cache.
- *
- * Architecture:
- *   Client <-> Proxy <----- IPC -----> Cache Process
- *                     Message Queue    Shared Memory
- *
- * Communication:
- * - Message queues for request/response signaling
- * - Shared memory for transferring file data
- *
- * Usage: ./proxy_ipc [proxy_port] [server_host] [server_port]
- *
- * NOTE: This requires Linux! Use Docker on macOS.
- */
+proxy_ipc.c - IPC-Based Caching Proxy (Part D)
+
+This proxy uses inter-process communication to talk to a separate
+cache process instead of an in-process cache.
+
+Architecture:
+  Client <-> Proxy <----- IPC -----> Cache Process
+                    Message Queue    Shared Memory
+
+Communication:
+- Message queues for request/response signaling
+- Shared memory for transferring file data
+
+Usage: ./proxy_ipc [proxy_port] [server_host] [server_port]
+
+NOTE: This requires Linux! Use Docker on macOS.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,8 +43,8 @@ typedef int mqd_t;
 #endif
 
 /* ============================================================================
- * Configuration
- * ============================================================================ */
+Configuration
+============================================================================ */
 
 static volatile sig_atomic_t running = 1;
 static int proxy_fd = -1;
@@ -62,8 +62,8 @@ static int server_port = DEFAULT_PORT;
 static uint32_t next_request_id = 1;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 static void signal_handler(int sig) {
     (void)sig;
@@ -75,12 +75,12 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * IPC Setup
- * ============================================================================ */
+IPC Setup
+============================================================================ */
 
 /*
- * setup_ipc - Initialize IPC resources
- */
+setup_ipc - Initialize IPC resources
+*/
 static int setup_ipc(void) {
     /*
      * TODO: Initialize message queues and shared memory
@@ -117,8 +117,8 @@ static int setup_ipc(void) {
 }
 
 /*
- * cleanup_ipc - Clean up IPC resources
- */
+cleanup_ipc - Clean up IPC resources
+*/
 static void cleanup_ipc(void) {
 #if HAS_MQ
     /* Close message queues (don't unlink - cache process may still use them) */
@@ -137,14 +137,14 @@ static void cleanup_ipc(void) {
 }
 
 /* ============================================================================
- * Cache Communication
- * ============================================================================ */
+Cache Communication
+============================================================================ */
 
 /*
- * cache_lookup - Ask cache process if file is cached
- *
- * Returns: 1 if hit (data and size filled), 0 if miss, -1 on error
- */
+cache_lookup - Ask cache process if file is cached
+
+Returns: 1 if hit (data and size filled), 0 if miss, -1 on error
+*/
 static int cache_lookup(const char *path, char **data, size_t *size) {
     /*
      * TODO: Implement cache lookup via IPC
@@ -200,8 +200,8 @@ static int cache_lookup(const char *path, char **data, size_t *size) {
 }
 
 /*
- * cache_store - Tell cache process to store a file
- */
+cache_store - Tell cache process to store a file
+*/
 static int cache_store(const char *path, const char *data, size_t size) {
     /*
      * TODO: Implement cache storage via IPC
@@ -245,8 +245,8 @@ static int cache_store(const char *path, const char *data, size_t size) {
 }
 
 /* ============================================================================
- * Backend Communication
- * ============================================================================ */
+Backend Communication
+============================================================================ */
 
 static int fetch_from_server(const char *path, char **data, size_t *size) {
     /* Same as proxy.c - forward request to backend server */
@@ -262,8 +262,8 @@ static int fetch_from_server(const char *path, char **data, size_t *size) {
 }
 
 /* ============================================================================
- * Request Handling
- * ============================================================================ */
+Request Handling
+============================================================================ */
 
 static void handle_proxy_request(int client_fd) {
     /*
@@ -281,8 +281,8 @@ static void handle_proxy_request(int client_fd) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 static int run_proxy(int proxy_port) {
     /*

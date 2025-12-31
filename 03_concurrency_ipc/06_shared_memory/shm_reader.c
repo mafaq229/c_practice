@@ -1,19 +1,19 @@
 /*
- * CS-6200 Preparation - Module 06: Shared Memory Reader
- *
- * Reads from shared memory created by shm_writer.
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Usage:
- *   Terminal 1: ./shm_writer
- *   Terminal 2: ./shm_reader
- *
- * Compile: clang -Wall -Wextra -g shm_reader.c -o shm_reader -lrt -pthread
- * Run:     ./shm_reader
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 06: Shared Memory Reader
+
+Reads from shared memory created by shm_writer.
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Usage:
+  Terminal 1: ./shm_writer
+  Terminal 2: ./shm_reader
+
+Compile: clang -Wall -Wextra -g shm_reader.c -o shm_reader -lrt -pthread
+Run:     ./shm_reader
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

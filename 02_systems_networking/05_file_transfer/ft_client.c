@@ -1,20 +1,20 @@
 /*
- * CS-6200 Preparation - Module 05: File Transfer Client
- *
- * Client for the file transfer protocol.
- *
- * Protocol:
- *   Request:  GET /path/to/file\r\n
- *   Response: OK <size>\r\n<file data>
- *          or ERROR <message>\r\n
- *
- * Compile: clang -Wall -Wextra -g ft_client.c -o ft_client
- * Run:     ./ft_client <host> <port> <path> [output_file]
- *
- * Example: ./ft_client localhost 8080 /small.txt
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 05: File Transfer Client
+
+Client for the file transfer protocol.
+
+Protocol:
+  Request:  GET /path/to/file\r\n
+  Response: OK <size>\r\n<file data>
+         or ERROR <message>\r\n
+
+Compile: clang -Wall -Wextra -g ft_client.c -o ft_client
+Run:     ./ft_client <host> <port> <path> [output_file]
+
+Example: ./ft_client localhost 8080 /small.txt
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,8 +63,8 @@ ssize_t recv_line(int fd, char *buf, size_t max_len) {
 }
 
 /*
- * TODO: Connect to server.
- */
+TODO: Connect to server.
+*/
 int connect_to_server(const char *host, int port) {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
@@ -97,12 +97,12 @@ int connect_to_server(const char *host, int port) {
 }
 
 /*
- * TODO: Parse response header.
- *
- * Format: "OK <size>\r\n" or "ERROR <message>\r\n"
- *
- * Returns file size on success, -1 on error.
- */
+TODO: Parse response header.
+
+Format: "OK <size>\r\n" or "ERROR <message>\r\n"
+
+Returns file size on success, -1 on error.
+*/
 long parse_response(const char *response) {
     /* TODO: Implement this function
      *
@@ -126,8 +126,8 @@ long parse_response(const char *response) {
 }
 
 /*
- * TODO: Download a file from the server.
- */
+TODO: Download a file from the server.
+*/
 int download_file(const char *host, int port, const char *path, const char *output) {
     /* TODO: Implement this function
      *

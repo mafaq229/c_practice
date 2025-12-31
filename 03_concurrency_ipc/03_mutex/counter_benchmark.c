@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 03: Counter Benchmark
- *
- * Compare different synchronization approaches for a shared counter.
- * Understanding performance implications helps design better systems!
- *
- * Compile: clang -Wall -Wextra -g -pthread counter_benchmark.c -o counter_benchmark
- * Run:     ./counter_benchmark
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 03: Counter Benchmark
+
+Compare different synchronization approaches for a shared counter.
+Understanding performance implications helps design better systems!
+
+Compile: clang -Wall -Wextra -g -pthread counter_benchmark.c -o counter_benchmark
+Run:     ./counter_benchmark
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,9 +21,9 @@
 #define NUM_THREADS 4
 
 /* ============================================================================
- * Helper: Get time in milliseconds
- * ============================================================================
- */
+Helper: Get time in milliseconds
+============================================================================
+*/
 
 double get_time_ms(void) {
     struct timespec ts;
@@ -32,9 +32,9 @@ double get_time_ms(void) {
 }
 
 /* ============================================================================
- * APPROACH 1: No synchronization (BROKEN - baseline)
- * ============================================================================
- */
+APPROACH 1: No synchronization (BROKEN - baseline)
+============================================================================
+*/
 
 volatile int counter_unsafe = 0;
 
@@ -73,9 +73,9 @@ void benchmark_unsafe(void) {
 }
 
 /* ============================================================================
- * APPROACH 2: Mutex (correct but slow)
- * ============================================================================
- */
+APPROACH 2: Mutex (correct but slow)
+============================================================================
+*/
 
 int counter_mutex = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -117,10 +117,10 @@ void benchmark_mutex(void) {
 }
 
 /* ============================================================================
- * APPROACH 3: Spin lock (busy waiting)
- * NOTE: pthread_spinlock_t is Linux-only. Not available on macOS.
- * ============================================================================
- */
+APPROACH 3: Spin lock (busy waiting)
+NOTE: pthread_spinlock_t is Linux-only. Not available on macOS.
+============================================================================
+*/
 
 #ifdef __linux__
 int counter_spin = 0;
@@ -174,9 +174,9 @@ void benchmark_spinlock(void) {
 #endif
 
 /* ============================================================================
- * APPROACH 4: Atomic operations (fast and correct)
- * ============================================================================
- */
+APPROACH 4: Atomic operations (fast and correct)
+============================================================================
+*/
 
 atomic_int counter_atomic = 0;
 
@@ -215,9 +215,9 @@ void benchmark_atomic(void) {
 }
 
 /* ============================================================================
- * APPROACH 5: Local counters + final merge (fastest)
- * ============================================================================
- */
+APPROACH 5: Local counters + final merge (fastest)
+============================================================================
+*/
 
 void *local_increment(void *arg) {
     int iters = *(int *)arg;
@@ -259,9 +259,9 @@ void benchmark_local(void) {
 }
 
 /* ============================================================================
- * APPROACH 6: Batched mutex (compromise)
- * ============================================================================
- */
+APPROACH 6: Batched mutex (compromise)
+============================================================================
+*/
 
 int counter_batched = 0;
 pthread_mutex_t batch_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -318,9 +318,9 @@ void benchmark_batched(void) {
 }
 
 /* ============================================================================
- * SINGLE-THREADED BASELINE
- * ============================================================================
- */
+SINGLE-THREADED BASELINE
+============================================================================
+*/
 
 void benchmark_single(void) {
     printf("\n--- Baseline: Single-Threaded ---\n");
@@ -340,9 +340,9 @@ void benchmark_single(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(void) {
     printf("\n================================================\n");

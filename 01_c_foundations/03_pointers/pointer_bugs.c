@@ -1,38 +1,39 @@
 /*
- * CS-6200 Preparation - Module 03: Pointer Bugs
- *
- * This file contains intentionally buggy code for you to fix.
- * Learning to identify and fix pointer bugs is ESSENTIAL for GIOS.
- *
- * Compile: clang -Wall -Wextra -g pointer_bugs.c -o pointer_bugs
- * Run:     ./pointer_bugs
- *
- * For memory checking (use Docker on M4 Mac):
- *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *      sh -c "clang -Wall -Wextra -g pointer_bugs.c -o pointer_bugs && valgrind --leak-check=full ./pointer_bugs"
- *
- * Topics covered:
- *   - Null pointer dereference
- *   - Use after free
- *   - Memory leaks
- *   - Buffer overflow
- *   - Uninitialized pointers
- *   - Double free
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 03: Pointer Bugs
+
+This file contains intentionally buggy code for you to fix.
+Learning to identify and fix pointer bugs is ESSENTIAL for GIOS.
+
+Compile: clang -Wall -Wextra -g pointer_bugs.c -o pointer_bugs
+Run:     ./pointer_bugs
+
+For memory checking (use Docker on M4 Mac):
+
+docker run --rm -v $(pwd):/code -w /code gios-prep \
+  sh -c "gcc -Wall -Wextra -g pointer_bugs.c -o pointer_bugs && valgrind --leak-check=full ./pointer_bugs"
+
+Topics covered:
+  - Null pointer dereference
+  - Use after free
+  - Memory leaks
+  - Buffer overflow
+  - Uninitialized pointers
+  - Double free
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * BUG 1: NULL Pointer Dereference [EASY]
- * ============================================================================
- *
- * TODO: Fix this function to handle NULL pointer.
- * It should return 0 if ptr is NULL.
- */
+BUG 1: NULL Pointer Dereference [EASY]
+============================================================================
+
+TODO: Fix this function to handle NULL pointer.
+It should return 0 if ptr is NULL.
+*/
 int get_value_bug1(int *ptr) {
     /* BUG: No NULL check before dereference */
     if (ptr == NULL) {
@@ -56,11 +57,11 @@ void test_bug1(void) {
 }
 
 /* ============================================================================
- * BUG 2: Use After Free [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function to avoid use-after-free.
- */
+BUG 2: Use After Free [MEDIUM]
+============================================================================
+
+TODO: Fix this function to avoid use-after-free.
+*/
 void use_after_free_bug2(void) {
     printf("\n=== Bug 2: Use After Free ===\n");
 
@@ -89,11 +90,11 @@ void use_after_free_bug2(void) {
 }
 
 /* ============================================================================
- * BUG 3: Memory Leak [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function to avoid memory leak.
- */
+BUG 3: Memory Leak [MEDIUM]
+============================================================================
+
+TODO: Fix this function to avoid memory leak.
+*/
 int *create_array_bug3(int size) {
     int *arr = malloc(size * sizeof(int));
     if (arr == NULL) return NULL;
@@ -122,11 +123,11 @@ void test_bug3(void) {
 }
 
 /* ============================================================================
- * BUG 4: Buffer Overflow [HARD]
- * ============================================================================
- *
- * TODO: Fix this function to avoid buffer overflow.
- */
+BUG 4: Buffer Overflow [HARD]
+============================================================================
+
+TODO: Fix this function to avoid buffer overflow.
+*/
 void string_copy_bug4(char *dest, const char *src, size_t dest_size) {
     /* BUG: strcpy doesn't check bounds! */
     if (dest == NULL || src == NULL || dest_size == 0) return;
@@ -149,11 +150,11 @@ void test_bug4(void) {
 }
 
 /* ============================================================================
- * BUG 5: Uninitialized Pointer [EASY]
- * ============================================================================
- *
- * TODO: Fix this function - the pointer must be initialized.
- */
+BUG 5: Uninitialized Pointer [EASY]
+============================================================================
+
+TODO: Fix this function - the pointer must be initialized.
+*/
 void uninitialized_bug5(void) {
     printf("\n=== Bug 5: Uninitialized Pointer ===\n");
 
@@ -177,11 +178,11 @@ void uninitialized_bug5(void) {
 }
 
 /* ============================================================================
- * BUG 6: Double Free [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function to avoid double free.
- */
+BUG 6: Double Free [MEDIUM]
+============================================================================
+
+TODO: Fix this function to avoid double free.
+*/
 void double_free_bug6(void) {
     printf("\n=== Bug 6: Double Free ===\n");
 
@@ -204,11 +205,11 @@ void double_free_bug6(void) {
 }
 
 /* ============================================================================
- * BUG 7: Returning Pointer to Local Variable [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function - returning address of local variable is wrong!
- */
+BUG 7: Returning Pointer to Local Variable [MEDIUM]
+============================================================================
+
+TODO: Fix this function - returning address of local variable is wrong!
+*/
 int *get_value_bug7(int value) {
     //int local = value;  /* Local variable on the stack */
     //return &local;  /* BUG: Returning address of local variable! */
@@ -239,11 +240,11 @@ void test_bug7(void) {
 }
 
 /* ============================================================================
- * BUG 8: Off-by-One Error [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function - classic off-by-one in loop.
- */
+BUG 8: Off-by-One Error [MEDIUM]
+============================================================================
+
+TODO: Fix this function - classic off-by-one in loop.
+*/
 void fill_array_bug8(int *arr, int size) {
     /* BUG: Loop goes one past the end of the array! */
     for (int i = 0; i < size; i++) {  /* Should be i < size */
@@ -264,11 +265,11 @@ void test_bug8(void) {
 }
 
 /* ============================================================================
- * BUG 9: Pointer Type Confusion [MEDIUM]
- * ============================================================================
- *
- * TODO: Understand why this is wrong and fix it.
- */
+BUG 9: Pointer Type Confusion [MEDIUM]
+============================================================================
+
+TODO: Understand why this is wrong and fix it.
+*/
 void type_confusion_bug9(void) {
     printf("\n=== Bug 9: Pointer Type Confusion ===\n");
 
@@ -296,11 +297,11 @@ void type_confusion_bug9(void) {
 }
 
 /* ============================================================================
- * BUG 10: Memory Allocation Failure Not Checked [EASY]
- * ============================================================================
- *
- * TODO: Fix this function to handle allocation failure.
- */
+BUG 10: Memory Allocation Failure Not Checked [EASY]
+============================================================================
+
+TODO: Fix this function to handle allocation failure.
+*/
 int *allocate_array_bug10(int size) {
     int *arr = malloc(size * sizeof(int));
     /* BUG: No check for malloc failure! */
@@ -330,27 +331,27 @@ void test_bug10(void) {
 }
 
 /* ============================================================================
- * SUMMARY: Common Pointer Bug Checklist
- * ============================================================================
- *
- * Before submitting GIOS projects, check for:
- *
- * 1. [ ] NULL checks after malloc/calloc/realloc
- * 2. [ ] No use of pointers after free
- * 3. [ ] Set pointers to NULL after freeing
- * 4. [ ] No double frees
- * 5. [ ] No returning pointers to local variables
- * 6. [ ] Correct loop bounds (< size, not <= size)
- * 7. [ ] strncpy instead of strcpy for bounded strings
- * 8. [ ] Initialize all pointers before use
- * 9. [ ] Free all allocated memory before function exit
- * 10. [ ] No pointer type confusion (matching sizes)
- */
+SUMMARY: Common Pointer Bug Checklist
+============================================================================
+
+Before submitting GIOS projects, check for:
+
+1. [ ] NULL checks after malloc/calloc/realloc
+2. [ ] No use of pointers after free
+3. [ ] Set pointers to NULL after freeing
+4. [ ] No double frees
+5. [ ] No returning pointers to local variables
+6. [ ] Correct loop bounds (< size, not <= size)
+7. [ ] strncpy instead of strcpy for bounded strings
+8. [ ] Initialize all pointers before use
+9. [ ] Free all allocated memory before function exit
+10. [ ] No pointer type confusion (matching sizes)
+*/
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 02: Thread Creation
- *
- * Learn POSIX threads (pthreads) basics.
- * This is critical for GIOS Project 1 Part 2!
- *
- * Compile: clang -Wall -Wextra -g -pthread thread_create.c -o thread_create
- * Run:     ./thread_create
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 02: Thread Creation
+
+Learn POSIX threads (pthreads) basics.
+This is critical for GIOS Project 1 Part 2!
+
+Compile: clang -Wall -Wextra -g -pthread thread_create.c -o thread_create
+Run:     ./thread_create
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,36 +16,36 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Threads vs Processes
- * ============================================================================
- *
- * Processes:
- * - Separate address space (memory not shared)
- * - Heavy to create (fork copies page tables)
- * - Communication via IPC (pipes, sockets, shared memory)
- *
- * Threads:
- * - Shared address space (same memory)
- * - Lighter to create
- * - Communication via shared variables (but needs synchronization!)
- *
- * pthreads API:
- * - pthread_create(): create a new thread
- * - pthread_join(): wait for thread to finish
- * - pthread_exit(): exit from current thread
- * - pthread_self(): get current thread ID
- */
+CONCEPT: Threads vs Processes
+============================================================================
+
+Processes:
+- Separate address space (memory not shared)
+- Heavy to create (fork copies page tables)
+- Communication via IPC (pipes, sockets, shared memory)
+
+Threads:
+- Shared address space (same memory)
+- Lighter to create
+- Communication via shared variables (but needs synchronization!)
+
+pthreads API:
+- pthread_create(): create a new thread
+- pthread_join(): wait for thread to finish
+- pthread_exit(): exit from current thread
+- pthread_self(): get current thread ID
+*/
 
 /* ============================================================================
- * EXERCISE 1: Basic thread creation
- * ============================================================================
- */
+EXERCISE 1: Basic thread creation
+============================================================================
+*/
 
 /*
- * Thread function signature: void *func(void *arg)
- * - Takes void* argument (can pass anything via casting)
- * - Returns void* (can return anything via casting)
- */
+Thread function signature: void *func(void *arg)
+- Takes void* argument (can pass anything via casting)
+- Returns void* (can return anything via casting)
+*/
 void *thread_function(void *arg) {
     (void)arg;  /* Unused in this example */
 
@@ -106,9 +106,9 @@ void exercise1_basic_thread(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Multiple threads
- * ============================================================================
- */
+EXERCISE 2: Multiple threads
+============================================================================
+*/
 
 #define NUM_THREADS 5
 
@@ -163,9 +163,9 @@ void exercise2_multiple_threads(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Demonstrating shared memory
- * ============================================================================
- */
+EXERCISE 3: Demonstrating shared memory
+============================================================================
+*/
 
 int shared_counter = 0;  /* Global variable shared by all threads */
 
@@ -209,9 +209,9 @@ void exercise3_shared_memory(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Thread vs main execution
- * ============================================================================
- */
+EXERCISE 4: Thread vs main execution
+============================================================================
+*/
 
 void *long_running_thread(void *arg) {
     int seconds = *(int *)arg;
@@ -255,9 +255,9 @@ void exercise4_thread_lifetime(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Detached threads
- * ============================================================================
- */
+EXERCISE 5: Detached threads
+============================================================================
+*/
 
 void *detached_thread_func(void *arg) {
     (void)arg;
@@ -302,9 +302,9 @@ void exercise5_detached(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Getting thread self
- * ============================================================================
- */
+EXERCISE 6: Getting thread self
+============================================================================
+*/
 
 void *self_aware_thread(void *arg) {
     int num = *(int *)arg;
@@ -335,9 +335,9 @@ void exercise6_thread_self(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

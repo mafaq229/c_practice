@@ -1,6 +1,6 @@
 /*
- * String Utilities Implementation
- */
+String Utilities Implementation
+*/
 
 #include <ctype.h>
 #include "string_utils.h"

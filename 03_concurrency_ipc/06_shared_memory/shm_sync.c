@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 06: Synchronized Shared Memory
- *
- * Demonstrates proper synchronization with shared memory using semaphores.
- * This is how GIOS Project 3 coordinates proxy and cache!
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Compile: clang -Wall -Wextra -g shm_sync.c -o shm_sync -lrt -pthread
- * Run:     ./shm_sync
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 06: Synchronized Shared Memory
+
+Demonstrates proper synchronization with shared memory using semaphores.
+This is how GIOS Project 3 coordinates proxy and cache!
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Compile: clang -Wall -Wextra -g shm_sync.c -o shm_sync -lrt -pthread
+Run:     ./shm_sync
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,18 +30,18 @@
 #define NUM_MESSAGES 5
 
 /* ============================================================================
- * CONCEPT: Synchronized Shared Memory
- * ============================================================================
- *
- * Without synchronization, shared memory access is unsafe:
- * - Writer might overwrite data before reader reads it
- * - Reader might read incomplete/inconsistent data
- *
- * Solution: Use semaphores to coordinate access
- * - Writer waits for reader to be ready
- * - Reader waits for writer to produce data
- * - Classic producer-consumer pattern!
- */
+CONCEPT: Synchronized Shared Memory
+============================================================================
+
+Without synchronization, shared memory access is unsafe:
+- Writer might overwrite data before reader reads it
+- Reader might read incomplete/inconsistent data
+
+Solution: Use semaphores to coordinate access
+- Writer waits for reader to be ready
+- Reader waits for writer to produce data
+- Classic producer-consumer pattern!
+*/
 
 /* Shared data structure */
 typedef struct {
@@ -51,8 +51,8 @@ typedef struct {
 } SharedBuffer;
 
 /*
- * Writer process
- */
+Writer process
+*/
 void run_writer(void) {
     printf("[Writer] Starting...\n");
 
@@ -109,8 +109,8 @@ void run_writer(void) {
 }
 
 /*
- * Reader process
- */
+Reader process
+*/
 void run_reader(void) {
     printf("[Reader] Starting...\n");
 

@@ -1,13 +1,13 @@
 /*
- * socket_utils.c - Socket Helper Functions Implementation
- *
- * These utilities handle common socket programming patterns:
- * - Handling partial sends and receives
- * - Dealing with EINTR (interrupted system calls)
- * - Connection setup for clients and servers
- *
- * These patterns are CRITICAL for GIOS projects!
- */
+socket_utils.c - Socket Helper Functions Implementation
+
+These utilities handle common socket programming patterns:
+- Handling partial sends and receives
+- Dealing with EINTR (interrupted system calls)
+- Connection setup for clients and servers
+
+These patterns are CRITICAL for GIOS projects!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,12 +24,12 @@
 #include "../include/protocol.h"
 
 /* ============================================================================
- * Connection Setup Functions
- * ============================================================================ */
+Connection Setup Functions
+============================================================================ */
 
 /*
- * create_server_socket - Create a listening socket
- */
+create_server_socket - Create a listening socket
+*/
 int create_server_socket(int port, int backlog) {
     /*
      * TODO: Implement this function
@@ -83,8 +83,8 @@ int create_server_socket(int port, int backlog) {
 }
 
 /*
- * create_client_socket - Connect to a server
- */
+create_client_socket - Connect to a server
+*/
 int create_client_socket(const char *hostname, int port) {
     /*
      * TODO: Implement this function
@@ -128,8 +128,8 @@ int create_client_socket(const char *hostname, int port) {
 }
 
 /*
- * accept_client - Accept a client connection with EINTR handling
- */
+accept_client - Accept a client connection with EINTR handling
+*/
 int accept_client(int server_fd, struct sockaddr *client_addr, socklen_t *addr_len) {
     /*
      * TODO: Implement this function
@@ -159,12 +159,12 @@ int accept_client(int server_fd, struct sockaddr *client_addr, socklen_t *addr_l
 }
 
 /* ============================================================================
- * Data Transfer Functions
- * ============================================================================ */
+Data Transfer Functions
+============================================================================ */
 
 /*
- * send_all - Send all bytes, handling partial sends
- */
+send_all - Send all bytes, handling partial sends
+*/
 ssize_t send_all(int fd, const void *buffer, size_t length) {
     /*
      * TODO: Implement this function
@@ -203,8 +203,8 @@ ssize_t send_all(int fd, const void *buffer, size_t length) {
 }
 
 /*
- * recv_all - Receive exactly n bytes
- */
+recv_all - Receive exactly n bytes
+*/
 ssize_t recv_all(int fd, void *buffer, size_t length) {
     /*
      * TODO: Implement this function
@@ -241,8 +241,8 @@ ssize_t recv_all(int fd, void *buffer, size_t length) {
 }
 
 /*
- * recv_until - Receive until delimiter found
- */
+recv_until - Receive until delimiter found
+*/
 ssize_t recv_until(int fd, void *buffer, size_t max_len, const char *delim) {
     /*
      * TODO: Implement this function
@@ -280,12 +280,12 @@ ssize_t recv_until(int fd, void *buffer, size_t max_len, const char *delim) {
 }
 
 /* ============================================================================
- * File Transfer Functions
- * ============================================================================ */
+File Transfer Functions
+============================================================================ */
 
 /*
- * send_file - Send a file's contents over a socket
- */
+send_file - Send a file's contents over a socket
+*/
 int send_file(int fd, const char *filepath, size_t *bytes_sent) {
     /*
      * TODO: Implement this function
@@ -326,8 +326,8 @@ int send_file(int fd, const char *filepath, size_t *bytes_sent) {
 }
 
 /*
- * recv_file - Receive file contents and save to disk
- */
+recv_file - Receive file contents and save to disk
+*/
 int recv_file(int fd, const char *filepath, size_t file_size, size_t *bytes_received) {
     /*
      * TODO: Implement this function
@@ -357,12 +357,12 @@ int recv_file(int fd, const char *filepath, size_t file_size, size_t *bytes_rece
 }
 
 /* ============================================================================
- * Utility Functions
- * ============================================================================ */
+Utility Functions
+============================================================================ */
 
 /*
- * set_socket_timeout - Set socket timeouts
- */
+set_socket_timeout - Set socket timeouts
+*/
 int set_socket_timeout(int fd, int timeout_sec) {
     /*
      * TODO: Implement this function
@@ -386,8 +386,8 @@ int set_socket_timeout(int fd, int timeout_sec) {
 }
 
 /*
- * close_socket - Clean socket shutdown
- */
+close_socket - Clean socket shutdown
+*/
 void close_socket(int fd) {
     /*
      * TODO: Implement this function

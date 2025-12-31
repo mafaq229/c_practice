@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 04: Producer-Consumer
- *
- * The classic producer-consumer problem using condition variables.
- * This pattern is the foundation for thread pools in GIOS!
- *
- * Compile: clang -Wall -Wextra -g -pthread producer_consumer.c -o producer_consumer
- * Run:     ./producer_consumer
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 04: Producer-Consumer
+
+The classic producer-consumer problem using condition variables.
+This pattern is the foundation for thread pools in GIOS!
+
+Compile: clang -Wall -Wextra -g -pthread producer_consumer.c -o producer_consumer
+Run:     ./producer_consumer
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,38 +16,38 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Condition Variables
- * ============================================================================
- *
- * A condition variable allows threads to WAIT for a condition to become true.
- *
- * Why not just use a loop with mutex?
- *   while (!ready) {
- *       pthread_mutex_unlock(&mutex);
- *       pthread_mutex_lock(&mutex);
- *   }
- * This is BUSY WAITING - wastes CPU cycles!
- *
- * Condition variables allow efficient waiting:
- * - pthread_cond_wait() atomically unlocks mutex and sleeps
- * - When signaled, it wakes up and re-acquires mutex
- *
- * Key functions:
- * - pthread_cond_wait(&cond, &mutex)   - Wait for signal
- * - pthread_cond_signal(&cond)         - Wake ONE waiting thread
- * - pthread_cond_broadcast(&cond)      - Wake ALL waiting threads
- *
- * CRITICAL RULE: Always use WHILE, not IF, before cond_wait!
- *   while (!condition) {
- *       pthread_cond_wait(&cond, &mutex);
- *   }
- * This handles spurious wakeups and race conditions.
- */
+CONCEPT: Condition Variables
+============================================================================
+
+A condition variable allows threads to WAIT for a condition to become true.
+
+Why not just use a loop with mutex?
+  while (!ready) {
+      pthread_mutex_unlock(&mutex);
+      pthread_mutex_lock(&mutex);
+  }
+This is BUSY WAITING - wastes CPU cycles!
+
+Condition variables allow efficient waiting:
+- pthread_cond_wait() atomically unlocks mutex and sleeps
+- When signaled, it wakes up and re-acquires mutex
+
+Key functions:
+- pthread_cond_wait(&cond, &mutex)   - Wait for signal
+- pthread_cond_signal(&cond)         - Wake ONE waiting thread
+- pthread_cond_broadcast(&cond)      - Wake ALL waiting threads
+
+CRITICAL RULE: Always use WHILE, not IF, before cond_wait!
+  while (!condition) {
+      pthread_cond_wait(&cond, &mutex);
+  }
+This handles spurious wakeups and race conditions.
+*/
 
 /* ============================================================================
- * Simple Producer-Consumer with Single Item
- * ============================================================================
- */
+Simple Producer-Consumer with Single Item
+============================================================================
+*/
 
 int buffer = 0;          /* Shared buffer (single item) */
 int has_data = 0;        /* Is there data in the buffer? */
@@ -130,9 +130,9 @@ void exercise1_simple_pc(void) {
 }
 
 /* ============================================================================
- * Multiple Producers and Consumers
- * ============================================================================
- */
+Multiple Producers and Consumers
+============================================================================
+*/
 
 #define QUEUE_SIZE 5
 #define NUM_PRODUCERS 2
@@ -272,9 +272,9 @@ void exercise2_multi_pc(void) {
 }
 
 /* ============================================================================
- * Exercise 3: Why WHILE, not IF?
- * ============================================================================
- */
+Exercise 3: Why WHILE, not IF?
+============================================================================
+*/
 
 void exercise3_while_vs_if(void) {
     printf("\n=== Exercise 3: Why WHILE, not IF? ===\n");
@@ -305,9 +305,9 @@ void exercise3_while_vs_if(void) {
 }
 
 /* ============================================================================
- * Exercise 4: Signal vs Broadcast
- * ============================================================================
- */
+Exercise 4: Signal vs Broadcast
+============================================================================
+*/
 
 int ready_flag = 0;
 pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -371,9 +371,9 @@ void exercise4_signal_vs_broadcast(void) {
 }
 
 /* ============================================================================
- * Exercise 5: Common mistakes
- * ============================================================================
- */
+Exercise 5: Common mistakes
+============================================================================
+*/
 
 void exercise5_common_mistakes(void) {
     printf("\n=== Exercise 5: Common Condition Variable Mistakes ===\n");
@@ -412,9 +412,9 @@ void exercise5_common_mistakes(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

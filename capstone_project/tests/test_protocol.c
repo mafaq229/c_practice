@@ -1,11 +1,11 @@
 /*
- * test_protocol.c - Unit Tests for Protocol Implementation
- *
- * Tests the GETFILE protocol parsing and creation functions.
- *
- * Compile: make test_protocol
- * Run: ./test_protocol
- */
+test_protocol.c - Unit Tests for Protocol Implementation
+
+Tests the GETFILE protocol parsing and creation functions.
+
+Compile: make test_protocol
+Run: ./test_protocol
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +14,8 @@
 #include "../include/protocol.h"
 
 /* ============================================================================
- * Test Utilities
- * ============================================================================ */
+Test Utilities
+============================================================================ */
 
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -46,8 +46,8 @@ static int tests_passed = 0;
     } while(0)
 
 /* ============================================================================
- * Tests for gf_find_header_end
- * ============================================================================ */
+Tests for gf_find_header_end
+============================================================================ */
 
 static void test_find_header_end_basic(void) {
     TEST(find_header_end_basic);
@@ -80,8 +80,8 @@ static void test_find_header_end_with_content(void) {
 }
 
 /* ============================================================================
- * Tests for gf_create_request
- * ============================================================================ */
+Tests for gf_create_request
+============================================================================ */
 
 static void test_create_request_basic(void) {
     TEST(create_request_basic);
@@ -121,8 +121,8 @@ static void test_create_request_null_inputs(void) {
 }
 
 /* ============================================================================
- * Tests for gf_parse_request
- * ============================================================================ */
+Tests for gf_parse_request
+============================================================================ */
 
 static void test_parse_request_basic(void) {
     TEST(parse_request_basic);
@@ -175,8 +175,8 @@ static void test_parse_request_missing_method(void) {
 }
 
 /* ============================================================================
- * Tests for gf_create_response_header
- * ============================================================================ */
+Tests for gf_create_response_header
+============================================================================ */
 
 static void test_create_response_ok(void) {
     TEST(create_response_ok);
@@ -216,8 +216,8 @@ static void test_create_response_error(void) {
 }
 
 /* ============================================================================
- * Tests for gf_parse_response_header
- * ============================================================================ */
+Tests for gf_parse_response_header
+============================================================================ */
 
 static void test_parse_response_ok(void) {
     TEST(parse_response_ok);
@@ -260,8 +260,8 @@ static void test_parse_response_incomplete(void) {
 }
 
 /* ============================================================================
- * Tests for gf_status_to_string / gf_string_to_status
- * ============================================================================ */
+Tests for gf_status_to_string / gf_string_to_status
+============================================================================ */
 
 static void test_status_conversion(void) {
     TEST(status_conversion);
@@ -280,8 +280,8 @@ static void test_status_conversion(void) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 int main(void) {
     printf("=== Protocol Tests ===\n\n");

@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 07: Message Queue Sender
- *
- * POSIX message queues for inter-process communication.
- * Alternative to shared memory for IPC.
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Compile: clang -Wall -Wextra -g mq_sender.c -o mq_sender -lrt
- * Run:     ./mq_sender
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 07: Message Queue Sender
+
+POSIX message queues for inter-process communication.
+Alternative to shared memory for IPC.
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Compile: clang -Wall -Wextra -g mq_sender.c -o mq_sender -lrt
+Run:     ./mq_sender
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,24 +21,24 @@
 #include <errno.h>
 
 /* ============================================================================
- * CONCEPT: POSIX Message Queues
- * ============================================================================
- *
- * Message queues provide a way to pass discrete messages between processes.
- * Unlike shared memory, data is copied (not shared).
- *
- * Advantages:
- * - Built-in synchronization (no need for semaphores)
- * - Message boundaries preserved
- * - Can have priority ordering
- *
- * Key functions:
- * - mq_open():    Create/open message queue
- * - mq_send():    Send a message
- * - mq_receive(): Receive a message (blocks by default)
- * - mq_close():   Close queue descriptor
- * - mq_unlink():  Remove queue
- */
+CONCEPT: POSIX Message Queues
+============================================================================
+
+Message queues provide a way to pass discrete messages between processes.
+Unlike shared memory, data is copied (not shared).
+
+Advantages:
+- Built-in synchronization (no need for semaphores)
+- Message boundaries preserved
+- Can have priority ordering
+
+Key functions:
+- mq_open():    Create/open message queue
+- mq_send():    Send a message
+- mq_receive(): Receive a message (blocks by default)
+- mq_close():   Close queue descriptor
+- mq_unlink():  Remove queue
+*/
 
 #define MQ_NAME "/gios_prep_mq"
 #define MAX_MSG_SIZE 256

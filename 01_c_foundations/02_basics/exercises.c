@@ -1,21 +1,21 @@
 /*
- * CS-6200 Preparation - Module 02: C Basics & Compilation
- *
- * This module covers fundamental C concepts. Complete all TODO items.
- *
- * Compile: clang -Wall -Wextra -g exercises.c -o exercises
- * Run:     ./exercises
- *
- * Topics covered:
- *   - Variables and data types
- *   - Operators and expressions
- *   - Control flow (if/else, loops, switch)
- *   - Functions
- *   - Arrays
- *   - Header files and multi-file programs
- *
- * Difficulty: [EASY] to [MEDIUM]
- */
+CS-6200 Preparation - Module 02: C Basics & Compilation
+
+This module covers fundamental C concepts. Complete all TODO items.
+
+Compile: clang -Wall -Wextra -g exercises.c -o exercises
+Run:     ./exercises
+
+Topics covered:
+  - Variables and data types
+  - Operators and expressions
+  - Control flow (if/else, loops, switch)
+  - Functions
+  - Arrays
+  - Header files and multi-file programs
+
+Difficulty: [EASY] to [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,12 +23,12 @@
 #include <stdbool.h>
 
 /* ============================================================================
- * EXERCISE 1: Variables and Data Types [EASY]
- * ============================================================================
- *
- * TODO: Complete the function to demonstrate understanding of C data types.
- *       Fill in the correct format specifiers for printf.
- */
+EXERCISE 1: Variables and Data Types [EASY]
+============================================================================
+
+TODO: Complete the function to demonstrate understanding of C data types.
+      Fill in the correct format specifiers for printf.
+*/
 void exercise1_data_types(void) {
     printf("\n=== Exercise 1: Data Types ===\n");
 
@@ -61,11 +61,11 @@ void exercise1_data_types(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Operators and Expressions [EASY]
- * ============================================================================
- *
- * TODO: Complete the arithmetic and logical operations.
- */
+EXERCISE 2: Operators and Expressions [EASY]
+============================================================================
+
+TODO: Complete the arithmetic and logical operations.
+*/
 void exercise2_operators(void) {
     printf("\n=== Exercise 2: Operators ===\n");
 
@@ -101,16 +101,16 @@ void exercise2_operators(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Control Flow [EASY]
- * ============================================================================
- *
- * TODO: Implement control flow structures.
- */
+EXERCISE 3: Control Flow [EASY]
+============================================================================
+
+TODO: Implement control flow structures.
+*/
 
 /*
- * TODO: Implement a function that returns the absolute value of an integer.
- * If n is negative, return -n. Otherwise, return n.
- */
+TODO: Implement a function that returns the absolute value of an integer.
+If n is negative, return -n. Otherwise, return n.
+*/
 int absolute_value(int n) {
     /* TODO: Implement using if/else */
     if (n < 0) {
@@ -123,8 +123,8 @@ int absolute_value(int n) {
 }
 
 /*
- * TODO: Implement a function that returns the maximum of three integers.
- */
+TODO: Implement a function that returns the maximum of three integers.
+*/
 int max_of_three(int a, int b, int c) {
     /* TODO: Implement this function */
     int max = a;
@@ -141,15 +141,15 @@ int max_of_three(int a, int b, int c) {
 }
 
 /*
- * TODO: Implement a function that categorizes age.
- * Use a switch statement or if/else chain.
- *
- * Returns:
- *   "child" if age < 13
- *   "teenager" if age >= 13 and age < 20
- *   "adult" if age >= 20 and age < 65
- *   "senior" if age >= 65
- */
+TODO: Implement a function that categorizes age.
+Use a switch statement or if/else chain.
+
+Returns:
+  "child" if age < 13
+  "teenager" if age >= 13 and age < 20
+  "adult" if age >= 20 and age < 65
+  "senior" if age >= 65
+*/
 const char* categorize_age(int age) {
     /* TODO: Implement this function */
     if (age < 13) {
@@ -193,16 +193,16 @@ void exercise3_control_flow(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Loops [EASY]
- * ============================================================================
- *
- * TODO: Implement functions using different loop types.
- */
+EXERCISE 4: Loops [EASY]
+============================================================================
+
+TODO: Implement functions using different loop types.
+*/
 
 /*
- * TODO: Calculate the sum of all integers from 1 to n (inclusive).
- * Use a for loop.
- */
+TODO: Calculate the sum of all integers from 1 to n (inclusive).
+Use a for loop.
+*/
 int sum_to_n(int n) {
     /* TODO: Implement using a for loop */
     int sum = 0;
@@ -213,10 +213,10 @@ int sum_to_n(int n) {
 }
 
 /*
- * TODO: Calculate factorial of n (n!).
- * factorial(0) = 1, factorial(5) = 120
- * Use a while loop.
- */
+TODO: Calculate factorial of n (n!).
+factorial(0) = 1, factorial(5) = 120
+Use a while loop.
+*/
 long factorial(int n) {
     /* TODO: Implement using a while loop */
     int factorial = 1;
@@ -228,10 +228,10 @@ long factorial(int n) {
 }
 
 /*
- * TODO: Count the number of digits in a positive integer.
- * count_digits(12345) = 5, count_digits(7) = 1
- * Use a do-while loop.
- */
+TODO: Count the number of digits in a positive integer.
+count_digits(12345) = 5, count_digits(7) = 1
+Use a do-while loop.
+*/
 int count_digits(int n) {
     /* TODO: Implement using a do-while loop */
     if (n < 0) n = -n;
@@ -258,16 +258,16 @@ void exercise4_loops(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Arrays [MEDIUM]
- * ============================================================================
- *
- * TODO: Implement array manipulation functions.
- */
+EXERCISE 5: Arrays [MEDIUM]
+============================================================================
+
+TODO: Implement array manipulation functions.
+*/
 
 /*
- * TODO: Reverse an array in-place.
- * Example: [1, 2, 3, 4, 5] becomes [5, 4, 3, 2, 1]
- */
+TODO: Reverse an array in-place.
+Example: [1, 2, 3, 4, 5] becomes [5, 4, 3, 2, 1]
+*/
 void reverse_array(int arr[], int size) {
     /* TODO: Implement this function
      * HINT: Swap elements from both ends, moving towards the center
@@ -285,9 +285,9 @@ void reverse_array(int arr[], int size) {
 }
 
 /*
- * TODO: Find the minimum element in an array.
- * Return the minimum value.
- */
+TODO: Find the minimum element in an array.
+Return the minimum value.
+*/
 int find_min(int arr[], int size) {
     /* TODO: Implement this function */
     if (size == 0) return 0;
@@ -301,9 +301,9 @@ int find_min(int arr[], int size) {
 }
 
 /*
- * TODO: Check if an array is sorted in ascending order.
- * Returns 1 (true) if sorted, 0 (false) otherwise.
- */
+TODO: Check if an array is sorted in ascending order.
+Returns 1 (true) if sorted, 0 (false) otherwise.
+*/
 int is_sorted(int arr[], int size) {
     /* TODO: Implement this function */
     for (int i = 0; i < size - 1; i++) {
@@ -347,19 +347,19 @@ void exercise5_arrays(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Functions and Scope [MEDIUM]
- * ============================================================================
- *
- * TODO: Understand function parameters and scope.
- */
+EXERCISE 6: Functions and Scope [MEDIUM]
+============================================================================
+
+TODO: Understand function parameters and scope.
+*/
 
 /*
- * TODO: Implement swap using pointers.
- * This function should swap the values of two integers.
- *
- * HINT: To swap values, you need to use pointers (pass by reference).
- * Without pointers, changes to parameters don't affect the original variables.
- */
+TODO: Implement swap using pointers.
+This function should swap the values of two integers.
+
+HINT: To swap values, you need to use pointers (pass by reference).
+Without pointers, changes to parameters don't affect the original variables.
+*/
 void swap(int *a, int *b) {
     /* TODO: Implement swap using pointers
      * HINT: Use a temporary variable
@@ -370,9 +370,9 @@ void swap(int *a, int *b) {
 }
 
 /*
- * TODO: Implement a function that modifies all elements of an array.
- * Multiply each element by the given factor.
- */
+TODO: Implement a function that modifies all elements of an array.
+Multiply each element by the given factor.
+*/
 void multiply_array(int arr[], int size, int factor) {
     /* TODO: Implement this function */
     for (int i = 0; i < size; i++) {
@@ -400,15 +400,15 @@ void exercise6_functions(void) {
 }
 
 /* ============================================================================
- * CHALLENGE: FizzBuzz [EASY]
- * ============================================================================
- *
- * TODO: Implement the classic FizzBuzz problem.
- * Print numbers from 1 to n, but:
- *   - For multiples of 3, print "Fizz"
- *   - For multiples of 5, print "Buzz"
- *   - For multiples of both 3 and 5, print "FizzBuzz"
- */
+CHALLENGE: FizzBuzz [EASY]
+============================================================================
+
+TODO: Implement the classic FizzBuzz problem.
+Print numbers from 1 to n, but:
+  - For multiples of 3, print "Fizz"
+  - For multiples of 5, print "Buzz"
+  - For multiples of both 3 and 5, print "FizzBuzz"
+*/
 void fizzbuzz(int n) {
     /* TODO: Implement FizzBuzz */
     printf("\n=== Challenge: FizzBuzz (1 to %d) ===\n", n);
@@ -430,9 +430,9 @@ void fizzbuzz(int n) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

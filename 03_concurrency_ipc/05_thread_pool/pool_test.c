@@ -1,13 +1,13 @@
 /*
- * CS-6200 Preparation - Module 05: Thread Pool Test
- *
- * Test harness for the thread pool implementation.
- *
- * Compile: clang -Wall -Wextra -g -pthread thread_pool.c work_queue.c pool_test.c -o pool_test
- * Run:     ./pool_test
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 05: Thread Pool Test
+
+Test harness for the thread pool implementation.
+
+Compile: clang -Wall -Wextra -g -pthread thread_pool.c work_queue.c pool_test.c -o pool_test
+Run:     ./pool_test
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,9 +19,9 @@
 #include "thread_pool.h"
 
 /* ============================================================================
- * TEST UTILITIES
- * ============================================================================
- */
+TEST UTILITIES
+============================================================================
+*/
 
 /* Atomic counter for tracking completed tasks */
 atomic_int completed_tasks = 0;
@@ -35,9 +35,9 @@ int get_counter(void) {
 }
 
 /* ============================================================================
- * TEST 1: Basic functionality
- * ============================================================================
- */
+TEST 1: Basic functionality
+============================================================================
+*/
 
 void simple_task(void *arg) {
     int task_id = *(int *)arg;
@@ -78,9 +78,9 @@ void test_basic(void) {
 }
 
 /* ============================================================================
- * TEST 2: High volume
- * ============================================================================
- */
+TEST 2: High volume
+============================================================================
+*/
 
 void quick_task(void *arg) {
     (void)arg;
@@ -115,9 +115,9 @@ void test_high_volume(void) {
 }
 
 /* ============================================================================
- * TEST 3: Slow tasks (worker blocking)
- * ============================================================================
- */
+TEST 3: Slow tasks (worker blocking)
+============================================================================
+*/
 
 void slow_task(void *arg) {
     int *id = (int *)arg;
@@ -155,9 +155,9 @@ void test_slow_tasks(void) {
 }
 
 /* ============================================================================
- * TEST 4: Pending count
- * ============================================================================
- */
+TEST 4: Pending count
+============================================================================
+*/
 
 void delayed_task(void *arg) {
     (void)arg;
@@ -192,9 +192,9 @@ void test_pending(void) {
 }
 
 /* ============================================================================
- * TEST 5: Task with complex data
- * ============================================================================
- */
+TEST 5: Task with complex data
+============================================================================
+*/
 
 typedef struct {
     int id;
@@ -249,9 +249,9 @@ void test_complex_data(void) {
 }
 
 /* ============================================================================
- * TEST 6: Simulated file transfer (GIOS-like)
- * ============================================================================
- */
+TEST 6: Simulated file transfer (GIOS-like)
+============================================================================
+*/
 
 typedef struct {
     int client_id;
@@ -314,9 +314,9 @@ void test_file_transfer_sim(void) {
 }
 
 /* ============================================================================
- * TEST 7: Error handling
- * ============================================================================
- */
+TEST 7: Error handling
+============================================================================
+*/
 
 void test_error_handling(void) {
     printf("\n=== Test 7: Error Handling ===\n");
@@ -349,9 +349,9 @@ void test_error_handling(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

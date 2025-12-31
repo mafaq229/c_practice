@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 01: Process Tree
- *
- * Create structured process hierarchies.
- * Understanding process relationships is key to debugging.
- *
- * Compile: clang -Wall -Wextra -g process_tree.c -o process_tree
- * Run:     ./process_tree
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 01: Process Tree
+
+Create structured process hierarchies.
+Understanding process relationships is key to debugging.
+
+Compile: clang -Wall -Wextra -g process_tree.c -o process_tree
+Run:     ./process_tree
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,11 +16,11 @@
 #include <sys/wait.h>
 
 /* ============================================================================
- * EXERCISE 1: Create a chain of processes
- * ============================================================================
- *
- * Create: Parent -> Child -> Grandchild -> Great-grandchild
- */
+EXERCISE 1: Create a chain of processes
+============================================================================
+
+Create: Parent -> Child -> Grandchild -> Great-grandchild
+*/
 
 void exercise1_chain(int depth) {
     printf("\n=== Exercise 1: Process Chain (depth=%d) ===\n", depth);
@@ -60,15 +60,15 @@ void exercise1_chain(int depth) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Create a binary tree of processes
- * ============================================================================
- *
- *           Root
- *          /    \
- *      Left      Right
- *      /  \      /   \
- *    LL   LR   RL    RR
- */
+EXERCISE 2: Create a binary tree of processes
+============================================================================
+
+          Root
+         /    \
+     Left      Right
+     /  \      /   \
+   LL   LR   RL    RR
+*/
 
 void exercise2_binary_tree(int depth, const char *name) {
     printf("Process '%s': PID=%d, Parent=%d\n", name, getpid(), getppid());
@@ -117,15 +117,15 @@ void exercise2_binary_tree(int depth, const char *name) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Fan-out pattern
- * ============================================================================
- *
- * One parent creates N children (all siblings)
- *
- *         Parent
- *       / | | | \
- *      C1 C2 C3 C4 C5
- */
+EXERCISE 3: Fan-out pattern
+============================================================================
+
+One parent creates N children (all siblings)
+
+        Parent
+      / | | | \
+     C1 C2 C3 C4 C5
+*/
 
 void exercise3_fan_out(int n) {
     printf("\n=== Exercise 3: Fan-out (%d children) ===\n", n);
@@ -175,12 +175,12 @@ void exercise3_fan_out(int n) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Pipeline pattern
- * ============================================================================
- *
- * Simulate a shell pipeline: cmd1 | cmd2 | cmd3
- * Each process reads from previous and writes to next.
- */
+EXERCISE 4: Pipeline pattern
+============================================================================
+
+Simulate a shell pipeline: cmd1 | cmd2 | cmd3
+Each process reads from previous and writes to next.
+*/
 
 void exercise4_pipeline_demo(void) {
     printf("\n=== Exercise 4: Pipeline Pattern Demo ===\n");
@@ -219,9 +219,9 @@ void exercise4_pipeline_demo(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Process info collector
- * ============================================================================
- */
+EXERCISE 5: Process info collector
+============================================================================
+*/
 
 void print_process_info(void) {
     printf("\n--- Process Information ---\n");
@@ -257,9 +257,9 @@ void exercise5_process_info(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Process group demo
- * ============================================================================
- */
+EXERCISE 6: Process group demo
+============================================================================
+*/
 
 void exercise6_process_group(void) {
     printf("\n=== Exercise 6: Process Groups ===\n");
@@ -295,9 +295,9 @@ void exercise6_process_group(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

@@ -1,19 +1,19 @@
 /*
- * CS-6200 Preparation - Module 05: File Transfer Server
- *
- * This is a simplified version of what you'll build in GIOS Project 1.
- * The server receives file requests and sends back file contents.
- *
- * Protocol:
- *   Request:  GET /path/to/file\r\n
- *   Response: OK <size>\r\n<file data>
- *          or ERROR <message>\r\n
- *
- * Compile: clang -Wall -Wextra -g ft_server.c -o ft_server
- * Run:     ./ft_server [port] [root_dir]
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 05: File Transfer Server
+
+This is a simplified version of what you'll build in GIOS Project 1.
+The server receives file requests and sends back file contents.
+
+Protocol:
+  Request:  GET /path/to/file\r\n
+  Response: OK <size>\r\n<file data>
+         or ERROR <message>\r\n
+
+Compile: clang -Wall -Wextra -g ft_server.c -o ft_server
+Run:     ./ft_server [port] [root_dir]
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,11 +74,11 @@ ssize_t recv_line(int fd, char *buf, size_t max_len) {
 }
 
 /*
- * TODO: Parse a file request.
- * Format: "GET /path/to/file\r\n"
- *
- * Returns 0 on success, stores path in 'path' buffer.
- */
+TODO: Parse a file request.
+Format: "GET /path/to/file\r\n"
+
+Returns 0 on success, stores path in 'path' buffer.
+*/
 int parse_request(const char *request, char *path, size_t path_size) {
     /* TODO: Implement this function
      *
@@ -121,12 +121,12 @@ int parse_request(const char *request, char *path, size_t path_size) {
 }
 
 /*
- * TODO: Send a file to the client.
- *
- * Response format:
- *   On success: "OK <size>\r\n" followed by file data
- *   On error:   "ERROR <message>\r\n"
- */
+TODO: Send a file to the client.
+
+Response format:
+  On success: "OK <size>\r\n" followed by file data
+  On error:   "ERROR <message>\r\n"
+*/
 int send_file(int client_fd, const char *root_dir, const char *path) {
     /* TODO: Implement this function
      *
@@ -199,8 +199,8 @@ int send_file(int client_fd, const char *root_dir, const char *path) {
 }
 
 /*
- * Handle a single client connection.
- */
+Handle a single client connection.
+*/
 void handle_client(int client_fd, const char *root_dir) {
     char request[BUFFER_SIZE];
 
@@ -226,8 +226,8 @@ void handle_client(int client_fd, const char *root_dir) {
 }
 
 /*
- * Create test files for testing
- */
+Create test files for testing
+*/
 void create_test_files(const char *root_dir) {
     /* Create directory if it doesn't exist */
     mkdir(root_dir, 0755);

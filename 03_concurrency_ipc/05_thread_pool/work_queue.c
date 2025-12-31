@@ -1,20 +1,20 @@
 /*
- * CS-6200 Preparation - Module 05: Work Queue Implementation
- *
- * Thread-safe work queue for the thread pool.
- *
- * Compile: (compiled as part of thread pool)
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 05: Work Queue Implementation
+
+Thread-safe work queue for the thread pool.
+
+Compile: (compiled as part of thread pool)
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "work_queue.h"
 
 /*
- * TODO: Initialize the work queue
- */
+TODO: Initialize the work queue
+*/
 int work_queue_init(WorkQueue *queue) {
     if (queue == NULL) {
         return -1;
@@ -38,8 +38,8 @@ int work_queue_init(WorkQueue *queue) {
 }
 
 /*
- * TODO: Destroy the work queue
- */
+TODO: Destroy the work queue
+*/
 void work_queue_destroy(WorkQueue *queue) {
     if (queue == NULL) {
         return;
@@ -66,11 +66,11 @@ void work_queue_destroy(WorkQueue *queue) {
 }
 
 /*
- * TODO: Add a work item to the queue
- *
- * Creates a new WorkItem and adds it to the tail of the queue.
- * Signals waiting threads that work is available.
- */
+TODO: Add a work item to the queue
+
+Creates a new WorkItem and adds it to the tail of the queue.
+Signals waiting threads that work is available.
+*/
 int work_queue_push(WorkQueue *queue, void (*function)(void *), void *arg) {
     if (queue == NULL || function == NULL) {
         return -1;
@@ -116,13 +116,13 @@ int work_queue_push(WorkQueue *queue, void (*function)(void *), void *arg) {
 }
 
 /*
- * TODO: Remove and return a work item from the queue
- *
- * Blocks if queue is empty.
- * Returns NULL if shutdown is signaled and queue is empty.
- *
- * IMPORTANT: Caller is responsible for freeing the returned WorkItem!
- */
+TODO: Remove and return a work item from the queue
+
+Blocks if queue is empty.
+Returns NULL if shutdown is signaled and queue is empty.
+
+IMPORTANT: Caller is responsible for freeing the returned WorkItem!
+*/
 WorkItem *work_queue_pop(WorkQueue *queue) {
     if (queue == NULL) {
         return NULL;
@@ -158,10 +158,10 @@ WorkItem *work_queue_pop(WorkQueue *queue) {
 }
 
 /*
- * TODO: Signal shutdown
- *
- * Sets shutdown flag and wakes all waiting threads.
- */
+TODO: Signal shutdown
+
+Sets shutdown flag and wakes all waiting threads.
+*/
 void work_queue_shutdown(WorkQueue *queue) {
     if (queue == NULL) {
         return;
@@ -178,8 +178,8 @@ void work_queue_shutdown(WorkQueue *queue) {
 }
 
 /*
- * Get current queue size (thread-safe)
- */
+Get current queue size (thread-safe)
+*/
 int work_queue_size(WorkQueue *queue) {
     if (queue == NULL) {
         return 0;

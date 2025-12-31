@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 05: Buffer Handling
- *
- * Proper buffer handling is critical for network programming.
- * This module covers safe buffer operations used in GIOS.
- *
- * Compile: clang -Wall -Wextra -g buffer_handling.c -o buffer_handling
- * Run:     ./buffer_handling
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 05: Buffer Handling
+
+Proper buffer handling is critical for network programming.
+This module covers safe buffer operations used in GIOS.
+
+Compile: clang -Wall -Wextra -g buffer_handling.c -o buffer_handling
+Run:     ./buffer_handling
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,14 +16,14 @@
 #include <stdint.h>
 
 /* ============================================================================
- * CONCEPT: Binary vs Text Data
- * ============================================================================
- *
- * Text data: Null-terminated strings, can use strlen, strcpy, etc.
- * Binary data: May contain null bytes, must track length separately.
- *
- * Network programming uses BINARY data (files can contain any bytes).
- */
+CONCEPT: Binary vs Text Data
+============================================================================
+
+Text data: Null-terminated strings, can use strlen, strcpy, etc.
+Binary data: May contain null bytes, must track length separately.
+
+Network programming uses BINARY data (files can contain any bytes).
+*/
 
 void demonstrate_binary_vs_text(void) {
     printf("\n=== Binary vs Text Data ===\n");
@@ -50,11 +50,11 @@ void demonstrate_binary_vs_text(void) {
 }
 
 /* ============================================================================
- * EXERCISE 1: Buffer Structure [MEDIUM]
- * ============================================================================
- *
- * A proper buffer structure tracks data and length.
- */
+EXERCISE 1: Buffer Structure [MEDIUM]
+============================================================================
+
+A proper buffer structure tracks data and length.
+*/
 
 typedef struct {
     uint8_t *data;
@@ -63,8 +63,8 @@ typedef struct {
 } Buffer;
 
 /*
- * TODO: Initialize a buffer with given capacity.
- */
+TODO: Initialize a buffer with given capacity.
+*/
 int buffer_init(Buffer *buf, size_t capacity) {
     /* TODO: Implement this function
      *
@@ -79,16 +79,16 @@ int buffer_init(Buffer *buf, size_t capacity) {
 }
 
 /*
- * TODO: Free buffer resources.
- */
+TODO: Free buffer resources.
+*/
 void buffer_free(Buffer *buf) {
     /* TODO: Implement this function */
 }
 
 /*
- * TODO: Append data to buffer.
- * Grows buffer if needed.
- */
+TODO: Append data to buffer.
+Grows buffer if needed.
+*/
 int buffer_append(Buffer *buf, const void *data, size_t len) {
     /* TODO: Implement this function
      *
@@ -104,8 +104,8 @@ int buffer_append(Buffer *buf, const void *data, size_t len) {
 }
 
 /*
- * TODO: Reset buffer (keep allocation, just clear data).
- */
+TODO: Reset buffer (keep allocation, just clear data).
+*/
 void buffer_reset(Buffer *buf) {
     /* TODO: Implement this function */
 }
@@ -137,11 +137,11 @@ void exercise1_buffer_struct(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Circular Buffer [HARD]
- * ============================================================================
- *
- * Circular buffers are used for streaming data.
- */
+EXERCISE 2: Circular Buffer [HARD]
+============================================================================
+
+Circular buffers are used for streaming data.
+*/
 
 typedef struct {
     uint8_t *data;
@@ -152,8 +152,8 @@ typedef struct {
 } CircularBuffer;
 
 /*
- * TODO: Initialize circular buffer.
- */
+TODO: Initialize circular buffer.
+*/
 int cbuf_init(CircularBuffer *cb, size_t capacity) {
     /* TODO: Implement this function */
 
@@ -161,9 +161,9 @@ int cbuf_init(CircularBuffer *cb, size_t capacity) {
 }
 
 /*
- * TODO: Write data to circular buffer.
- * Returns number of bytes written.
- */
+TODO: Write data to circular buffer.
+Returns number of bytes written.
+*/
 size_t cbuf_write(CircularBuffer *cb, const void *data, size_t len) {
     /* TODO: Implement this function
      *
@@ -175,9 +175,9 @@ size_t cbuf_write(CircularBuffer *cb, const void *data, size_t len) {
 }
 
 /*
- * TODO: Read data from circular buffer.
- * Returns number of bytes read.
- */
+TODO: Read data from circular buffer.
+Returns number of bytes read.
+*/
 size_t cbuf_read(CircularBuffer *cb, void *dest, size_t len) {
     /* TODO: Implement this function
      *
@@ -189,15 +189,15 @@ size_t cbuf_read(CircularBuffer *cb, void *dest, size_t len) {
 }
 
 /*
- * TODO: Get available data length.
- */
+TODO: Get available data length.
+*/
 size_t cbuf_available(const CircularBuffer *cb) {
     return cb->count;
 }
 
 /*
- * TODO: Get free space.
- */
+TODO: Get free space.
+*/
 size_t cbuf_free_space(const CircularBuffer *cb) {
     return cb->capacity - cb->count;
 }
@@ -244,18 +244,18 @@ void exercise2_circular_buffer(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Packet Buffer with Header [HARD]
- * ============================================================================
- *
- * This is similar to network packet handling.
- */
+EXERCISE 3: Packet Buffer with Header [HARD]
+============================================================================
+
+This is similar to network packet handling.
+*/
 
 /* Simple packet format:
- * +--------+--------+----------------+
- * | Length | Type   | Payload        |
- * | 2 bytes| 1 byte | Length bytes   |
- * +--------+--------+----------------+
- */
++--------+--------+----------------+
+| Length | Type   | Payload        |
+| 2 bytes| 1 byte | Length bytes   |
++--------+--------+----------------+
+*/
 
 #define PACKET_TYPE_DATA 0x01
 #define PACKET_TYPE_CONTROL 0x02
@@ -270,9 +270,9 @@ typedef struct {
 #define PACKET_HEADER_SIZE (sizeof(uint16_t) + sizeof(uint8_t))
 
 /*
- * TODO: Create a packet with given payload.
- * Returns pointer to allocated packet (caller must free).
- */
+TODO: Create a packet with given payload.
+Returns pointer to allocated packet (caller must free).
+*/
 Packet *packet_create(uint8_t type, const void *payload, size_t payload_len) {
     /* TODO: Implement this function
      *
@@ -287,10 +287,10 @@ Packet *packet_create(uint8_t type, const void *payload, size_t payload_len) {
 }
 
 /*
- * TODO: Parse a packet from raw bytes.
- * Returns 0 on success, -1 on failure.
- * Sets *packet to point to the packet (within raw_data).
- */
+TODO: Parse a packet from raw bytes.
+Returns 0 on success, -1 on failure.
+Sets *packet to point to the packet (within raw_data).
+*/
 int packet_parse(const uint8_t *raw_data, size_t raw_len, Packet **packet) {
     /* TODO: Implement this function
      *
@@ -342,11 +342,11 @@ void exercise3_packet_buffer(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Safe Memory Copy [MEDIUM]
- * ============================================================================
- *
- * memcpy vs memmove - know the difference!
- */
+EXERCISE 4: Safe Memory Copy [MEDIUM]
+============================================================================
+
+memcpy vs memmove - know the difference!
+*/
 void exercise4_memcpy(void) {
     printf("\n=== Exercise 4: Safe Memory Copy ===\n");
 
@@ -376,11 +376,11 @@ void exercise4_memcpy(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Buffer to Network Format [MEDIUM]
- * ============================================================================
- *
- * Network byte order is big-endian. x86 is little-endian.
- */
+EXERCISE 5: Buffer to Network Format [MEDIUM]
+============================================================================
+
+Network byte order is big-endian. x86 is little-endian.
+*/
 void exercise5_endianness(void) {
     printf("\n=== Exercise 5: Endianness ===\n");
 
@@ -411,9 +411,9 @@ void exercise5_endianness(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

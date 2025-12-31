@@ -1,6 +1,6 @@
 /*
- * Math Utilities Implementation
- */
+Math Utilities Implementation
+*/
 
 #include "math_utils.h"
 

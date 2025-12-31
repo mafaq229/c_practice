@@ -1,12 +1,12 @@
 /*
- * file_utils.c - File Handling Utilities Implementation
- *
- * These utilities handle file operations including path validation,
- * size checking, and safe file I/O.
- *
- * Security Note: Path validation is critical to prevent directory
- * traversal attacks!
- */
+file_utils.c - File Handling Utilities Implementation
+
+These utilities handle file operations including path validation,
+size checking, and safe file I/O.
+
+Security Note: Path validation is critical to prevent directory
+traversal attacks!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,12 +18,12 @@
 #include "../include/file_utils.h"
 
 /* ============================================================================
- * Path Validation Functions
- * ============================================================================ */
+Path Validation Functions
+============================================================================ */
 
 /*
- * validate_path - Security check for file paths
- */
+validate_path - Security check for file paths
+*/
 int validate_path(const char *path) {
     /*
      * TODO: Implement this function
@@ -57,8 +57,8 @@ int validate_path(const char *path) {
 }
 
 /*
- * build_full_path - Combine root directory and requested path
- */
+build_full_path - Combine root directory and requested path
+*/
 int build_full_path(char *buffer, size_t buflen, const char *root, const char *path) {
     /*
      * TODO: Implement this function
@@ -90,12 +90,12 @@ int build_full_path(char *buffer, size_t buflen, const char *root, const char *p
 }
 
 /* ============================================================================
- * File Information Functions
- * ============================================================================ */
+File Information Functions
+============================================================================ */
 
 /*
- * get_file_size - Get size of a file
- */
+get_file_size - Get size of a file
+*/
 ssize_t get_file_size(const char *filepath) {
     /*
      * TODO: Implement this function
@@ -119,8 +119,8 @@ ssize_t get_file_size(const char *filepath) {
 }
 
 /*
- * file_exists - Check if file exists and is readable
- */
+file_exists - Check if file exists and is readable
+*/
 int file_exists(const char *filepath) {
     /*
      * TODO: Implement this function
@@ -141,8 +141,8 @@ int file_exists(const char *filepath) {
 }
 
 /*
- * is_regular_file - Check if path is a regular file
- */
+is_regular_file - Check if path is a regular file
+*/
 int is_regular_file(const char *filepath) {
     /*
      * TODO: Implement this function
@@ -166,12 +166,12 @@ int is_regular_file(const char *filepath) {
 }
 
 /* ============================================================================
- * File I/O Functions
- * ============================================================================ */
+File I/O Functions
+============================================================================ */
 
 /*
- * read_file_to_buffer - Read entire file into memory
- */
+read_file_to_buffer - Read entire file into memory
+*/
 int read_file_to_buffer(const char *filepath, char **buffer, size_t *size) {
     /*
      * TODO: Implement this function
@@ -203,8 +203,8 @@ int read_file_to_buffer(const char *filepath, char **buffer, size_t *size) {
 }
 
 /*
- * write_buffer_to_file - Write buffer to file
- */
+write_buffer_to_file - Write buffer to file
+*/
 int write_buffer_to_file(const char *filepath, const char *buffer, size_t size) {
     /*
      * TODO: Implement this function
@@ -227,14 +227,14 @@ int write_buffer_to_file(const char *filepath, const char *buffer, size_t size) 
 }
 
 /* ============================================================================
- * Cache Support Functions
- * ============================================================================ */
+Cache Support Functions
+============================================================================ */
 
 /*
- * compute_file_hash - Simple hash function for file paths
- *
- * Uses djb2 algorithm - simple but effective for strings.
- */
+compute_file_hash - Simple hash function for file paths
+
+Uses djb2 algorithm - simple but effective for strings.
+*/
 unsigned long compute_file_hash(const char *path) {
     /*
      * TODO: Implement djb2 hash
@@ -259,8 +259,8 @@ unsigned long compute_file_hash(const char *path) {
 }
 
 /*
- * generate_cache_key - Create normalized cache key from path
- */
+generate_cache_key - Create normalized cache key from path
+*/
 int generate_cache_key(char *buffer, size_t buflen, const char *path) {
     /*
      * TODO: Implement this function

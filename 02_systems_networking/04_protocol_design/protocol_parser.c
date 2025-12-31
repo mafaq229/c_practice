@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 04: Protocol Parser
- *
- * This module teaches you to design and parse network protocols.
- * GIOS Project 1 requires parsing "GETFILE GET /path\r\n\r\n" style requests.
- *
- * Compile: clang -Wall -Wextra -g protocol_parser.c -o protocol_parser
- * Run:     ./protocol_parser
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 04: Protocol Parser
+
+This module teaches you to design and parse network protocols.
+GIOS Project 1 requires parsing "GETFILE GET /path\r\n\r\n" style requests.
+
+Compile: clang -Wall -Wextra -g protocol_parser.c -o protocol_parser
+Run:     ./protocol_parser
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,34 +16,34 @@
 #include <ctype.h>
 
 /* ============================================================================
- * PROTOCOL SPECIFICATION
- * ============================================================================
- *
- * Request format:
- *   <METHOD> <PATH> <VERSION>\r\n
- *   <HEADER-NAME>: <HEADER-VALUE>\r\n
- *   ...
- *   \r\n
- *   [BODY]
- *
- * Example:
- *   GETFILE GET /path/to/file\r\n
- *   Content-Length: 1234\r\n
- *   \r\n
- *
- * Response format:
- *   <SCHEME> <STATUS> <MESSAGE>\r\n
- *   <HEADER-NAME>: <HEADER-VALUE>\r\n
- *   ...
- *   \r\n
- *   [BODY]
- *
- * Example:
- *   GETFILE OK\r\n
- *   Content-Length: 1234\r\n
- *   \r\n
- *   <file data>
- */
+PROTOCOL SPECIFICATION
+============================================================================
+
+Request format:
+  <METHOD> <PATH> <VERSION>\r\n
+  <HEADER-NAME>: <HEADER-VALUE>\r\n
+  ...
+  \r\n
+  [BODY]
+
+Example:
+  GETFILE GET /path/to/file\r\n
+  Content-Length: 1234\r\n
+  \r\n
+
+Response format:
+  <SCHEME> <STATUS> <MESSAGE>\r\n
+  <HEADER-NAME>: <HEADER-VALUE>\r\n
+  ...
+  \r\n
+  [BODY]
+
+Example:
+  GETFILE OK\r\n
+  Content-Length: 1234\r\n
+  \r\n
+  <file data>
+*/
 
 #define MAX_PATH_LEN 256
 #define MAX_HEADERS 16
@@ -76,16 +76,16 @@ typedef struct {
 } Response;
 
 /* ============================================================================
- * EXERCISE 1: Parse Request Line
- * ============================================================================
- */
+EXERCISE 1: Parse Request Line
+============================================================================
+*/
 
 /*
- * TODO: Parse the first line of a request.
- * Format: "SCHEME METHOD PATH\r\n" or "SCHEME METHOD PATH"
- *
- * Returns 0 on success, -1 on parse error.
- */
+TODO: Parse the first line of a request.
+Format: "SCHEME METHOD PATH\r\n" or "SCHEME METHOD PATH"
+
+Returns 0 on success, -1 on parse error.
+*/
 int parse_request_line(const char *line, Request *req) {
     /* TODO: Implement this function
      *
@@ -145,16 +145,16 @@ void test_parse_request_line(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Parse Headers
- * ============================================================================
- */
+EXERCISE 2: Parse Headers
+============================================================================
+*/
 
 /*
- * TODO: Parse a single header line.
- * Format: "Header-Name: Header-Value\r\n"
- *
- * Returns 0 on success, -1 on parse error, 1 if empty line (end of headers).
- */
+TODO: Parse a single header line.
+Format: "Header-Name: Header-Value\r\n"
+
+Returns 0 on success, -1 on parse error, 1 if empty line (end of headers).
+*/
 int parse_header_line(const char *line, char *name, size_t name_size,
                       char *value, size_t value_size) {
     /* TODO: Implement this function
@@ -208,8 +208,8 @@ int parse_header_line(const char *line, char *name, size_t name_size,
 }
 
 /*
- * TODO: Parse all headers from a multi-line string.
- */
+TODO: Parse all headers from a multi-line string.
+*/
 int parse_headers(const char *data, Request *req) {
     /* TODO: Implement this function
      *
@@ -294,13 +294,13 @@ void test_parse_headers(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Parse Complete Request
- * ============================================================================
- */
+EXERCISE 3: Parse Complete Request
+============================================================================
+*/
 
 /*
- * TODO: Parse a complete request (request line + headers).
- */
+TODO: Parse a complete request (request line + headers).
+*/
 int parse_request(const char *data, Request *req) {
     /* TODO: Implement this function
      *
@@ -368,13 +368,13 @@ void test_parse_complete_request(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Build Response
- * ============================================================================
- */
+EXERCISE 4: Build Response
+============================================================================
+*/
 
 /*
- * TODO: Build a response string.
- */
+TODO: Build a response string.
+*/
 int build_response(char *buffer, size_t buffer_size, const Response *resp) {
     /* TODO: Implement this function
      *
@@ -420,9 +420,9 @@ void test_build_response(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(void) {
     printf("\n================================================\n");

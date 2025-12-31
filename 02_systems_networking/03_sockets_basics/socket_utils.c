@@ -1,9 +1,9 @@
 /*
- * Socket Utilities Implementation
- *
- * TODO: Implement these utility functions.
- * These will be reusable in your GIOS projects.
- */
+Socket Utilities Implementation
+
+TODO: Implement these utility functions.
+These will be reusable in your GIOS projects.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,8 +19,8 @@
 #include "socket_utils.h"
 
 /*
- * Send all data, handling partial sends.
- */
+Send all data, handling partial sends.
+*/
 ssize_t send_all(int fd, const void *buf, size_t len) {
     const char *ptr = buf;
     size_t remaining = len;
@@ -42,8 +42,8 @@ ssize_t send_all(int fd, const void *buf, size_t len) {
 }
 
 /*
- * TODO: Receive exactly 'len' bytes.
- */
+TODO: Receive exactly 'len' bytes.
+*/
 ssize_t recv_all(int fd, void *buf, size_t len) {
     /* TODO: Implement this function
      *
@@ -71,10 +71,10 @@ ssize_t recv_all(int fd, void *buf, size_t len) {
 }
 
 /*
- * TODO: Receive until delimiter is found.
- *
- * This is useful for reading protocol headers that end with \r\n or similar.
- */
+TODO: Receive until delimiter is found.
+
+This is useful for reading protocol headers that end with \r\n or similar.
+*/
 ssize_t recv_until(int fd, void *buf, size_t max_len, const char *delim) {
     /* TODO: Implement this function
      *
@@ -119,8 +119,8 @@ ssize_t recv_until(int fd, void *buf, size_t max_len, const char *delim) {
 }
 
 /*
- * TODO: Create a server socket, bind, and listen.
- */
+TODO: Create a server socket, bind, and listen.
+*/
 int create_server_socket(int port, int backlog) {
     /* TODO: Implement this function
      *
@@ -170,8 +170,8 @@ int create_server_socket(int port, int backlog) {
 }
 
 /*
- * TODO: Create a client socket and connect.
- */
+TODO: Create a client socket and connect.
+*/
 int connect_to_server(const char *host, int port) {
     /* TODO: Implement this function
      *
@@ -217,8 +217,8 @@ int connect_to_server(const char *host, int port) {
 }
 
 /*
- * Set socket to non-blocking mode.
- */
+Set socket to non-blocking mode.
+*/
 int set_nonblocking(int fd) {
     int flags = fcntl(fd, F_GETFL, 0);
     if (flags < 0) {
@@ -235,9 +235,9 @@ int set_nonblocking(int fd) {
 }
 
 /*
- * Set TCP_NODELAY (disable Nagle's algorithm).
- * Useful for low-latency applications.
- */
+Set TCP_NODELAY (disable Nagle's algorithm).
+Useful for low-latency applications.
+*/
 int set_tcp_nodelay(int fd) {
     int opt = 1;
     if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &opt, sizeof(opt)) < 0) {

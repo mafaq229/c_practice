@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 02: Buffered vs Unbuffered I/O
- *
- * Understanding the difference between buffered and unbuffered I/O
- * is important for performance optimization.
- *
- * Compile: clang -Wall -Wextra -g -O2 buffered_io.c -o buffered_io
- * Run:     ./buffered_io
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 02: Buffered vs Unbuffered I/O
+
+Understanding the difference between buffered and unbuffered I/O
+is important for performance optimization.
+
+Compile: clang -Wall -Wextra -g -O2 buffered_io.c -o buffered_io
+Run:     ./buffered_io
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +21,8 @@
 #define FILE_SIZE (10 * 1024 * 1024)  /* 10 MB */
 
 /*
- * Get current time in microseconds
- */
+Get current time in microseconds
+*/
 long long get_time_us(void) {
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -30,8 +30,8 @@ long long get_time_us(void) {
 }
 
 /*
- * Create a test file of specified size
- */
+Create a test file of specified size
+*/
 void create_test_file(const char *filename, size_t size) {
     printf("Creating %zu byte test file...\n", size);
 
@@ -59,9 +59,9 @@ void create_test_file(const char *filename, size_t size) {
 }
 
 /* ============================================================================
- * TEST 1: Single byte reads - Buffered vs Unbuffered
- * ============================================================================
- */
+TEST 1: Single byte reads - Buffered vs Unbuffered
+============================================================================
+*/
 
 void test_single_byte_reads(void) {
     printf("\n=== Test 1: Single Byte Reads ===\n");
@@ -108,9 +108,9 @@ void test_single_byte_reads(void) {
 }
 
 /* ============================================================================
- * TEST 2: Large reads - Buffer size impact
- * ============================================================================
- */
+TEST 2: Large reads - Buffer size impact
+============================================================================
+*/
 
 void test_buffer_sizes(void) {
     printf("\n=== Test 2: Buffer Size Impact ===\n");
@@ -147,9 +147,9 @@ void test_buffer_sizes(void) {
 }
 
 /* ============================================================================
- * TEST 3: Write performance
- * ============================================================================
- */
+TEST 3: Write performance
+============================================================================
+*/
 
 void test_write_performance(void) {
     printf("\n=== Test 3: Write Performance ===\n");
@@ -198,9 +198,9 @@ void test_write_performance(void) {
 }
 
 /* ============================================================================
- * TEST 4: fsync and data integrity
- * ============================================================================
- */
+TEST 4: fsync and data integrity
+============================================================================
+*/
 
 void test_fsync(void) {
     printf("\n=== Test 4: fsync for Data Integrity ===\n");
@@ -237,9 +237,9 @@ void test_fsync(void) {
 }
 
 /* ============================================================================
- * SUMMARY
- * ============================================================================
- */
+SUMMARY
+============================================================================
+*/
 
 void print_summary(void) {
     printf("\n=== I/O Performance Summary ===\n\n");
@@ -266,9 +266,9 @@ void print_summary(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(void) {
     printf("\n================================================\n");

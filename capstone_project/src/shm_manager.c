@@ -1,16 +1,16 @@
 /*
- * shm_manager.c - Shared Memory Manager Implementation
- *
- * This implements POSIX shared memory management for inter-process
- * communication in Part D.
- *
- * NOTE: This requires Linux! On macOS, use Docker.
- *
- * Key concepts:
- * - shm_open() creates/opens shared memory
- * - mmap() maps it into address space
- * - Synchronization with process-shared mutex
- */
+shm_manager.c - Shared Memory Manager Implementation
+
+This implements POSIX shared memory management for inter-process
+communication in Part D.
+
+NOTE: This requires Linux! On macOS, use Docker.
+
+Key concepts:
+- shm_open() creates/opens shared memory
+- mmap() maps it into address space
+- Synchronization with process-shared mutex
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,19 +30,19 @@
 #endif
 
 /* ============================================================================
- * Helper Functions
- * ============================================================================ */
+Helper Functions
+============================================================================ */
 
 /*
- * Calculate number of blocks needed for a given size
- */
+Calculate number of blocks needed for a given size
+*/
 static int blocks_needed(size_t size) {
     return (size + SHM_BLOCK_SIZE - 1) / SHM_BLOCK_SIZE;
 }
 
 /*
- * Initialize process-shared mutex
- */
+Initialize process-shared mutex
+*/
 static int init_shared_mutex(pthread_mutex_t *mutex) {
     /*
      * TODO: Initialize a process-shared mutex
@@ -74,12 +74,12 @@ static int init_shared_mutex(pthread_mutex_t *mutex) {
 }
 
 /* ============================================================================
- * Shared Memory Lifecycle
- * ============================================================================ */
+Shared Memory Lifecycle
+============================================================================ */
 
 /*
- * shm_create - Create a new shared memory segment
- */
+shm_create - Create a new shared memory segment
+*/
 shm_handle_t *shm_create(const char *name, size_t size) {
     /*
      * TODO: Implement shared memory creation
@@ -140,8 +140,8 @@ shm_handle_t *shm_create(const char *name, size_t size) {
 }
 
 /*
- * shm_attach - Attach to an existing shared memory segment
- */
+shm_attach - Attach to an existing shared memory segment
+*/
 shm_handle_t *shm_attach(const char *name) {
     /*
      * TODO: Implement attaching to existing shared memory
@@ -181,8 +181,8 @@ shm_handle_t *shm_attach(const char *name) {
 }
 
 /*
- * shm_detach - Detach from shared memory (don't destroy)
- */
+shm_detach - Detach from shared memory (don't destroy)
+*/
 void shm_detach(shm_handle_t *handle) {
     /*
      * TODO: Implement detachment
@@ -208,8 +208,8 @@ void shm_detach(shm_handle_t *handle) {
 }
 
 /*
- * shm_destroy - Destroy shared memory segment
- */
+shm_destroy - Destroy shared memory segment
+*/
 void shm_destroy(shm_handle_t *handle) {
     /*
      * TODO: Implement destruction
@@ -239,12 +239,12 @@ void shm_destroy(shm_handle_t *handle) {
 }
 
 /* ============================================================================
- * Memory Allocation
- * ============================================================================ */
+Memory Allocation
+============================================================================ */
 
 /*
- * shm_alloc - Allocate space in shared memory
- */
+shm_alloc - Allocate space in shared memory
+*/
 void *shm_alloc(shm_handle_t *handle, size_t size, size_t *offset) {
     /*
      * TODO: Implement allocation
@@ -300,8 +300,8 @@ void *shm_alloc(shm_handle_t *handle, size_t size, size_t *offset) {
 }
 
 /*
- * shm_free - Free previously allocated space
- */
+shm_free - Free previously allocated space
+*/
 void shm_free(shm_handle_t *handle, size_t offset, size_t size) {
     /*
      * TODO: Implement deallocation
@@ -332,8 +332,8 @@ void shm_free(shm_handle_t *handle, size_t offset, size_t size) {
 }
 
 /*
- * shm_get_ptr - Get pointer to data at offset
- */
+shm_get_ptr - Get pointer to data at offset
+*/
 void *shm_get_ptr(shm_handle_t *handle, size_t offset) {
     /*
      * TODO: Implement pointer retrieval
@@ -358,8 +358,8 @@ void *shm_get_ptr(shm_handle_t *handle, size_t offset) {
 }
 
 /* ============================================================================
- * Utility Functions
- * ============================================================================ */
+Utility Functions
+============================================================================ */
 
 size_t shm_get_free_space(shm_handle_t *handle) {
     if (handle == NULL || handle->header == NULL) {

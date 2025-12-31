@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 01: Exec Examples
- *
- * Learn how to replace the current process image with exec().
- * Typically used with fork() to run other programs.
- *
- * Compile: clang -Wall -Wextra -g exec_example.c -o exec_example
- * Run:     ./exec_example
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 01: Exec Examples
+
+Learn how to replace the current process image with exec().
+Typically used with fork() to run other programs.
+
+Compile: clang -Wall -Wextra -g exec_example.c -o exec_example
+Run:     ./exec_example
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,33 +17,33 @@
 #include <sys/wait.h>
 
 /* ============================================================================
- * CONCEPT: exec() family
- * ============================================================================
- *
- * exec() replaces the current process image with a new program.
- * After exec(), the original program code is gone!
- *
- * The exec family:
- *   execl()  - list of arguments
- *   execlp() - list, searches PATH
- *   execle() - list, custom environment
- *   execv()  - array (vector) of arguments
- *   execvp() - vector, searches PATH
- *   execve() - vector, custom environment (the base syscall)
- *
- * Naming convention:
- *   l = list of args (arg1, arg2, ..., NULL)
- *   v = vector of args (char *argv[])
- *   p = search PATH for executable
- *   e = custom environment
- *
- * Common pattern: fork() then exec() in child
- */
+CONCEPT: exec() family
+============================================================================
+
+exec() replaces the current process image with a new program.
+After exec(), the original program code is gone!
+
+The exec family:
+  execl()  - list of arguments
+  execlp() - list, searches PATH
+  execle() - list, custom environment
+  execv()  - array (vector) of arguments
+  execvp() - vector, searches PATH
+  execve() - vector, custom environment (the base syscall)
+
+Naming convention:
+  l = list of args (arg1, arg2, ..., NULL)
+  v = vector of args (char *argv[])
+  p = search PATH for executable
+  e = custom environment
+
+Common pattern: fork() then exec() in child
+*/
 
 /* ============================================================================
- * EXERCISE 1: Basic exec
- * ============================================================================
- */
+EXERCISE 1: Basic exec
+============================================================================
+*/
 
 void exercise1_basic_exec(void) {
     printf("\n=== Exercise 1: Basic Exec ===\n");
@@ -80,9 +80,9 @@ void exercise1_basic_exec(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: exec with execv (vector)
- * ============================================================================
- */
+EXERCISE 2: exec with execv (vector)
+============================================================================
+*/
 
 void exercise2_execv(void) {
     printf("\n=== Exercise 2: execv with Vector ===\n");
@@ -115,9 +115,9 @@ void exercise2_execv(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Run a program with arguments
- * ============================================================================
- */
+EXERCISE 3: Run a program with arguments
+============================================================================
+*/
 
 void exercise3_run_program(const char *program, char *const args[]) {
     printf("\n=== Exercise 3: Run Program ===\n");
@@ -157,9 +157,9 @@ void exercise3_run_program(const char *program, char *const args[]) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Capture command output
- * ============================================================================
- */
+EXERCISE 4: Capture command output
+============================================================================
+*/
 
 void exercise4_capture_output(void) {
     printf("\n=== Exercise 4: Capture Output (using popen) ===\n");
@@ -189,9 +189,9 @@ void exercise4_capture_output(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Build a simple shell command executor
- * ============================================================================
- */
+EXERCISE 5: Build a simple shell command executor
+============================================================================
+*/
 
 void exercise5_mini_shell(void) {
     printf("\n=== Exercise 5: Mini Shell ===\n");
@@ -263,9 +263,9 @@ void exercise5_mini_shell(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Environment variables with exec
- * ============================================================================
- */
+EXERCISE 6: Environment variables with exec
+============================================================================
+*/
 
 void exercise6_exec_env(void) {
     printf("\n=== Exercise 6: Exec with Custom Environment ===\n");
@@ -303,9 +303,9 @@ void exercise6_exec_env(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

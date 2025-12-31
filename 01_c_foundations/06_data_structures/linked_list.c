@@ -1,23 +1,23 @@
 /*
- * CS-6200 Preparation - Module 06: Linked List
- *
- * Linked lists are fundamental data structures used throughout GIOS.
- * Thread pools, request queues, and many other components use them.
- *
- * Compile: clang -Wall -Wextra -g linked_list.c -o linked_list
- * Run:     ./linked_list
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 06: Linked List
+
+Linked lists are fundamental data structures used throughout GIOS.
+Thread pools, request queues, and many other components use them.
+
+Compile: clang -Wall -Wextra -g linked_list.c -o linked_list
+Run:     ./linked_list
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * SINGLY LINKED LIST
- * ============================================================================
- */
+SINGLY LINKED LIST
+============================================================================
+*/
 
 typedef struct SNode {
     int data;
@@ -31,15 +31,15 @@ typedef struct {
 } SinglyLinkedList;
 
 /*
- * TODO: Initialize the list.
- */
+TODO: Initialize the list.
+*/
 void slist_init(SinglyLinkedList *list) {
     /* TODO: Set head and tail to NULL, size to 0 */
 }
 
 /*
- * TODO: Append to end of list.
- */
+TODO: Append to end of list.
+*/
 int slist_append(SinglyLinkedList *list, int data) {
     /* TODO: Implement this function
      *
@@ -56,8 +56,8 @@ int slist_append(SinglyLinkedList *list, int data) {
 }
 
 /*
- * TODO: Prepend to beginning of list.
- */
+TODO: Prepend to beginning of list.
+*/
 int slist_prepend(SinglyLinkedList *list, int data) {
     /* TODO: Implement this function */
 
@@ -65,9 +65,9 @@ int slist_prepend(SinglyLinkedList *list, int data) {
 }
 
 /*
- * TODO: Remove and return first element.
- * Returns -1 if list is empty (use a different error mechanism in real code).
- */
+TODO: Remove and return first element.
+Returns -1 if list is empty (use a different error mechanism in real code).
+*/
 int slist_pop_front(SinglyLinkedList *list) {
     /* TODO: Implement this function
      *
@@ -85,9 +85,9 @@ int slist_pop_front(SinglyLinkedList *list) {
 }
 
 /*
- * TODO: Find element by value.
- * Returns pointer to node or NULL if not found.
- */
+TODO: Find element by value.
+Returns pointer to node or NULL if not found.
+*/
 SNode *slist_find(SinglyLinkedList *list, int data) {
     /* TODO: Implement this function */
 
@@ -95,9 +95,9 @@ SNode *slist_find(SinglyLinkedList *list, int data) {
 }
 
 /*
- * TODO: Remove element by value.
- * Returns 0 if removed, -1 if not found.
- */
+TODO: Remove element by value.
+Returns 0 if removed, -1 if not found.
+*/
 int slist_remove(SinglyLinkedList *list, int data) {
     /* TODO: Implement this function
      *
@@ -109,8 +109,8 @@ int slist_remove(SinglyLinkedList *list, int data) {
 }
 
 /*
- * TODO: Free all nodes.
- */
+TODO: Free all nodes.
+*/
 void slist_free(SinglyLinkedList *list) {
     /* TODO: Implement this function */
 }
@@ -127,9 +127,9 @@ void slist_print(SinglyLinkedList *list) {
 }
 
 /* ============================================================================
- * DOUBLY LINKED LIST
- * ============================================================================
- */
+DOUBLY LINKED LIST
+============================================================================
+*/
 
 typedef struct DNode {
     int data;
@@ -144,15 +144,15 @@ typedef struct {
 } DoublyLinkedList;
 
 /*
- * TODO: Initialize doubly linked list.
- */
+TODO: Initialize doubly linked list.
+*/
 void dlist_init(DoublyLinkedList *list) {
     /* TODO: Implement this function */
 }
 
 /*
- * TODO: Append to doubly linked list.
- */
+TODO: Append to doubly linked list.
+*/
 int dlist_append(DoublyLinkedList *list, int data) {
     /* TODO: Implement this function
      *
@@ -163,8 +163,8 @@ int dlist_append(DoublyLinkedList *list, int data) {
 }
 
 /*
- * TODO: Remove from end of doubly linked list.
- */
+TODO: Remove from end of doubly linked list.
+*/
 int dlist_pop_back(DoublyLinkedList *list) {
     /* TODO: Implement this function
      *
@@ -175,9 +175,9 @@ int dlist_pop_back(DoublyLinkedList *list) {
 }
 
 /*
- * TODO: Remove a specific node.
- * This is O(1) because we have prev pointer!
- */
+TODO: Remove a specific node.
+This is O(1) because we have prev pointer!
+*/
 void dlist_remove_node(DoublyLinkedList *list, DNode *node) {
     /* TODO: Implement this function
      *
@@ -212,9 +212,9 @@ void dlist_print(DoublyLinkedList *list) {
 }
 
 /* ============================================================================
- * TEST FUNCTIONS
- * ============================================================================
- */
+TEST FUNCTIONS
+============================================================================
+*/
 
 void test_singly_linked(void) {
     printf("\n=== Singly Linked List ===\n");
@@ -268,9 +268,9 @@ void test_doubly_linked(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

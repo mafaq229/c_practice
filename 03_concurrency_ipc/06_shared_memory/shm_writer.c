@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 06: Shared Memory Writer
- *
- * POSIX shared memory for inter-process communication.
- * This is essential for GIOS Project 3 (proxy cache)!
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Compile: clang -Wall -Wextra -g shm_writer.c -o shm_writer -lrt -pthread
- * Run:     ./shm_writer
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 06: Shared Memory Writer
+
+POSIX shared memory for inter-process communication.
+This is essential for GIOS Project 3 (proxy cache)!
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Compile: clang -Wall -Wextra -g shm_writer.c -o shm_writer -lrt -pthread
+Run:     ./shm_writer
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,24 +22,24 @@
 #include <errno.h>
 
 /* ============================================================================
- * CONCEPT: POSIX Shared Memory
- * ============================================================================
- *
- * Shared memory allows multiple processes to access the same memory region.
- * It's the fastest IPC mechanism because data doesn't need to be copied.
- *
- * Key functions:
- * - shm_open():    Create/open shared memory object
- * - ftruncate():   Set size of shared memory
- * - mmap():        Map shared memory into process address space
- * - munmap():      Unmap when done
- * - shm_unlink():  Remove shared memory object
- *
- * GIOS Connection:
- * In Project 3, the proxy and cache processes share memory:
- * - Cache writes file data to shared memory
- * - Proxy reads from shared memory and sends to client
- */
+CONCEPT: POSIX Shared Memory
+============================================================================
+
+Shared memory allows multiple processes to access the same memory region.
+It's the fastest IPC mechanism because data doesn't need to be copied.
+
+Key functions:
+- shm_open():    Create/open shared memory object
+- ftruncate():   Set size of shared memory
+- mmap():        Map shared memory into process address space
+- munmap():      Unmap when done
+- shm_unlink():  Remove shared memory object
+
+GIOS Connection:
+In Project 3, the proxy and cache processes share memory:
+- Cache writes file data to shared memory
+- Proxy reads from shared memory and sends to client
+*/
 
 #define SHM_NAME "/gios_prep_shm"
 #define SHM_SIZE 4096

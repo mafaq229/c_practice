@@ -1,22 +1,22 @@
 /*
- * proxy.c - Caching Proxy Server (Part C)
- *
- * A proxy server that sits between clients and the file server.
- * It caches file responses to reduce load on the backend server.
- *
- * Architecture:
- *   Client <-> Proxy <-> File Server
- *              |
- *           [Cache]
- *
- * Usage: ./proxy [proxy_port] [server_host] [server_port]
- *
- * The proxy:
- * 1. Receives requests from clients
- * 2. Checks cache for requested file
- * 3. If cache hit: return cached content
- * 4. If cache miss: forward request to server, cache response, return to client
- */
+proxy.c - Caching Proxy Server (Part C)
+
+A proxy server that sits between clients and the file server.
+It caches file responses to reduce load on the backend server.
+
+Architecture:
+  Client <-> Proxy <-> File Server
+             |
+          [Cache]
+
+Usage: ./proxy [proxy_port] [server_host] [server_port]
+
+The proxy:
+1. Receives requests from clients
+2. Checks cache for requested file
+3. If cache hit: return cached content
+4. If cache miss: forward request to server, cache response, return to client
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,8 +34,8 @@
 #include "../include/cache.h"
 
 /* ============================================================================
- * Configuration
- * ============================================================================ */
+Configuration
+============================================================================ */
 
 #define CACHE_SIZE          (10 * 1024 * 1024)  /* 10 MB cache */
 
@@ -48,8 +48,8 @@ static char server_host[256] = "localhost";
 static int server_port = DEFAULT_PORT;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 static void signal_handler(int sig) {
     (void)sig;
@@ -61,15 +61,15 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * Backend Server Communication
- * ============================================================================ */
+Backend Server Communication
+============================================================================ */
 
 /*
- * fetch_from_server - Fetch a file from the backend server
- *
- * Returns: 0 on success (data and size filled), -1 on error
- * On success, caller must free *data!
- */
+fetch_from_server - Fetch a file from the backend server
+
+Returns: 0 on success (data and size filled), -1 on error
+On success, caller must free *data!
+*/
 static int fetch_from_server(const char *path, char **data, size_t *size) {
     /*
      * TODO: Implement fetching from backend server
@@ -113,12 +113,12 @@ static int fetch_from_server(const char *path, char **data, size_t *size) {
 }
 
 /* ============================================================================
- * Request Handling
- * ============================================================================ */
+Request Handling
+============================================================================ */
 
 /*
- * send_cached_response - Send cached file to client
- */
+send_cached_response - Send cached file to client
+*/
 static int send_cached_response(int client_fd, const char *data, size_t size) {
     /*
      * TODO: Send a cached response
@@ -142,8 +142,8 @@ static int send_cached_response(int client_fd, const char *data, size_t size) {
 }
 
 /*
- * handle_proxy_request - Handle a single proxy request
- */
+handle_proxy_request - Handle a single proxy request
+*/
 static void handle_proxy_request(int client_fd) {
     /*
      * TODO: Implement proxy request handling
@@ -202,8 +202,8 @@ static void handle_proxy_request(int client_fd) {
 }
 
 /* ============================================================================
- * Statistics Display
- * ============================================================================ */
+Statistics Display
+============================================================================ */
 
 static void print_cache_stats(void) {
     if (cache == NULL) return;
@@ -223,8 +223,8 @@ static void print_cache_stats(void) {
 }
 
 /* ============================================================================
- * Main Proxy Loop
- * ============================================================================ */
+Main Proxy Loop
+============================================================================ */
 
 static int run_proxy(int proxy_port) {
     /*
@@ -263,8 +263,8 @@ static int run_proxy(int proxy_port) {
 }
 
 /* ============================================================================
- * Main Entry Point
- * ============================================================================ */
+Main Entry Point
+============================================================================ */
 
 static void print_usage(const char *prog) {
     fprintf(stderr, "Usage: %s [proxy_port] [server_host] [server_port]\n", prog);

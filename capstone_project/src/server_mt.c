@@ -1,17 +1,17 @@
 /*
- * server_mt.c - Multi-Threaded File Server (Part B)
- *
- * This server uses a thread pool to handle multiple clients concurrently.
- * It extends the single-threaded server with the boss-worker pattern.
- *
- * Usage: ./server_mt [port] [num_threads]
- *
- * Boss-Worker Pattern:
- * - Boss (main thread): accepts connections, adds to work queue
- * - Workers (thread pool): handle client requests concurrently
- *
- * This is similar to GIOS Project 1 Part 2!
- */
+server_mt.c - Multi-Threaded File Server (Part B)
+
+This server uses a thread pool to handle multiple clients concurrently.
+It extends the single-threaded server with the boss-worker pattern.
+
+Usage: ./server_mt [port] [num_threads]
+
+Boss-Worker Pattern:
+- Boss (main thread): accepts connections, adds to work queue
+- Workers (thread pool): handle client requests concurrently
+
+This is similar to GIOS Project 1 Part 2!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,16 +29,16 @@
 #include "../include/thread_pool.h"
 
 /* ============================================================================
- * Global State
- * ============================================================================ */
+Global State
+============================================================================ */
 
 static volatile sig_atomic_t running = 1;
 static int server_fd = -1;
 static thread_pool_t *pool = NULL;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 static void signal_handler(int sig) {
     (void)sig;
@@ -50,12 +50,12 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * Statistics Display
- * ============================================================================ */
+Statistics Display
+============================================================================ */
 
 /*
- * print_stats - Print thread pool statistics
- */
+print_stats - Print thread pool statistics
+*/
 static void print_stats(void) {
     /*
      * TODO: Implement statistics display
@@ -75,12 +75,12 @@ static void print_stats(void) {
 }
 
 /* ============================================================================
- * Main Server Loop
- * ============================================================================ */
+Main Server Loop
+============================================================================ */
 
 /*
- * run_server - Boss thread main loop
- */
+run_server - Boss thread main loop
+*/
 static int run_server(int port, int num_threads) {
     /*
      * TODO: Implement the multi-threaded server
@@ -159,8 +159,8 @@ static int run_server(int port, int num_threads) {
 }
 
 /* ============================================================================
- * Main Entry Point
- * ============================================================================ */
+Main Entry Point
+============================================================================ */
 
 int main(int argc, char *argv[]) {
     int port = DEFAULT_PORT;

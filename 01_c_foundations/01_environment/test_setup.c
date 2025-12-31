@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Environment Setup Verification
- *
- * This program verifies that your development environment is correctly set up.
- * If this compiles and runs successfully, you're ready to start the curriculum.
- *
- * Compile: clang -Wall -Wextra -g test_setup.c -o test_setup
- * Run:     ./test_setup
- *
- * Expected output: All checks should pass with green checkmarks or "PASS".
- */
+CS-6200 Preparation - Environment Setup Verification
+
+This program verifies that your development environment is correctly set up.
+If this compiles and runs successfully, you're ready to start the curriculum.
+
+Compile: clang -Wall -Wextra -g test_setup.c -o test_setup
+Run:     ./test_setup
+
+Expected output: All checks should pass with green checkmarks or "PASS".
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

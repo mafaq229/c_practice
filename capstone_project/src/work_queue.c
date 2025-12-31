@@ -1,16 +1,16 @@
 /*
- * work_queue.c - Thread-Safe Work Queue Implementation
- *
- * This is a bounded buffer implementation using a circular array.
- * It uses a mutex and condition variables for thread synchronization.
- *
- * Key concepts:
- * - Mutex protects all queue state
- * - Condition variables for efficient waiting
- * - While loops for spurious wakeup handling
- *
- * This is the foundation of the boss-worker thread pool pattern!
- */
+work_queue.c - Thread-Safe Work Queue Implementation
+
+This is a bounded buffer implementation using a circular array.
+It uses a mutex and condition variables for thread synchronization.
+
+Key concepts:
+- Mutex protects all queue state
+- Condition variables for efficient waiting
+- While loops for spurious wakeup handling
+
+This is the foundation of the boss-worker thread pool pattern!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,12 +19,12 @@
 #include "../include/work_queue.h"
 
 /* ============================================================================
- * Queue Lifecycle Functions
- * ============================================================================ */
+Queue Lifecycle Functions
+============================================================================ */
 
 /*
- * work_queue_create - Create and initialize a work queue
- */
+work_queue_create - Create and initialize a work queue
+*/
 work_queue_t *work_queue_create(void) {
     /*
      * TODO: Implement this function
@@ -76,8 +76,8 @@ work_queue_t *work_queue_create(void) {
 }
 
 /*
- * work_queue_destroy - Destroy a work queue
- */
+work_queue_destroy - Destroy a work queue
+*/
 void work_queue_destroy(work_queue_t *queue) {
     /*
      * TODO: Implement this function
@@ -105,12 +105,12 @@ void work_queue_destroy(work_queue_t *queue) {
 }
 
 /* ============================================================================
- * Queue Operations
- * ============================================================================ */
+Queue Operations
+============================================================================ */
 
 /*
- * work_queue_push - Add a work item to the queue (producer)
- */
+work_queue_push - Add a work item to the queue (producer)
+*/
 int work_queue_push(work_queue_t *queue, int client_fd) {
     /*
      * TODO: Implement this function
@@ -149,8 +149,8 @@ int work_queue_push(work_queue_t *queue, int client_fd) {
 }
 
 /*
- * work_queue_pop - Remove and return a work item (consumer)
- */
+work_queue_pop - Remove and return a work item (consumer)
+*/
 int work_queue_pop(work_queue_t *queue) {
     /*
      * TODO: Implement this function
@@ -187,8 +187,8 @@ int work_queue_pop(work_queue_t *queue) {
 }
 
 /*
- * work_queue_shutdown - Signal the queue to shut down
- */
+work_queue_shutdown - Signal the queue to shut down
+*/
 void work_queue_shutdown(work_queue_t *queue) {
     /*
      * TODO: Implement this function
@@ -212,12 +212,12 @@ void work_queue_shutdown(work_queue_t *queue) {
 }
 
 /* ============================================================================
- * Query Functions
- * ============================================================================ */
+Query Functions
+============================================================================ */
 
 /*
- * work_queue_size - Get current queue size
- */
+work_queue_size - Get current queue size
+*/
 int work_queue_size(work_queue_t *queue) {
     /*
      * TODO: Implement this function
@@ -235,28 +235,28 @@ int work_queue_size(work_queue_t *queue) {
 }
 
 /*
- * work_queue_is_empty - Check if queue is empty
- */
+work_queue_is_empty - Check if queue is empty
+*/
 bool work_queue_is_empty(work_queue_t *queue) {
     return work_queue_size(queue) == 0;
 }
 
 /*
- * work_queue_is_full - Check if queue is full
- */
+work_queue_is_full - Check if queue is full
+*/
 bool work_queue_is_full(work_queue_t *queue) {
     return work_queue_size(queue) >= MAX_QUEUE_SIZE;
 }
 
 /* ============================================================================
- * Testing helper
- * ============================================================================ */
+Testing helper
+============================================================================ */
 
 #ifdef WORK_QUEUE_TEST_MAIN
 /*
- * Simple test for work queue (single-threaded)
- * Compile: gcc -DWORK_QUEUE_TEST_MAIN -g -pthread work_queue.c -o test_wq
- */
+Simple test for work queue (single-threaded)
+Compile: gcc -DWORK_QUEUE_TEST_MAIN -g -pthread work_queue.c -o test_wq
+*/
 int main(void) {
     work_queue_t *queue;
     int fd;

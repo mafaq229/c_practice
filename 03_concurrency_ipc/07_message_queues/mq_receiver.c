@@ -1,19 +1,19 @@
 /*
- * CS-6200 Preparation - Module 07: Message Queue Receiver
- *
- * Receives messages from the queue created by mq_sender.
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Usage:
- *   Terminal 1: ./mq_sender
- *   Terminal 2: ./mq_receiver
- *
- * Compile: clang -Wall -Wextra -g mq_receiver.c -o mq_receiver -lrt
- * Run:     ./mq_receiver
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 07: Message Queue Receiver
+
+Receives messages from the queue created by mq_sender.
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Usage:
+  Terminal 1: ./mq_sender
+  Terminal 2: ./mq_receiver
+
+Compile: clang -Wall -Wextra -g mq_receiver.c -o mq_receiver -lrt
+Run:     ./mq_receiver
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

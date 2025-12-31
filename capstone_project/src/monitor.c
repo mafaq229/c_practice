@@ -1,19 +1,19 @@
 /*
- * monitor.c - System Monitor (Part E)
- *
- * A monitoring tool that collects and displays statistics from
- * the various components of the Mini-GIOS system.
- *
- * Features:
- * - Real-time statistics display
- * - Cache hit/miss rates
- * - Thread pool utilization
- * - Request throughput
- *
- * This demonstrates monitoring and observability concepts.
- *
- * Usage: ./monitor [options]
- */
+monitor.c - System Monitor (Part E)
+
+A monitoring tool that collects and displays statistics from
+the various components of the Mini-GIOS system.
+
+Features:
+- Real-time statistics display
+- Cache hit/miss rates
+- Thread pool utilization
+- Request throughput
+
+This demonstrates monitoring and observability concepts.
+
+Usage: ./monitor [options]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,8 +27,8 @@
 #include "../include/cache.h"
 
 /* ============================================================================
- * Configuration
- * ============================================================================ */
+Configuration
+============================================================================ */
 
 #define REFRESH_INTERVAL_MS     1000    /* Refresh every second */
 #define HISTORY_SIZE            60      /* Keep 60 samples for graphing */
@@ -36,8 +36,8 @@
 static volatile sig_atomic_t running = 1;
 
 /* ============================================================================
- * Statistics Structures
- * ============================================================================ */
+Statistics Structures
+============================================================================ */
 
 typedef struct {
     /* Request statistics */
@@ -77,8 +77,8 @@ typedef struct {
 static system_stats_t stats;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 static void signal_handler(int sig) {
     (void)sig;
@@ -86,12 +86,12 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * Statistics Collection
- * ============================================================================ */
+Statistics Collection
+============================================================================ */
 
 /*
- * collect_stats - Gather statistics from various sources
- */
+collect_stats - Gather statistics from various sources
+*/
 static void collect_stats(void) {
     /*
      * TODO: Implement statistics collection
@@ -137,19 +137,19 @@ static void collect_stats(void) {
 }
 
 /* ============================================================================
- * Display Functions
- * ============================================================================ */
+Display Functions
+============================================================================ */
 
 /*
- * clear_screen - Clear terminal screen
- */
+clear_screen - Clear terminal screen
+*/
 static void clear_screen(void) {
     printf("\033[2J\033[H");  /* ANSI escape codes */
 }
 
 /*
- * draw_bar - Draw a progress bar
- */
+draw_bar - Draw a progress bar
+*/
 static void draw_bar(double value, double max, int width) {
     int filled = (max > 0) ? (int)(value / max * width) : 0;
     if (filled > width) filled = width;
@@ -166,8 +166,8 @@ static void draw_bar(double value, double max, int width) {
 }
 
 /*
- * draw_sparkline - Draw a simple sparkline graph
- */
+draw_sparkline - Draw a simple sparkline graph
+*/
 static void draw_sparkline(double *values, int count, int width) {
     static const char *blocks[] = {" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"};
 
@@ -191,8 +191,8 @@ static void draw_sparkline(double *values, int count, int width) {
 }
 
 /*
- * display_stats - Render the statistics display
- */
+display_stats - Render the statistics display
+*/
 static void display_stats(void) {
     /*
      * TODO: Implement a nice statistics display
@@ -265,8 +265,8 @@ static void display_stats(void) {
 }
 
 /* ============================================================================
- * Main Loop
- * ============================================================================ */
+Main Loop
+============================================================================ */
 
 static int run_monitor(void) {
     /*
@@ -327,8 +327,8 @@ static int run_monitor(void) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 int main(int argc, char *argv[]) {
     (void)argc;

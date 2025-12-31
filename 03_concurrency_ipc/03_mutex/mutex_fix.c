@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 03: Mutex Fix
- *
- * Learn how to fix race conditions using mutexes.
- * Essential for GIOS Project 1 Part 2!
- *
- * Compile: clang -Wall -Wextra -g -pthread mutex_fix.c -o mutex_fix
- * Run:     ./mutex_fix
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 03: Mutex Fix
+
+Learn how to fix race conditions using mutexes.
+Essential for GIOS Project 1 Part 2!
+
+Compile: clang -Wall -Wextra -g -pthread mutex_fix.c -o mutex_fix
+Run:     ./mutex_fix
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,29 +16,29 @@
 #include <pthread.h>
 
 /* ============================================================================
- * CONCEPT: Mutex (Mutual Exclusion)
- * ============================================================================
- *
- * A mutex ensures only ONE thread can access protected code at a time.
- *
- * Basic usage:
- *   pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
- *
- *   pthread_mutex_lock(&mutex);    // Acquire lock (blocks if held)
- *   // ... critical section ...     // Only one thread at a time here
- *   pthread_mutex_unlock(&mutex);  // Release lock
- *
- * Rules:
- * 1. Always unlock what you lock
- * 2. Keep critical sections short
- * 3. Don't forget to unlock on all code paths (including errors!)
- * 4. The same thread must lock and unlock (no cross-thread unlocking)
- */
+CONCEPT: Mutex (Mutual Exclusion)
+============================================================================
+
+A mutex ensures only ONE thread can access protected code at a time.
+
+Basic usage:
+  pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+  pthread_mutex_lock(&mutex);    // Acquire lock (blocks if held)
+  // ... critical section ...     // Only one thread at a time here
+  pthread_mutex_unlock(&mutex);  // Release lock
+
+Rules:
+1. Always unlock what you lock
+2. Keep critical sections short
+3. Don't forget to unlock on all code paths (including errors!)
+4. The same thread must lock and unlock (no cross-thread unlocking)
+*/
 
 /* ============================================================================
- * EXERCISE 1: Fix the counter race condition
- * ============================================================================
- */
+EXERCISE 1: Fix the counter race condition
+============================================================================
+*/
 
 int counter = 0;
 pthread_mutex_t counter_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -84,9 +84,9 @@ void exercise1_counter_fix(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Fix the bank account race condition
- * ============================================================================
- */
+EXERCISE 2: Fix the bank account race condition
+============================================================================
+*/
 
 typedef struct {
     int balance;
@@ -164,9 +164,9 @@ void exercise2_bank_fix(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Fix the linked list race condition
- * ============================================================================
- */
+EXERCISE 3: Fix the linked list race condition
+============================================================================
+*/
 
 typedef struct Node {
     int value;
@@ -264,9 +264,9 @@ void exercise3_list_fix(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Using dynamic mutex initialization
- * ============================================================================
- */
+EXERCISE 4: Using dynamic mutex initialization
+============================================================================
+*/
 
 void exercise4_dynamic_mutex(void) {
     printf("\n=== Exercise 4: Dynamic Mutex Initialization ===\n");
@@ -310,9 +310,9 @@ void exercise4_dynamic_mutex(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: trylock (non-blocking lock)
- * ============================================================================
- */
+EXERCISE 5: trylock (non-blocking lock)
+============================================================================
+*/
 
 pthread_mutex_t trylock_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -354,9 +354,9 @@ void exercise5_trylock(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Protecting a structure with multiple fields
- * ============================================================================
- */
+EXERCISE 6: Protecting a structure with multiple fields
+============================================================================
+*/
 
 typedef struct {
     int x;
@@ -421,9 +421,9 @@ void exercise6_struct_protection(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

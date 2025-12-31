@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 02: Binary Files
- *
- * Learn to read and write binary data (structs, raw bytes).
- * This is essential for protocol implementation.
- *
- * Compile: clang -Wall -Wextra -g binary_file.c -o binary_file
- * Run:     ./binary_file
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 02: Binary Files
+
+Learn to read and write binary data (structs, raw bytes).
+This is essential for protocol implementation.
+
+Compile: clang -Wall -Wextra -g binary_file.c -o binary_file
+Run:     ./binary_file
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,9 +16,9 @@
 #include <stdint.h>
 
 /* ============================================================================
- * EXERCISE 1: Write and Read Structs
- * ============================================================================
- */
+EXERCISE 1: Write and Read Structs
+============================================================================
+*/
 
 /* A simple record structure */
 typedef struct {
@@ -29,8 +29,8 @@ typedef struct {
 } __attribute__((packed)) Record;
 
 /*
- * TODO: Write an array of records to a binary file.
- */
+TODO: Write an array of records to a binary file.
+*/
 int write_records(const char *filename, Record *records, int count) {
     /* TODO: Implement this function
      *
@@ -47,10 +47,10 @@ int write_records(const char *filename, Record *records, int count) {
 }
 
 /*
- * TODO: Read records from a binary file.
- * Returns number of records read, or -1 on error.
- * Caller must free the returned array.
- */
+TODO: Read records from a binary file.
+Returns number of records read, or -1 on error.
+Caller must free the returned array.
+*/
 int read_records(const char *filename, Record **records) {
     /* TODO: Implement this function
      *
@@ -106,9 +106,9 @@ void test_records(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: File with Header
- * ============================================================================
- */
+EXERCISE 2: File with Header
+============================================================================
+*/
 
 #define MAGIC_NUMBER 0x4D594654  /* "MYFT" */
 #define VERSION 1
@@ -121,8 +121,8 @@ typedef struct {
 } __attribute__((packed)) FileHeader;
 
 /*
- * TODO: Write file with header and records.
- */
+TODO: Write file with header and records.
+*/
 int write_file_with_header(const char *filename, Record *records, int count) {
     /* TODO: Implement this function
      *
@@ -139,8 +139,8 @@ int write_file_with_header(const char *filename, Record *records, int count) {
 }
 
 /*
- * TODO: Read and validate file with header.
- */
+TODO: Read and validate file with header.
+*/
 int read_file_with_header(const char *filename, Record **records) {
     /* TODO: Implement this function
      *
@@ -183,9 +183,9 @@ void test_header(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Seeking in Files
- * ============================================================================
- */
+EXERCISE 3: Seeking in Files
+============================================================================
+*/
 
 void test_seeking(void) {
     printf("\n=== Exercise 3: File Seeking ===\n");
@@ -234,9 +234,9 @@ void test_seeking(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Endianness
- * ============================================================================
- */
+EXERCISE 4: Endianness
+============================================================================
+*/
 
 void test_endianness(void) {
     printf("\n=== Exercise 4: Endianness ===\n");
@@ -272,9 +272,9 @@ void test_endianness(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(void) {
     printf("\n================================================\n");

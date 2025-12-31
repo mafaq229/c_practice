@@ -1,32 +1,32 @@
 /*
- * CS-6200 Preparation - Module 03: Pointer Basics
- *
- * Pointers are CRITICAL for systems programming and GIOS. This module builds
- * your understanding from the ground up.
- *
- * Compile: clang -Wall -Wextra -g pointer_basics.c -o pointer_basics
- * Run:     ./pointer_basics
- *
- * Topics covered:
- *   - What pointers are and why we use them
- *   - Address-of (&) and dereference (*) operators
- *   - Pointer arithmetic
- *   - Arrays and pointers relationship
- *   - Passing pointers to functions
- *
- * Difficulty: [EASY] to [MEDIUM]
- */
+CS-6200 Preparation - Module 03: Pointer Basics
+
+Pointers are CRITICAL for systems programming and GIOS. This module builds
+your understanding from the ground up.
+
+Compile: clang -Wall -Wextra -g pointer_basics.c -o pointer_basics
+Run:     ./pointer_basics
+
+Topics covered:
+  - What pointers are and why we use them
+  - Address-of (&) and dereference (*) operators
+  - Pointer arithmetic
+  - Arrays and pointers relationship
+  - Passing pointers to functions
+
+Difficulty: [EASY] to [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * EXERCISE 1: Pointer Basics [EASY]
- * ============================================================================
- *
- * Understand the relationship between variables, addresses, and pointers.
- */
+EXERCISE 1: Pointer Basics [EASY]
+============================================================================
+
+Understand the relationship between variables, addresses, and pointers.
+*/
 void exercise1_pointer_basics(void) {
     printf("\n=== Exercise 1: Pointer Basics ===\n");
 
@@ -59,11 +59,11 @@ void exercise1_pointer_basics(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Pointer Arithmetic [MEDIUM]
- * ============================================================================
- *
- * Pointer arithmetic is essential for working with arrays and buffers.
- */
+EXERCISE 2: Pointer Arithmetic [MEDIUM]
+============================================================================
+
+Pointer arithmetic is essential for working with arrays and buffers.
+*/
 void exercise2_pointer_arithmetic(void) {
     printf("\n=== Exercise 2: Pointer Arithmetic ===\n");
 
@@ -105,11 +105,11 @@ void exercise2_pointer_arithmetic(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Pointers and Arrays [MEDIUM]
- * ============================================================================
- *
- * Arrays and pointers are closely related but not identical.
- */
+EXERCISE 3: Pointers and Arrays [MEDIUM]
+============================================================================
+
+Arrays and pointers are closely related but not identical.
+*/
 void exercise3_arrays_pointers(void) {
     printf("\n=== Exercise 3: Pointers and Arrays ===\n");
 
@@ -157,15 +157,15 @@ void exercise3_arrays_pointers(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Passing Pointers to Functions [MEDIUM]
- * ============================================================================
- *
- * This is how you modify variables across function calls.
- */
+EXERCISE 4: Passing Pointers to Functions [MEDIUM]
+============================================================================
+
+This is how you modify variables across function calls.
+*/
 
 /*
- * TODO: Complete this function to set the value at the pointer.
- */
+TODO: Complete this function to set the value at the pointer.
+*/
 void set_value(int *ptr, int value) {
     /* TODO: Set the value at the address ptr points to */
     /* HINT: Use the dereference operator */
@@ -173,8 +173,8 @@ void set_value(int *ptr, int value) {
 }
 
 /*
- * TODO: Complete this function to swap two integers using pointers.
- */
+TODO: Complete this function to swap two integers using pointers.
+*/
 void swap_ints(int *a, int *b) {
     /* TODO: Implement swap
      * 1. Store *a in a temp variable
@@ -187,9 +187,9 @@ void swap_ints(int *a, int *b) {
 }
 
 /*
- * TODO: Complete this function to find min and max in an array.
- * Store results in the provided pointers.
- */
+TODO: Complete this function to find min and max in an array.
+Store results in the provided pointers.
+*/
 void find_min_max(int arr[], int size, int *min, int *max) {
     /* TODO: Find min and max, store in *min and *max */
     /* HINT: Initialize *min and *max to arr[0], then iterate */
@@ -228,11 +228,11 @@ void exercise4_pointer_functions(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Pointer Comparison and NULL [EASY]
- * ============================================================================
- *
- * Understanding NULL and pointer comparison is crucial for safe code.
- */
+EXERCISE 5: Pointer Comparison and NULL [EASY]
+============================================================================
+
+Understanding NULL and pointer comparison is crucial for safe code.
+*/
 void exercise5_null_comparison(void) {
     printf("\n=== Exercise 5: NULL and Pointer Comparison ===\n");
 
@@ -256,21 +256,21 @@ void exercise5_null_comparison(void) {
 }
 
 /*
- * TODO: Implement a function that safely gets a value from a pointer.
- * If ptr is NULL, return the default_value.
- * Otherwise, return *ptr.
- */
+TODO: Implement a function that safely gets a value from a pointer.
+If ptr is NULL, return the default_value.
+Otherwise, return *ptr.
+*/
 int safe_get(int *ptr, int default_value) {
     /* TODO: Implement this function */
     return ptr != NULL ? *ptr : default_value;
 }
 
 /* ============================================================================
- * EXERCISE 6: Const Pointers [MEDIUM]
- * ============================================================================
- *
- * Understanding const with pointers - this trips up many C programmers!
- */
+EXERCISE 6: Const Pointers [MEDIUM]
+============================================================================
+
+Understanding const with pointers - this trips up many C programmers!
+*/
 void exercise6_const_pointers(void) {
     printf("\n=== Exercise 6: Const Pointers ===\n");
 
@@ -316,12 +316,12 @@ void exercise6_const_pointers(void) {
 }
 
 /* ============================================================================
- * CHALLENGE: Reverse String In-Place Using Pointers [MEDIUM]
- * ============================================================================
- *
- * TODO: Implement string reversal using only pointer arithmetic.
- * Do not use array indexing (no str[i]).
- */
+CHALLENGE: Reverse String In-Place Using Pointers [MEDIUM]
+============================================================================
+
+TODO: Implement string reversal using only pointer arithmetic.
+Do not use array indexing (no str[i]).
+*/
 void reverse_string_ptr(char *str) {
     /* TODO: Implement using pointers only
      *
@@ -354,9 +354,9 @@ void reverse_string_ptr(char *str) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

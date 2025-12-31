@@ -1,12 +1,12 @@
 /*
- * thread_pool.c - Thread Pool Implementation
- *
- * This implements the boss-worker pattern:
- * - Boss (main thread): accepts connections, adds to work queue
- * - Workers: pull work from queue, handle client requests
- *
- * This is the core of GIOS Project 1 Part 2!
- */
+thread_pool.c - Thread Pool Implementation
+
+This implements the boss-worker pattern:
+- Boss (main thread): accepts connections, adds to work queue
+- Workers: pull work from queue, handle client requests
+
+This is the core of GIOS Project 1 Part 2!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,12 +21,12 @@
 static void handle_client_request(int client_fd);
 
 /* ============================================================================
- * Thread Pool Lifecycle
- * ============================================================================ */
+Thread Pool Lifecycle
+============================================================================ */
 
 /*
- * thread_pool_create - Create and start a thread pool
- */
+thread_pool_create - Create and start a thread pool
+*/
 thread_pool_t *thread_pool_create(int num_threads) {
     /*
      * TODO: Implement this function
@@ -98,8 +98,8 @@ thread_pool_t *thread_pool_create(int num_threads) {
 }
 
 /*
- * thread_pool_destroy - Shut down and destroy thread pool
- */
+thread_pool_destroy - Shut down and destroy thread pool
+*/
 void thread_pool_destroy(thread_pool_t *pool) {
     /*
      * TODO: Implement this function
@@ -137,12 +137,12 @@ void thread_pool_destroy(thread_pool_t *pool) {
 }
 
 /* ============================================================================
- * Task Submission
- * ============================================================================ */
+Task Submission
+============================================================================ */
 
 /*
- * thread_pool_submit - Submit a task (client connection) to the pool
- */
+thread_pool_submit - Submit a task (client connection) to the pool
+*/
 int thread_pool_submit(thread_pool_t *pool, int client_fd) {
     /*
      * TODO: Implement this function
@@ -170,12 +170,12 @@ int thread_pool_submit(thread_pool_t *pool, int client_fd) {
 }
 
 /* ============================================================================
- * Worker Thread
- * ============================================================================ */
+Worker Thread
+============================================================================ */
 
 /*
- * worker_function - Entry point for worker threads
- */
+worker_function - Entry point for worker threads
+*/
 void *worker_function(void *arg) {
     /*
      * TODO: Implement this function
@@ -227,10 +227,10 @@ void *worker_function(void *arg) {
 }
 
 /*
- * handle_client_request - Process a single client request
- *
- * This is the actual file serving logic.
- */
+handle_client_request - Process a single client request
+
+This is the actual file serving logic.
+*/
 static void handle_client_request(int client_fd) {
     /*
      * TODO: Implement this function
@@ -278,12 +278,12 @@ static void handle_client_request(int client_fd) {
 }
 
 /* ============================================================================
- * Statistics
- * ============================================================================ */
+Statistics
+============================================================================ */
 
 /*
- * thread_pool_get_stats - Get thread pool statistics
- */
+thread_pool_get_stats - Get thread pool statistics
+*/
 void thread_pool_get_stats(thread_pool_t *pool, int *tasks_completed, int *active_workers) {
     /*
      * TODO: Implement this function

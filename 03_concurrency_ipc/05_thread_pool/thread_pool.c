@@ -1,12 +1,12 @@
 /*
- * CS-6200 Preparation - Module 05: Thread Pool Implementation
- *
- * This is the boss-worker pattern you'll implement in GIOS Project 1 Part 2!
- *
- * Compile: (compiled as part of pool_test)
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 05: Thread Pool Implementation
+
+This is the boss-worker pattern you'll implement in GIOS Project 1 Part 2!
+
+Compile: (compiled as part of pool_test)
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,16 +14,16 @@
 #include "work_queue.h"
 
 /*
- * Worker thread function.
- *
- * Each worker:
- * 1. Waits for work on the queue
- * 2. Executes the work function
- * 3. Frees the work item
- * 4. Repeats until shutdown
- *
- * This is the pattern for GIOS file transfer workers!
- */
+Worker thread function.
+
+Each worker:
+1. Waits for work on the queue
+2. Executes the work function
+3. Frees the work item
+4. Repeats until shutdown
+
+This is the pattern for GIOS file transfer workers!
+*/
 static void *worker_thread(void *arg) {
     ThreadPool *pool = (ThreadPool *)arg;
 
@@ -47,8 +47,8 @@ static void *worker_thread(void *arg) {
 }
 
 /*
- * TODO: Create and start a thread pool
- */
+TODO: Create and start a thread pool
+*/
 ThreadPool *thread_pool_create(int num_threads) {
     if (num_threads <= 0) {
         fprintf(stderr, "thread_pool_create: num_threads must be positive\n");
@@ -105,8 +105,8 @@ ThreadPool *thread_pool_create(int num_threads) {
 }
 
 /*
- * TODO: Submit work to the thread pool
- */
+TODO: Submit work to the thread pool
+*/
 int thread_pool_submit(ThreadPool *pool, void (*function)(void *), void *arg) {
     if (pool == NULL || !pool->started) {
         return -1;
@@ -116,14 +116,14 @@ int thread_pool_submit(ThreadPool *pool, void (*function)(void *), void *arg) {
 }
 
 /*
- * TODO: Destroy the thread pool
- *
- * Steps:
- * 1. Signal shutdown to work queue
- * 2. Join all worker threads
- * 3. Destroy work queue
- * 4. Free all memory
- */
+TODO: Destroy the thread pool
+
+Steps:
+1. Signal shutdown to work queue
+2. Join all worker threads
+3. Destroy work queue
+4. Free all memory
+*/
 void thread_pool_destroy(ThreadPool *pool) {
     if (pool == NULL) {
         return;
@@ -151,8 +151,8 @@ void thread_pool_destroy(ThreadPool *pool) {
 }
 
 /*
- * Get number of pending work items
- */
+Get number of pending work items
+*/
 int thread_pool_pending(ThreadPool *pool) {
     if (pool == NULL) {
         return 0;

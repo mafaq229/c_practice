@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 07: Priority Message Queues
- *
- * Demonstrates priority ordering in message queues.
- * Higher priority messages are delivered first!
- *
- * NOTE: This requires Linux - use Docker on macOS!
- *
- * Compile: clang -Wall -Wextra -g mq_priority.c -o mq_priority -lrt
- * Run:     ./mq_priority
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 07: Priority Message Queues
+
+Demonstrates priority ordering in message queues.
+Higher priority messages are delivered first!
+
+NOTE: This requires Linux - use Docker on macOS!
+
+Compile: clang -Wall -Wextra -g mq_priority.c -o mq_priority -lrt
+Run:     ./mq_priority
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 01: Fork Basics
- *
- * Learn how processes are created using fork().
- * Understanding fork() is essential before moving to threads.
- *
- * Compile: clang -Wall -Wextra -g fork_basics.c -o fork_basics
- * Run:     ./fork_basics
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 01: Fork Basics
+
+Learn how processes are created using fork().
+Understanding fork() is essential before moving to threads.
+
+Compile: clang -Wall -Wextra -g fork_basics.c -o fork_basics
+Run:     ./fork_basics
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,26 +16,26 @@
 #include <sys/wait.h>
 
 /* ============================================================================
- * CONCEPT: fork()
- * ============================================================================
- *
- * fork() creates a new process by duplicating the calling process.
- *
- * After fork():
- * - Parent process: fork() returns child's PID (positive number)
- * - Child process:  fork() returns 0
- * - On error:       fork() returns -1 (no child created)
- *
- * The child is an almost exact copy of the parent:
- * - Same code, same variables (copied, not shared!)
- * - Different PID
- * - Different return value from fork()
- */
+CONCEPT: fork()
+============================================================================
+
+fork() creates a new process by duplicating the calling process.
+
+After fork():
+- Parent process: fork() returns child's PID (positive number)
+- Child process:  fork() returns 0
+- On error:       fork() returns -1 (no child created)
+
+The child is an almost exact copy of the parent:
+- Same code, same variables (copied, not shared!)
+- Different PID
+- Different return value from fork()
+*/
 
 /* ============================================================================
- * EXERCISE 1: Basic fork
- * ============================================================================
- */
+EXERCISE 1: Basic fork
+============================================================================
+*/
 
 void exercise1_basic_fork(void) {
     printf("\n=== Exercise 1: Basic Fork ===\n");
@@ -70,9 +70,9 @@ void exercise1_basic_fork(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Variables after fork
- * ============================================================================
- */
+EXERCISE 2: Variables after fork
+============================================================================
+*/
 
 void exercise2_variables(void) {
     printf("\n=== Exercise 2: Variables After Fork ===\n");
@@ -108,9 +108,9 @@ void exercise2_variables(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Multiple forks
- * ============================================================================
- */
+EXERCISE 3: Multiple forks
+============================================================================
+*/
 
 void exercise3_multiple_forks(void) {
     printf("\n=== Exercise 3: Multiple Forks ===\n");
@@ -148,9 +148,9 @@ void exercise3_multiple_forks(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Create N child processes
- * ============================================================================
- */
+EXERCISE 4: Create N child processes
+============================================================================
+*/
 
 void exercise4_n_children(int n) {
     printf("\n=== Exercise 4: Create %d Children ===\n", n);
@@ -201,9 +201,9 @@ void exercise4_n_children(int n) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Zombie and Orphan Processes
- * ============================================================================
- */
+EXERCISE 5: Zombie and Orphan Processes
+============================================================================
+*/
 
 void exercise5_zombie(void) {
     printf("\n=== Exercise 5: Zombie Process ===\n");
@@ -278,9 +278,9 @@ void exercise5_orphan(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

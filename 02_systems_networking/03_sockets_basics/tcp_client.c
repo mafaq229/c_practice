@@ -1,16 +1,16 @@
 /*
- * CS-6200 Preparation - Module 03: TCP Client
- *
- * A simple TCP client that connects to a server and sends/receives data.
- *
- * Compile: clang -Wall -Wextra -g tcp_client.c -o tcp_client
- * Run:     ./tcp_client [host] [port]
- *
- * First start the server in another terminal:
- *   ./tcp_server 8080
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 03: TCP Client
+
+A simple TCP client that connects to a server and sends/receives data.
+
+Compile: clang -Wall -Wextra -g tcp_client.c -o tcp_client
+Run:     ./tcp_client [host] [port]
+
+First start the server in another terminal:
+  ./tcp_server 8080
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,9 +27,9 @@
 #define BUFFER_SIZE 4096
 
 /*
- * TODO: Connect to server.
- * Returns socket fd on success, -1 on failure.
- */
+TODO: Connect to server.
+Returns socket fd on success, -1 on failure.
+*/
 int connect_to_server(const char *host, int port) {
     /* TODO: Implement this function
      *
@@ -60,8 +60,8 @@ int connect_to_server(const char *host, int port) {
 }
 
 /*
- * Send all data (handles partial sends)
- */
+Send all data (handles partial sends)
+*/
 ssize_t send_all(int fd, const void *buf, size_t len) {
     const char *ptr = buf;
     size_t remaining = len;
@@ -80,8 +80,8 @@ ssize_t send_all(int fd, const void *buf, size_t len) {
 }
 
 /*
- * Receive all data (handles partial receives)
- */
+Receive all data (handles partial receives)
+*/
 ssize_t recv_all(int fd, void *buf, size_t len) {
     char *ptr = buf;
     size_t remaining = len;
@@ -104,8 +104,8 @@ ssize_t recv_all(int fd, void *buf, size_t len) {
 }
 
 /*
- * Interactive client session
- */
+Interactive client session
+*/
 void interactive_session(int sockfd) {
     printf("Connected! Type messages to send (Ctrl+D to quit)\n\n");
 
@@ -146,8 +146,8 @@ void interactive_session(int sockfd) {
 }
 
 /*
- * A simpler working example for reference
- */
+A simpler working example for reference
+*/
 void simple_client_example(const char *host, int port) {
     printf("\n=== Simple Client Example (Reference) ===\n\n");
 
@@ -197,8 +197,8 @@ void simple_client_example(const char *host, int port) {
 }
 
 /*
- * Run the client
- */
+Run the client
+*/
 void run_client(const char *host, int port) {
     printf("Connecting to %s:%d...\n", host, port);
 

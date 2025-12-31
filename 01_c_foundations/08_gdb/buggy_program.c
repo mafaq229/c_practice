@@ -1,38 +1,40 @@
 /*
- * CS-6200 Preparation - Module 08: GDB Debugging
- *
- * This program has intentional bugs for you to find using a debugger.
- *
- * Compile: clang -Wall -Wextra -g buggy_program.c -o buggy_program
- *
- * Debug with LLDB (macOS):
- *   lldb ./buggy_program
- *   (lldb) run
- *   (lldb) thread backtrace
- *
- * Debug with GDB (via Docker):
- *   docker run -it --rm -v $(pwd):/code -w /code gios-prep gdb ./buggy_program
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 08: GDB Debugging
+
+This program has intentional bugs for you to find using a debugger.
+
+Compile: clang -Wall -Wextra -g buggy_program.c -o buggy_program
+
+Debug with LLDB (macOS):
+  lldb ./buggy_program
+  (lldb) run
+  (lldb) thread backtrace
+
+Debug with GDB (via Docker):
+
+docker run -it --rm -v $(pwd):/code -w /code gios-prep \
+  sh -c "gcc -Wall -Wextra -g buggy_program.c -o buggy_program && gdb ./buggy_program"
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * BUG 1: Logic Error
- * ============================================================================
- *
- * This function should calculate the average of an array.
- * There's a bug - use the debugger to find it.
- *
- * Debugging steps:
- * 1. Set a breakpoint at the function start
- * 2. Step through the loop
- * 3. Watch the 'sum' variable
- * 4. Find the bug!
- */
+BUG 1: Logic Error
+============================================================================
+
+This function should calculate the average of an array.
+There's a bug - use the debugger to find it.
+
+Debugging steps:
+1. Set a breakpoint at the function start
+2. Step through the loop
+3. Watch the 'sum' variable
+4. Find the bug!
+*/
 double calculate_average(int *arr, int size) {
     int sum = 0;
 
@@ -53,12 +55,12 @@ void test_bug1(void) {
 }
 
 /* ============================================================================
- * BUG 2: Uninitialized Variable
- * ============================================================================
- *
- * This function has an uninitialized variable bug.
- * Use the debugger to see the garbage value.
- */
+BUG 2: Uninitialized Variable
+============================================================================
+
+This function has an uninitialized variable bug.
+Use the debugger to see the garbage value.
+*/
 int find_max(int *arr, int size) {
     int max;  /* BUG: Uninitialized! */
 
@@ -80,12 +82,12 @@ void test_bug2(void) {
 }
 
 /* ============================================================================
- * BUG 3: Pointer Not Checked
- * ============================================================================
- *
- * This function crashes on NULL input.
- * Use the debugger to see where it crashes.
- */
+BUG 3: Pointer Not Checked
+============================================================================
+
+This function crashes on NULL input.
+Use the debugger to see where it crashes.
+*/
 int string_length(const char *str) {
     int len = 0;
     /* BUG: No NULL check! */
@@ -106,11 +108,11 @@ void test_bug3(void) {
 }
 
 /* ============================================================================
- * BUG 4: Wrong Condition
- * ============================================================================
- *
- * This function has a logic bug in its condition.
- */
+BUG 4: Wrong Condition
+============================================================================
+
+This function has a logic bug in its condition.
+*/
 int count_positive(int *arr, int size) {
     int count = 0;
 
@@ -134,11 +136,11 @@ void test_bug4(void) {
 }
 
 /* ============================================================================
- * BUG 5: Memory Corruption
- * ============================================================================
- *
- * This function writes past the end of an array.
- */
+BUG 5: Memory Corruption
+============================================================================
+
+This function writes past the end of an array.
+*/
 void fill_array(int *arr, int size) {
     /* BUG: Loop writes one past the end */
     for (int i = 0; i <= size; i++) {  /* Should be i < size */
@@ -160,12 +162,12 @@ void test_bug5(void) {
 }
 
 /* ============================================================================
- * BUG 6: Infinite Loop
- * ============================================================================
- *
- * This function has an infinite loop bug.
- * Use the debugger to break into it and see where it's stuck.
- */
+BUG 6: Infinite Loop
+============================================================================
+
+This function has an infinite loop bug.
+Use the debugger to break into it and see where it's stuck.
+*/
 int sum_until_zero(int *arr) {
     int sum = 0;
     int i = 0;
@@ -196,66 +198,66 @@ void test_bug6(void) {
 }
 
 /* ============================================================================
- * DEBUGGING CHEAT SHEET
- * ============================================================================
- *
- * LLDB (macOS) Commands:
- * -----------------------
- * lldb ./program           - Start debugger
- * run                      - Run the program
- * run arg1 arg2            - Run with arguments
- *
- * breakpoint set -n main   - Break at function 'main'
- * breakpoint set -f file.c -l 42  - Break at file.c line 42
- * breakpoint list          - List breakpoints
- * breakpoint delete 1      - Delete breakpoint 1
- *
- * next (n)                 - Step over (execute line)
- * step (s)                 - Step into (enter function)
- * continue (c)             - Continue execution
- * finish                   - Run until function returns
- *
- * print var                - Print variable value
- * print *ptr               - Print dereferenced pointer
- * print arr[0]             - Print array element
- * frame variable           - Print all local variables
- *
- * thread backtrace (bt)    - Show call stack
- * frame select 2           - Go to frame 2 in stack
- *
- * process interrupt        - Break into running program
- * quit (q)                 - Exit debugger
- *
- *
- * GDB Commands (similar but slightly different):
- * -----------------------------------------------
- * gdb ./program            - Start debugger
- * run                      - Run the program
- *
- * break main               - Break at function 'main'
- * break file.c:42          - Break at line 42
- * info breakpoints         - List breakpoints
- * delete 1                 - Delete breakpoint 1
- *
- * next (n)                 - Step over
- * step (s)                 - Step into
- * continue (c)             - Continue
- * finish                   - Run until return
- *
- * print var                - Print variable
- * info locals              - Print all local variables
- *
- * backtrace (bt)           - Show call stack
- * frame 2                  - Go to frame 2
- *
- * Ctrl+C                   - Break into running program
- * quit (q)                 - Exit debugger
- */
+DEBUGGING CHEAT SHEET
+============================================================================
+
+LLDB (macOS) Commands:
+-----------------------
+lldb ./program           - Start debugger
+run                      - Run the program
+run arg1 arg2            - Run with arguments
+
+breakpoint set -n main   - Break at function 'main'
+breakpoint set -f file.c -l 42  - Break at file.c line 42
+breakpoint list          - List breakpoints
+breakpoint delete 1      - Delete breakpoint 1
+
+next (n)                 - Step over (execute line)
+step (s)                 - Step into (enter function)
+continue (c)             - Continue execution
+finish                   - Run until function returns
+
+print var                - Print variable value
+print *ptr               - Print dereferenced pointer
+print arr[0]             - Print array element
+frame variable           - Print all local variables
+
+thread backtrace (bt)    - Show call stack
+frame select 2           - Go to frame 2 in stack
+
+process interrupt        - Break into running program
+quit (q)                 - Exit debugger
+
+
+GDB Commands (similar but slightly different):
+-----------------------------------------------
+gdb ./program            - Start debugger
+run                      - Run the program
+
+break main               - Break at function 'main'
+break file.c:42          - Break at line 42
+info breakpoints         - List breakpoints
+delete 1                 - Delete breakpoint 1
+
+next (n)                 - Step over
+step (s)                 - Step into
+continue (c)             - Continue
+finish                   - Run until return
+
+print var                - Print variable
+info locals              - Print all local variables
+
+backtrace (bt)           - Show call stack
+frame 2                  - Go to frame 2
+
+Ctrl+C                   - Break into running program
+quit (q)                 - Exit debugger
+*/
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

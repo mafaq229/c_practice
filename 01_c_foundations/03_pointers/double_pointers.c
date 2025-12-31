@@ -1,33 +1,33 @@
 /*
- * CS-6200 Preparation - Module 03: Double Pointers
- *
- * Double pointers (pointer to pointer) are used extensively in GIOS,
- * especially in Project 3. This module builds your understanding.
- *
- * Compile: clang -Wall -Wextra -g double_pointers.c -o double_pointers
- * Run:     ./double_pointers
- *
- * Topics covered:
- *   - What double pointers are
- *   - When and why to use them
- *   - Modifying pointers through functions
- *   - Dynamic 2D arrays
- *   - Common patterns in systems programming
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 03: Double Pointers
+
+Double pointers (pointer to pointer) are used extensively in GIOS,
+especially in Project 3. This module builds your understanding.
+
+Compile: clang -Wall -Wextra -g double_pointers.c -o double_pointers
+Run:     ./double_pointers
+
+Topics covered:
+  - What double pointers are
+  - When and why to use them
+  - Modifying pointers through functions
+  - Dynamic 2D arrays
+  - Common patterns in systems programming
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * EXERCISE 1: Understanding Double Pointers [MEDIUM]
- * ============================================================================
- *
- * A double pointer is a pointer that points to another pointer.
- * int **dptr points to an int* which points to an int.
- */
+EXERCISE 1: Understanding Double Pointers [MEDIUM]
+============================================================================
+
+A double pointer is a pointer that points to another pointer.
+int **dptr points to an int* which points to an int.
+*/
 void exercise1_double_pointer_basics(void) {
     printf("\n=== Exercise 1: Double Pointer Basics ===\n");
 
@@ -67,18 +67,18 @@ void exercise1_double_pointer_basics(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Why Double Pointers? - Modifying Pointers [MEDIUM]
- * ============================================================================
- *
- * The main reason for double pointers: modifying a pointer in a function.
- * Without double pointers, you can only modify what the pointer points TO,
- * not the pointer ITSELF.
- */
+EXERCISE 2: Why Double Pointers? - Modifying Pointers [MEDIUM]
+============================================================================
+
+The main reason for double pointers: modifying a pointer in a function.
+Without double pointers, you can only modify what the pointer points TO,
+not the pointer ITSELF.
+*/
 
 /*
- * This function DOES NOT work as intended.
- * The caller's pointer is not modified.
- */
+This function DOES NOT work as intended.
+The caller's pointer is not modified.
+*/
 void allocate_wrong(int *ptr, int value) {
     ptr = malloc(sizeof(int));  /* Only modifies local copy! */
     if (ptr != NULL) {
@@ -88,9 +88,9 @@ void allocate_wrong(int *ptr, int value) {
 }
 
 /*
- * This function DOES work.
- * We receive a pointer TO the caller's pointer, so we can modify it.
- */
+This function DOES work.
+We receive a pointer TO the caller's pointer, so we can modify it.
+*/
 void allocate_correct(int **ptr, int value) {
     *ptr = malloc(sizeof(int));  /* Modifies caller's pointer */
     if (*ptr != NULL) {
@@ -131,17 +131,17 @@ void exercise2_modifying_pointers(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Implementing Functions with Double Pointers [MEDIUM]
- * ============================================================================
- */
+EXERCISE 3: Implementing Functions with Double Pointers [MEDIUM]
+============================================================================
+*/
 
 /*
- * TODO: Implement a function that allocates an array of n integers,
- * initializes all elements to init_value, and returns the array
- * through the double pointer.
- *
- * Returns: 0 on success, -1 on failure (malloc failed)
- */
+TODO: Implement a function that allocates an array of n integers,
+initializes all elements to init_value, and returns the array
+through the double pointer.
+
+Returns: 0 on success, -1 on failure (malloc failed)
+*/
 int create_array(int **arr, int n, int init_value) {
     /* TODO: Implement this function
      *
@@ -171,9 +171,9 @@ int create_array(int **arr, int n, int init_value) {
 }
 
 /*
- * TODO: Implement a function that frees an array and sets the pointer to NULL.
- * This is a common pattern to prevent use-after-free bugs.
- */
+TODO: Implement a function that frees an array and sets the pointer to NULL.
+This is a common pattern to prevent use-after-free bugs.
+*/
 void destroy_array(int **arr) {
     /* TODO: Implement this function
      *
@@ -214,19 +214,19 @@ void exercise3_double_pointer_functions(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Dynamic 2D Arrays [HARD]
- * ============================================================================
- *
- * Double pointers are commonly used for dynamic 2D arrays.
- * This is an array of pointers, where each pointer points to a row.
- */
+EXERCISE 4: Dynamic 2D Arrays [HARD]
+============================================================================
+
+Double pointers are commonly used for dynamic 2D arrays.
+This is an array of pointers, where each pointer points to a row.
+*/
 
 /*
- * TODO: Implement a function to create a 2D array (matrix).
- * The matrix should be an array of pointers, each pointing to a row.
- *
- * Returns: pointer to the 2D array, or NULL on failure
- */
+TODO: Implement a function to create a 2D array (matrix).
+The matrix should be an array of pointers, each pointing to a row.
+
+Returns: pointer to the 2D array, or NULL on failure
+*/
 int **create_matrix(int rows, int cols) {
     /* TODO: Implement this function
      *
@@ -252,8 +252,8 @@ int **create_matrix(int rows, int cols) {
 }
 
 /*
- * TODO: Implement a function to free a 2D array.
- */
+TODO: Implement a function to free a 2D array.
+*/
 void free_matrix(int **matrix, int rows) {
     /* TODO: Implement this function
      *
@@ -270,9 +270,9 @@ void free_matrix(int **matrix, int rows) {
 }
 
 /*
- * TODO: Implement a function to initialize a matrix with values.
- * matrix[i][j] = i * cols + j
- */
+TODO: Implement a function to initialize a matrix with values.
+matrix[i][j] = i * cols + j
+*/
 void init_matrix(int **matrix, int rows, int cols) {
     /* TODO: Implement this function */
     if (matrix == NULL) return;
@@ -285,8 +285,8 @@ void init_matrix(int **matrix, int rows, int cols) {
 }
 
 /*
- * Helper function to print a matrix
- */
+Helper function to print a matrix
+*/
 void print_matrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         printf("  [");
@@ -321,12 +321,12 @@ void exercise4_2d_arrays(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Array of Strings [MEDIUM]
- * ============================================================================
- *
- * char** is used for arrays of strings (array of char pointers).
- * This is the type of argv in main(int argc, char **argv).
- */
+EXERCISE 5: Array of Strings [MEDIUM]
+============================================================================
+
+char** is used for arrays of strings (array of char pointers).
+This is the type of argv in main(int argc, char **argv).
+*/
 void exercise5_string_array(void) {
     printf("\n=== Exercise 5: Array of Strings ===\n");
 
@@ -374,11 +374,11 @@ void exercise5_string_array(void) {
 }
 
 /* ============================================================================
- * CHALLENGE: Linked List with Double Pointer [HARD]
- * ============================================================================
- *
- * This pattern is common in GIOS: using double pointers to modify list heads.
- */
+CHALLENGE: Linked List with Double Pointer [HARD]
+============================================================================
+
+This pattern is common in GIOS: using double pointers to modify list heads.
+*/
 
 typedef struct Node {
     int data;
@@ -386,9 +386,9 @@ typedef struct Node {
 } Node;
 
 /*
- * TODO: Implement insert at head using double pointer.
- * This allows modifying the head pointer itself.
- */
+TODO: Implement insert at head using double pointer.
+This allows modifying the head pointer itself.
+*/
 void insert_at_head(Node **head, int data) {
     /* TODO: Implement this function
      *
@@ -406,9 +406,9 @@ void insert_at_head(Node **head, int data) {
 }
 
 /*
- * TODO: Implement delete node using double pointer.
- * This elegant approach uses a pointer to the link, not to the node.
- */
+TODO: Implement delete node using double pointer.
+This elegant approach uses a pointer to the link, not to the node.
+*/
 void delete_node(Node **head, int data) {
     /* TODO: Implement this function
      *
@@ -454,9 +454,9 @@ void free_list(Node *head) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

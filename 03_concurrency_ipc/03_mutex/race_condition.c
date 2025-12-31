@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 03: Race Conditions
- *
- * Understand why shared data needs protection.
- * This is THE most important concept in concurrent programming!
- *
- * Compile: clang -Wall -Wextra -g -pthread race_condition.c -o race_condition
- * Run:     ./race_condition
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 03: Race Conditions
+
+Understand why shared data needs protection.
+This is THE most important concept in concurrent programming!
+
+Compile: clang -Wall -Wextra -g -pthread race_condition.c -o race_condition
+Run:     ./race_condition
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,32 +16,32 @@
 #include <unistd.h>
 
 /* ============================================================================
- * CONCEPT: Race Conditions
- * ============================================================================
- *
- * A RACE CONDITION occurs when:
- * 1. Multiple threads access shared data
- * 2. At least one thread writes
- * 3. No synchronization is used
- *
- * The result depends on thread scheduling - it's non-deterministic!
- *
- * Example: counter++ is NOT atomic! It consists of:
- * 1. LOAD: Read counter from memory
- * 2. ADD:  Add 1 to the value
- * 3. STORE: Write new value back to memory
- *
- * If two threads do this simultaneously, increments can be lost!
- *
- * Thread A: LOAD(0), ADD(1), STORE(1)
- * Thread B: LOAD(0), ADD(1), STORE(1)
- * Result: 1 (should be 2!)
- */
+CONCEPT: Race Conditions
+============================================================================
+
+A RACE CONDITION occurs when:
+1. Multiple threads access shared data
+2. At least one thread writes
+3. No synchronization is used
+
+The result depends on thread scheduling - it's non-deterministic!
+
+Example: counter++ is NOT atomic! It consists of:
+1. LOAD: Read counter from memory
+2. ADD:  Add 1 to the value
+3. STORE: Write new value back to memory
+
+If two threads do this simultaneously, increments can be lost!
+
+Thread A: LOAD(0), ADD(1), STORE(1)
+Thread B: LOAD(0), ADD(1), STORE(1)
+Result: 1 (should be 2!)
+*/
 
 /* ============================================================================
- * EXERCISE 1: Classic counter race condition
- * ============================================================================
- */
+EXERCISE 1: Classic counter race condition
+============================================================================
+*/
 
 volatile int counter = 0;  /* volatile prevents compiler optimization */
 #define ITERATIONS 1000000
@@ -77,9 +77,9 @@ void exercise1_counter_race(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Visualizing the race
- * ============================================================================
- */
+EXERCISE 2: Visualizing the race
+============================================================================
+*/
 
 int slow_counter = 0;
 
@@ -132,9 +132,9 @@ void exercise2_visualize_race(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Bank account race condition
- * ============================================================================
- */
+EXERCISE 3: Bank account race condition
+============================================================================
+*/
 
 typedef struct {
     int balance;
@@ -185,9 +185,9 @@ void exercise3_bank_race(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Read-Write race
- * ============================================================================
- */
+EXERCISE 4: Read-Write race
+============================================================================
+*/
 
 typedef struct {
     int x;
@@ -247,9 +247,9 @@ void exercise4_read_write_race(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Linked list race condition
- * ============================================================================
- */
+EXERCISE 5: Linked list race condition
+============================================================================
+*/
 
 typedef struct Node {
     int value;
@@ -323,9 +323,9 @@ void exercise5_list_race(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: String race condition
- * ============================================================================
- */
+EXERCISE 6: String race condition
+============================================================================
+*/
 
 char shared_buffer[64] = {0};
 
@@ -359,9 +359,9 @@ void exercise6_string_race(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

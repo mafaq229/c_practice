@@ -1,29 +1,34 @@
 /*
- * CS-6200 Preparation - Module 08: Debugging Segfaults
- *
- * Segmentation faults are common in C. This file teaches you to debug them.
- *
- * Compile: clang -Wall -Wextra -g segfault_examples.c -o segfault_examples
- *
- * Run in debugger:
- *   lldb ./segfault_examples
- *   (lldb) run
- *   [crash]
- *   (lldb) thread backtrace
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 08: Debugging Segfaults
+
+Segmentation faults are common in C. This file teaches you to debug them.
+
+Compile: clang -Wall -Wextra -g segfault_examples.c -o segfault_examples
+
+Debug with LLDB (macOS):
+  lldb ./segfault_examples
+  (lldb) run
+  [crash]
+  (lldb) thread backtrace
+
+Debug with GDB (via Docker):
+
+docker run -it --rm -v $(pwd):/code -w /code gios-prep \
+  sh -c "gcc -Wall -Wextra -g segfault_examples.c -o segfault_examples && gdb ./segfault_examples"
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * SEGFAULT 1: NULL Pointer Dereference
- * ============================================================================
- *
- * The most common cause of segfaults.
- */
+SEGFAULT 1: NULL Pointer Dereference
+============================================================================
+
+The most common cause of segfaults.
+*/
 void segfault1_null_pointer(void) {
     printf("\n=== Segfault 1: NULL Pointer ===\n");
 
@@ -37,11 +42,11 @@ void segfault1_null_pointer(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 2: Use After Free
- * ============================================================================
- *
- * Accessing memory after it's been freed.
- */
+SEGFAULT 2: Use After Free
+============================================================================
+
+Accessing memory after it's been freed.
+*/
 void segfault2_use_after_free(void) {
     printf("\n=== Segfault 2: Use After Free ===\n");
 
@@ -58,11 +63,11 @@ void segfault2_use_after_free(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 3: Stack Overflow
- * ============================================================================
- *
- * Infinite recursion causes stack overflow.
- */
+SEGFAULT 3: Stack Overflow
+============================================================================
+
+Infinite recursion causes stack overflow.
+*/
 int infinite_recursion(int n) {
     /* No base case - infinite recursion! */
     return infinite_recursion(n + 1);
@@ -79,11 +84,11 @@ void segfault3_stack_overflow(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 4: Out of Bounds Access
- * ============================================================================
- *
- * Accessing array elements outside valid range.
- */
+SEGFAULT 4: Out of Bounds Access
+============================================================================
+
+Accessing array elements outside valid range.
+*/
 void segfault4_out_of_bounds(void) {
     printf("\n=== Segfault 4: Out of Bounds ===\n");
 
@@ -96,11 +101,11 @@ void segfault4_out_of_bounds(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 5: Invalid Pointer Arithmetic
- * ============================================================================
- *
- * Dereferencing an invalid pointer.
- */
+SEGFAULT 5: Invalid Pointer Arithmetic
+============================================================================
+
+Dereferencing an invalid pointer.
+*/
 void segfault5_invalid_pointer(void) {
     printf("\n=== Segfault 5: Invalid Pointer ===\n");
 
@@ -117,11 +122,11 @@ void segfault5_invalid_pointer(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 6: Modifying String Literal
- * ============================================================================
- *
- * String literals are stored in read-only memory.
- */
+SEGFAULT 6: Modifying String Literal
+============================================================================
+
+String literals are stored in read-only memory.
+*/
 void segfault6_string_literal(void) {
     printf("\n=== Segfault 6: Modifying String Literal ===\n");
 
@@ -135,11 +140,11 @@ void segfault6_string_literal(void) {
 }
 
 /* ============================================================================
- * SEGFAULT 7: Uninitialized Pointer
- * ============================================================================
- *
- * Using a pointer before initializing it.
- */
+SEGFAULT 7: Uninitialized Pointer
+============================================================================
+
+Using a pointer before initializing it.
+*/
 void segfault7_uninitialized(void) {
     printf("\n=== Segfault 7: Uninitialized Pointer ===\n");
 
@@ -153,11 +158,11 @@ void segfault7_uninitialized(void) {
 }
 
 /* ============================================================================
- * EXERCISE: Debug This Function
- * ============================================================================
- *
- * This function has a segfault bug. Use the debugger to find it.
- */
+EXERCISE: Debug This Function
+============================================================================
+
+This function has a segfault bug. Use the debugger to find it.
+*/
 typedef struct {
     char *name;
     int value;
@@ -200,44 +205,44 @@ void exercise_debug_segfault(void) {
 }
 
 /* ============================================================================
- * HOW TO DEBUG SEGFAULTS
- * ============================================================================
- *
- * Step 1: Run in debugger
- *   lldb ./program
- *   (lldb) run
- *
- * Step 2: When it crashes, get backtrace
- *   (lldb) thread backtrace
- *   or
- *   (lldb) bt
- *
- * Step 3: Look at the backtrace
- *   - Find the first frame in YOUR code (ignore library frames)
- *   - That's likely where the bug is
- *
- * Step 4: Examine variables
- *   (lldb) frame variable
- *   (lldb) print ptr
- *   (lldb) print *ptr
- *
- * Step 5: Common causes to check
- *   - Is the pointer NULL?
- *   - Was the memory freed already?
- *   - Is the index within array bounds?
- *   - Was the pointer properly initialized?
- *
- * Step 6: Use Address Sanitizer (via Docker)
- *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *       bash -c "gcc -g -fsanitize=address program.c -o program && ./program"
- *
- *   Address Sanitizer gives detailed reports on memory errors.
- */
+HOW TO DEBUG SEGFAULTS
+============================================================================
+
+Step 1: Run in debugger
+  lldb ./program
+  (lldb) run
+
+Step 2: When it crashes, get backtrace
+  (lldb) thread backtrace
+  or
+  (lldb) bt
+
+Step 3: Look at the backtrace
+  - Find the first frame in YOUR code (ignore library frames)
+  - That's likely where the bug is
+
+Step 4: Examine variables
+  (lldb) frame variable
+  (lldb) print ptr
+  (lldb) print *ptr
+
+Step 5: Common causes to check
+  - Is the pointer NULL?
+  - Was the memory freed already?
+  - Is the index within array bounds?
+  - Was the pointer properly initialized?
+
+Step 6: Use Address Sanitizer (via Docker)
+  docker run --rm -v $(pwd):/code -w /code gios-prep \
+      bash -c "gcc -g -fsanitize=address program.c -o program && ./program"
+
+  Address Sanitizer gives detailed reports on memory errors.
+*/
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(int argc, char *argv[]) {
     printf("\n");
     printf("================================================\n");

@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 05: String Parsing
- *
- * GIOS Project 1 requires parsing HTTP-like protocol headers.
- * This module teaches you to parse structured text.
- *
- * Compile: clang -Wall -Wextra -g string_parsing.c -o string_parsing
- * Run:     ./string_parsing
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 05: String Parsing
+
+GIOS Project 1 requires parsing HTTP-like protocol headers.
+This module teaches you to parse structured text.
+
+Compile: clang -Wall -Wextra -g string_parsing.c -o string_parsing
+Run:     ./string_parsing
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,17 +16,17 @@
 #include <ctype.h>
 
 /* ============================================================================
- * EXERCISE 1: Parse Key-Value Pairs [MEDIUM]
- * ============================================================================
- *
- * Parse strings like "key=value" or "name: John"
- */
+EXERCISE 1: Parse Key-Value Pairs [MEDIUM]
+============================================================================
+
+Parse strings like "key=value" or "name: John"
+*/
 
 /*
- * TODO: Parse a key-value string.
- * Returns 0 on success, -1 on failure.
- * key and value buffers must be provided by caller.
- */
+TODO: Parse a key-value string.
+Returns 0 on success, -1 on failure.
+key and value buffers must be provided by caller.
+*/
 int parse_key_value(const char *input, char delimiter,
                     char *key, size_t key_size,
                     char *value, size_t value_size) {
@@ -73,12 +73,12 @@ void exercise1_key_value(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Parse HTTP-like Request Line [HARD]
- * ============================================================================
- *
- * This is similar to what you'll do in GIOS Project 1!
- * Parse: "METHOD /path HTTP/1.1"
- */
+EXERCISE 2: Parse HTTP-like Request Line [HARD]
+============================================================================
+
+This is similar to what you'll do in GIOS Project 1!
+Parse: "METHOD /path HTTP/1.1"
+*/
 
 typedef struct {
     char method[16];
@@ -87,9 +87,9 @@ typedef struct {
 } RequestLine;
 
 /*
- * TODO: Parse an HTTP-like request line.
- * Returns 0 on success, -1 on failure.
- */
+TODO: Parse an HTTP-like request line.
+Returns 0 on success, -1 on failure.
+*/
 int parse_request_line(const char *line, RequestLine *req) {
     /* TODO: Implement this function
      *
@@ -125,11 +125,11 @@ void exercise2_request_line(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Parse Headers [HARD]
- * ============================================================================
- *
- * Parse multiple headers into a key-value structure.
- */
+EXERCISE 3: Parse Headers [HARD]
+============================================================================
+
+Parse multiple headers into a key-value structure.
+*/
 
 #define MAX_HEADERS 32
 #define MAX_HEADER_NAME 64
@@ -146,10 +146,10 @@ typedef struct {
 } HeaderList;
 
 /*
- * TODO: Parse a multi-line header string.
- * Headers are separated by \r\n or \n.
- * Format: "Header-Name: Header-Value"
- */
+TODO: Parse a multi-line header string.
+Headers are separated by \r\n or \n.
+Format: "Header-Name: Header-Value"
+*/
 int parse_headers(const char *input, HeaderList *list) {
     /* TODO: Implement this function
      *
@@ -167,9 +167,9 @@ int parse_headers(const char *input, HeaderList *list) {
 }
 
 /*
- * TODO: Find a header by name (case-insensitive).
- * Returns pointer to value or NULL if not found.
- */
+TODO: Find a header by name (case-insensitive).
+Returns pointer to value or NULL if not found.
+*/
 const char *get_header(const HeaderList *list, const char *name) {
     /* TODO: Implement this function */
 
@@ -205,19 +205,19 @@ void exercise3_headers(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Parse CSV Line [MEDIUM]
- * ============================================================================
- */
+EXERCISE 4: Parse CSV Line [MEDIUM]
+============================================================================
+*/
 
 #define MAX_FIELDS 32
 #define MAX_FIELD_LEN 128
 
 /*
- * TODO: Parse a CSV line into fields.
- * Returns number of fields parsed.
- *
- * Simple version: no quotes handling.
- */
+TODO: Parse a CSV line into fields.
+Returns number of fields parsed.
+
+Simple version: no quotes handling.
+*/
 int parse_csv_line(const char *line, char fields[][MAX_FIELD_LEN], int max_fields) {
     /* TODO: Implement this function
      *
@@ -243,11 +243,11 @@ void exercise4_csv(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Parse URL [HARD]
- * ============================================================================
- *
- * Parse: "http://user:pass@host:port/path?query#fragment"
- */
+EXERCISE 5: Parse URL [HARD]
+============================================================================
+
+Parse: "http://user:pass@host:port/path?query#fragment"
+*/
 
 typedef struct {
     char scheme[16];      /* http, https */
@@ -261,9 +261,9 @@ typedef struct {
 } ParsedURL;
 
 /*
- * TODO: Parse a URL.
- * This is a challenging exercise - start with simple URLs.
- */
+TODO: Parse a URL.
+This is a challenging exercise - start with simple URLs.
+*/
 int parse_url(const char *url, ParsedURL *parsed) {
     /* TODO: Implement this function
      *
@@ -311,11 +311,11 @@ void exercise5_url(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Build Formatted Strings [MEDIUM]
- * ============================================================================
- *
- * Use snprintf to safely build strings.
- */
+EXERCISE 6: Build Formatted Strings [MEDIUM]
+============================================================================
+
+Use snprintf to safely build strings.
+*/
 void exercise6_snprintf(void) {
     printf("\n=== Exercise 6: Build Formatted Strings ===\n");
 
@@ -351,9 +351,9 @@ void exercise6_snprintf(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

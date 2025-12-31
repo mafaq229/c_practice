@@ -1,11 +1,11 @@
 /*
- * test_cache.c - Unit Tests for Cache Implementation
- *
- * Tests the LRU cache operations.
- *
- * Compile: make test_cache
- * Run: ./test_cache
- */
+test_cache.c - Unit Tests for Cache Implementation
+
+Tests the LRU cache operations.
+
+Compile: make test_cache
+Run: ./test_cache
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +14,8 @@
 #include "../include/cache.h"
 
 /* ============================================================================
- * Test Utilities
- * ============================================================================ */
+Test Utilities
+============================================================================ */
 
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -46,8 +46,8 @@ static int tests_passed = 0;
     } while(0)
 
 /* ============================================================================
- * Tests for cache_create / cache_destroy
- * ============================================================================ */
+Tests for cache_create / cache_destroy
+============================================================================ */
 
 static void test_cache_create(void) {
     TEST(cache_create);
@@ -72,8 +72,8 @@ static void test_cache_create_zero_size(void) {
 }
 
 /* ============================================================================
- * Tests for cache_put / cache_get
- * ============================================================================ */
+Tests for cache_put / cache_get
+============================================================================ */
 
 static void test_cache_put_get_basic(void) {
     TEST(cache_put_get_basic);
@@ -145,8 +145,8 @@ static void test_cache_update_existing(void) {
 }
 
 /* ============================================================================
- * Tests for cache_remove
- * ============================================================================ */
+Tests for cache_remove
+============================================================================ */
 
 static void test_cache_remove(void) {
     TEST(cache_remove);
@@ -183,8 +183,8 @@ static void test_cache_remove_nonexistent(void) {
 }
 
 /* ============================================================================
- * Tests for LRU Eviction
- * ============================================================================ */
+Tests for LRU Eviction
+============================================================================ */
 
 static void test_cache_eviction(void) {
     TEST(cache_eviction);
@@ -245,8 +245,8 @@ static void test_cache_lru_ordering(void) {
 }
 
 /* ============================================================================
- * Tests for cache_clear
- * ============================================================================ */
+Tests for cache_clear
+============================================================================ */
 
 static void test_cache_clear(void) {
     TEST(cache_clear);
@@ -270,8 +270,8 @@ static void test_cache_clear(void) {
 }
 
 /* ============================================================================
- * Tests for cache_get_stats
- * ============================================================================ */
+Tests for cache_get_stats
+============================================================================ */
 
 static void test_cache_stats(void) {
     TEST(cache_stats);
@@ -305,8 +305,8 @@ static void test_cache_stats(void) {
 }
 
 /* ============================================================================
- * Concurrent Access Test
- * ============================================================================ */
+Concurrent Access Test
+============================================================================ */
 
 #define NUM_THREADS 4
 #define OPS_PER_THREAD 100
@@ -359,8 +359,8 @@ static void test_cache_concurrent(void) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 int main(void) {
     printf("=== Cache Tests ===\n\n");

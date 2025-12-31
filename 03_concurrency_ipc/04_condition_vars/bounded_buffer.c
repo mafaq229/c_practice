@@ -1,14 +1,14 @@
 /*
- * CS-6200 Preparation - Module 04: Bounded Buffer
- *
- * A complete, reusable thread-safe bounded buffer implementation.
- * This is exactly what you'll need for GIOS thread pool work queue!
- *
- * Compile: clang -Wall -Wextra -g -pthread bounded_buffer.c -o bounded_buffer
- * Run:     ./bounded_buffer
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 04: Bounded Buffer
+
+A complete, reusable thread-safe bounded buffer implementation.
+This is exactly what you'll need for GIOS thread pool work queue!
+
+Compile: clang -Wall -Wextra -g -pthread bounded_buffer.c -o bounded_buffer
+Run:     ./bounded_buffer
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +17,9 @@
 #include <unistd.h>
 
 /* ============================================================================
- * BOUNDED BUFFER IMPLEMENTATION
- * ============================================================================
- */
+BOUNDED BUFFER IMPLEMENTATION
+============================================================================
+*/
 
 typedef struct {
     void **items;               /* Array of item pointers */
@@ -36,8 +36,8 @@ typedef struct {
 } BoundedBuffer;
 
 /*
- * TODO: Initialize the bounded buffer
- */
+TODO: Initialize the bounded buffer
+*/
 BoundedBuffer *buffer_create(int capacity) {
     BoundedBuffer *buf = malloc(sizeof(BoundedBuffer));
     if (buf == NULL) {
@@ -64,8 +64,8 @@ BoundedBuffer *buffer_create(int capacity) {
 }
 
 /*
- * TODO: Destroy the bounded buffer
- */
+TODO: Destroy the bounded buffer
+*/
 void buffer_destroy(BoundedBuffer *buf) {
     if (buf == NULL) return;
 
@@ -78,10 +78,10 @@ void buffer_destroy(BoundedBuffer *buf) {
 }
 
 /*
- * TODO: Add an item to the buffer (blocks if full)
- *
- * Returns 0 on success, -1 if shutdown
- */
+TODO: Add an item to the buffer (blocks if full)
+
+Returns 0 on success, -1 if shutdown
+*/
 int buffer_put(BoundedBuffer *buf, void *item) {
     pthread_mutex_lock(&buf->mutex);
 
@@ -109,10 +109,10 @@ int buffer_put(BoundedBuffer *buf, void *item) {
 }
 
 /*
- * TODO: Remove an item from the buffer (blocks if empty)
- *
- * Returns item on success, NULL if shutdown and empty
- */
+TODO: Remove an item from the buffer (blocks if empty)
+
+Returns item on success, NULL if shutdown and empty
+*/
 void *buffer_get(BoundedBuffer *buf) {
     pthread_mutex_lock(&buf->mutex);
 
@@ -140,10 +140,10 @@ void *buffer_get(BoundedBuffer *buf) {
 }
 
 /*
- * TODO: Try to add without blocking
- *
- * Returns 0 on success, -1 if full or shutdown
- */
+TODO: Try to add without blocking
+
+Returns 0 on success, -1 if full or shutdown
+*/
 int buffer_try_put(BoundedBuffer *buf, void *item) {
     pthread_mutex_lock(&buf->mutex);
 
@@ -163,10 +163,10 @@ int buffer_try_put(BoundedBuffer *buf, void *item) {
 }
 
 /*
- * TODO: Try to get without blocking
- *
- * Returns item on success, NULL if empty
- */
+TODO: Try to get without blocking
+
+Returns item on success, NULL if empty
+*/
 void *buffer_try_get(BoundedBuffer *buf) {
     pthread_mutex_lock(&buf->mutex);
 
@@ -186,8 +186,8 @@ void *buffer_try_get(BoundedBuffer *buf) {
 }
 
 /*
- * TODO: Signal shutdown and wake all waiting threads
- */
+TODO: Signal shutdown and wake all waiting threads
+*/
 void buffer_shutdown(BoundedBuffer *buf) {
     pthread_mutex_lock(&buf->mutex);
 
@@ -201,8 +201,8 @@ void buffer_shutdown(BoundedBuffer *buf) {
 }
 
 /*
- * Get current count (for debugging/testing)
- */
+Get current count (for debugging/testing)
+*/
 int buffer_count(BoundedBuffer *buf) {
     pthread_mutex_lock(&buf->mutex);
     int count = buf->count;
@@ -211,9 +211,9 @@ int buffer_count(BoundedBuffer *buf) {
 }
 
 /* ============================================================================
- * TEST: Basic Operations
- * ============================================================================
- */
+TEST: Basic Operations
+============================================================================
+*/
 
 void test_basic(void) {
     printf("\n=== Test: Basic Operations ===\n");
@@ -241,9 +241,9 @@ void test_basic(void) {
 }
 
 /* ============================================================================
- * TEST: Producer-Consumer Threads
- * ============================================================================
- */
+TEST: Producer-Consumer Threads
+============================================================================
+*/
 
 typedef struct {
     BoundedBuffer *buffer;
@@ -347,9 +347,9 @@ void test_threaded(void) {
 }
 
 /* ============================================================================
- * TEST: Try operations
- * ============================================================================
- */
+TEST: Try operations
+============================================================================
+*/
 
 void test_try_operations(void) {
     printf("\n=== Test: Non-blocking Operations ===\n");
@@ -379,9 +379,9 @@ void test_try_operations(void) {
 }
 
 /* ============================================================================
- * TEST: Shutdown behavior
- * ============================================================================
- */
+TEST: Shutdown behavior
+============================================================================
+*/
 
 void *waiting_consumer(void *arg) {
     BoundedBuffer *buf = (BoundedBuffer *)arg;
@@ -417,9 +417,9 @@ void test_shutdown(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

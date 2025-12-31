@@ -1,13 +1,13 @@
 /*
- * CS-6200 Preparation - Module 02: Thread Return Values
- *
- * Learn how threads can return results.
- *
- * Compile: clang -Wall -Wextra -g -pthread thread_return.c -o thread_return
- * Run:     ./thread_return
- *
- * Difficulty: [HARD]
- */
+CS-6200 Preparation - Module 02: Thread Return Values
+
+Learn how threads can return results.
+
+Compile: clang -Wall -Wextra -g -pthread thread_return.c -o thread_return
+Run:     ./thread_return
+
+Difficulty: [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,28 +16,28 @@
 #include <pthread.h>
 
 /* ============================================================================
- * CONCEPT: Getting Results from Threads
- * ============================================================================
- *
- * Thread functions return void*, and pthread_join() can retrieve it.
- *
- * int pthread_join(pthread_t thread, void **retval);
- *
- * If retval is not NULL, it receives the thread's return value.
- *
- * Common patterns:
- * 1. Return a cast integer
- * 2. Return a pointer to allocated memory
- * 3. Return a pointer to passed-in struct (result stored there)
- * 4. Return NULL (no result needed)
- *
- * DANGER: Don't return pointers to stack-local variables!
- */
+CONCEPT: Getting Results from Threads
+============================================================================
+
+Thread functions return void*, and pthread_join() can retrieve it.
+
+int pthread_join(pthread_t thread, void **retval);
+
+If retval is not NULL, it receives the thread's return value.
+
+Common patterns:
+1. Return a cast integer
+2. Return a pointer to allocated memory
+3. Return a pointer to passed-in struct (result stored there)
+4. Return NULL (no result needed)
+
+DANGER: Don't return pointers to stack-local variables!
+*/
 
 /* ============================================================================
- * EXERCISE 1: Return integer (cast to void*)
- * ============================================================================
- */
+EXERCISE 1: Return integer (cast to void*)
+============================================================================
+*/
 
 void *compute_square(void *arg) {
     long num = (long)arg;
@@ -66,9 +66,9 @@ void exercise1_return_int(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: Return allocated struct
- * ============================================================================
- */
+EXERCISE 2: Return allocated struct
+============================================================================
+*/
 
 typedef struct {
     int input;
@@ -112,9 +112,9 @@ void exercise2_return_struct(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: Return via passed-in struct (no allocation)
- * ============================================================================
- */
+EXERCISE 3: Return via passed-in struct (no allocation)
+============================================================================
+*/
 
 typedef struct {
     /* Input */
@@ -174,9 +174,9 @@ void exercise3_return_via_input(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: pthread_exit() with return value
- * ============================================================================
- */
+EXERCISE 4: pthread_exit() with return value
+============================================================================
+*/
 
 void *early_exit_thread(void *arg) {
     int *value = (int *)arg;
@@ -212,9 +212,9 @@ void exercise4_pthread_exit(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: THE WRONG WAY - returning stack pointer
- * ============================================================================
- */
+EXERCISE 5: THE WRONG WAY - returning stack pointer
+============================================================================
+*/
 
 void *buggy_return(void *arg) {
     (void)arg;
@@ -252,9 +252,9 @@ void exercise5_wrong_way(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Cancellation and return values
- * ============================================================================
- */
+EXERCISE 6: Cancellation and return values
+============================================================================
+*/
 
 void *cancellable_thread(void *arg) {
     (void)arg;
@@ -295,9 +295,9 @@ void exercise6_cancellation(void) {
 }
 
 /* ============================================================================
- * EXERCISE 7: Collecting results from multiple threads
- * ============================================================================
- */
+EXERCISE 7: Collecting results from multiple threads
+============================================================================
+*/
 
 #define ARRAY_SIZE 1000
 #define NUM_THREADS 4
@@ -363,9 +363,9 @@ void exercise7_parallel_sum(void) {
 }
 
 /* ============================================================================
- * MAIN
- * ============================================================================
- */
+MAIN
+============================================================================
+*/
 
 int main(int argc, char *argv[]) {
     printf("\n================================================\n");

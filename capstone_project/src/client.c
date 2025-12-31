@@ -1,15 +1,15 @@
 /*
- * client.c - GETFILE Client
- *
- * A client that connects to the server and requests files using
- * the GETFILE protocol.
- *
- * Usage: ./client <host> <port> <path> [output_file]
- *
- * Examples:
- *   ./client localhost 8080 /small.txt
- *   ./client localhost 8080 /large.bin output.bin
- */
+client.c - GETFILE Client
+
+A client that connects to the server and requests files using
+the GETFILE protocol.
+
+Usage: ./client <host> <port> <path> [output_file]
+
+Examples:
+  ./client localhost 8080 /small.txt
+  ./client localhost 8080 /large.bin output.bin
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,14 +22,14 @@
 #include "../include/file_utils.h"
 
 /* ============================================================================
- * Request Functions
- * ============================================================================ */
+Request Functions
+============================================================================ */
 
 /*
- * request_file - Request a file from the server
- *
- * Returns: 0 on success, -1 on error
- */
+request_file - Request a file from the server
+
+Returns: 0 on success, -1 on error
+*/
 static int request_file(const char *host, int port, const char *path,
                         const char *output_path) {
     /*
@@ -133,8 +133,8 @@ static int request_file(const char *host, int port, const char *path,
 }
 
 /* ============================================================================
- * Main Entry Point
- * ============================================================================ */
+Main Entry Point
+============================================================================ */
 
 static void print_usage(const char *prog) {
     fprintf(stderr, "Usage: %s <host> <port> <path> [output_file]\n", prog);

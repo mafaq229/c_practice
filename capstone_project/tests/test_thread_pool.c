@@ -1,11 +1,11 @@
 /*
- * test_thread_pool.c - Unit Tests for Thread Pool Implementation
- *
- * Tests the thread pool and work queue.
- *
- * Compile: make test_thread_pool
- * Run: ./test_thread_pool
- */
+test_thread_pool.c - Unit Tests for Thread Pool Implementation
+
+Tests the thread pool and work queue.
+
+Compile: make test_thread_pool
+Run: ./test_thread_pool
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +17,8 @@
 #include "../include/work_queue.h"
 
 /* ============================================================================
- * Test Utilities
- * ============================================================================ */
+Test Utilities
+============================================================================ */
 
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -49,8 +49,8 @@ static int tests_passed = 0;
     } while(0)
 
 /* ============================================================================
- * Work Queue Tests
- * ============================================================================ */
+Work Queue Tests
+============================================================================ */
 
 static void test_work_queue_create(void) {
     TEST(work_queue_create);
@@ -188,8 +188,8 @@ static void test_work_queue_concurrent(void) {
 }
 
 /* ============================================================================
- * Thread Pool Tests
- * ============================================================================ */
+Thread Pool Tests
+============================================================================ */
 
 static void test_thread_pool_create(void) {
     TEST(thread_pool_create);
@@ -267,8 +267,8 @@ static void test_thread_pool_shutdown(void) {
 }
 
 /* ============================================================================
- * Integration Test
- * ============================================================================ */
+Integration Test
+============================================================================ */
 
 static void test_pool_with_real_work(void) {
     TEST(pool_with_real_work);
@@ -301,8 +301,8 @@ static void test_pool_with_real_work(void) {
 }
 
 /* ============================================================================
- * Main
- * ============================================================================ */
+Main
+============================================================================ */
 
 int main(void) {
     printf("=== Thread Pool Tests ===\n\n");

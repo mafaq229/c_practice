@@ -1,12 +1,12 @@
 /*
- * protocol.c - GETFILE Protocol Implementation
- *
- * This file implements the GETFILE protocol parsing and creation functions.
- * The protocol is text-based with a simple format, but parsing must be
- * robust to handle partial data, malformed requests, and edge cases.
- *
- * This is similar to what you'll implement in GIOS Project 1!
- */
+protocol.c - GETFILE Protocol Implementation
+
+This file implements the GETFILE protocol parsing and creation functions.
+The protocol is text-based with a simple format, but parsing must be
+robust to handle partial data, malformed requests, and edge cases.
+
+This is similar to what you'll implement in GIOS Project 1!
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,28 +15,28 @@
 #include "../include/protocol.h"
 
 /* ============================================================================
- * TODO: Implement these functions
- *
- * Study the protocol format carefully:
- *
- * Request:  GETFILE GET /path/to/file\r\n\r\n
- * Response: GETFILE OK 12345\r\n\r\n<file_content>
- *           GETFILE FILE_NOT_FOUND\r\n\r\n
- *           GETFILE ERROR\r\n\r\n
- *           GETFILE INVALID\r\n\r\n
- *
- * Key challenges:
- * 1. Handling partial headers (network may split data)
- * 2. Validating format strictly
- * 3. Extracting path and content length correctly
- * ============================================================================ */
+TODO: Implement these functions
+
+Study the protocol format carefully:
+
+Request:  GETFILE GET /path/to/file\r\n\r\n
+Response: GETFILE OK 12345\r\n\r\n<file_content>
+          GETFILE FILE_NOT_FOUND\r\n\r\n
+          GETFILE ERROR\r\n\r\n
+          GETFILE INVALID\r\n\r\n
+
+Key challenges:
+1. Handling partial headers (network may split data)
+2. Validating format strictly
+3. Extracting path and content length correctly
+============================================================================ */
 
 /*
- * gf_find_header_end - Find the end of header delimiter
- *
- * Searches for "\r\n\r\n" in the buffer.
- * Returns position AFTER the delimiter, or 0 if not found.
- */
+gf_find_header_end - Find the end of header delimiter
+
+Searches for "\r\n\r\n" in the buffer.
+Returns position AFTER the delimiter, or 0 if not found.
+*/
 size_t gf_find_header_end(const char *buffer, size_t buflen) {
     /*
      * TODO: Implement this function
@@ -61,8 +61,8 @@ size_t gf_find_header_end(const char *buffer, size_t buflen) {
 }
 
 /*
- * gf_status_to_string - Convert status code to string
- */
+gf_status_to_string - Convert status code to string
+*/
 const char *gf_status_to_string(gf_status_t status) {
     /*
      * TODO: Implement this function
@@ -79,8 +79,8 @@ const char *gf_status_to_string(gf_status_t status) {
 }
 
 /*
- * gf_string_to_status - Convert string to status code
- */
+gf_string_to_status - Convert string to status code
+*/
 gf_status_t gf_string_to_status(const char *str) {
     /*
      * TODO: Implement this function
@@ -99,10 +99,10 @@ gf_status_t gf_string_to_status(const char *str) {
 }
 
 /*
- * gf_create_request - Build a GETFILE request string
- *
- * Format: "GETFILE GET /path\r\n\r\n"
- */
+gf_create_request - Build a GETFILE request string
+
+Format: "GETFILE GET /path\r\n\r\n"
+*/
 int gf_create_request(char *buffer, size_t buflen, const char *path) {
     /*
      * TODO: Implement this function
@@ -130,10 +130,10 @@ int gf_create_request(char *buffer, size_t buflen, const char *path) {
 }
 
 /*
- * gf_parse_request - Parse a GETFILE request
- *
- * Expected format: "GETFILE GET /path\r\n\r\n"
- */
+gf_parse_request - Parse a GETFILE request
+
+Expected format: "GETFILE GET /path\r\n\r\n"
+*/
 int gf_parse_request(const char *buffer, size_t buflen, gf_request_t *request) {
     /*
      * TODO: Implement this function
@@ -181,10 +181,10 @@ int gf_parse_request(const char *buffer, size_t buflen, gf_request_t *request) {
 }
 
 /*
- * gf_create_response_header - Build a GETFILE response header
- *
- * Format: "GETFILE OK 12345\r\n\r\n" or "GETFILE FILE_NOT_FOUND\r\n\r\n"
- */
+gf_create_response_header - Build a GETFILE response header
+
+Format: "GETFILE OK 12345\r\n\r\n" or "GETFILE FILE_NOT_FOUND\r\n\r\n"
+*/
 int gf_create_response_header(char *buffer, size_t buflen,
                                gf_status_t status, size_t content_length) {
     /*
@@ -212,10 +212,10 @@ int gf_create_response_header(char *buffer, size_t buflen,
 }
 
 /*
- * gf_parse_response_header - Parse a GETFILE response header
- *
- * Handles: "GETFILE OK 12345\r\n\r\n" and "GETFILE FILE_NOT_FOUND\r\n\r\n"
- */
+gf_parse_response_header - Parse a GETFILE response header
+
+Handles: "GETFILE OK 12345\r\n\r\n" and "GETFILE FILE_NOT_FOUND\r\n\r\n"
+*/
 int gf_parse_response_header(const char *buffer, size_t buflen,
                               gf_response_t *response) {
     /*
@@ -256,14 +256,14 @@ int gf_parse_response_header(const char *buffer, size_t buflen,
 }
 
 /* ============================================================================
- * Testing helper (optional)
- * ============================================================================ */
+Testing helper (optional)
+============================================================================ */
 
 #ifdef PROTOCOL_TEST_MAIN
 /*
- * Simple test program for protocol functions.
- * Compile: gcc -DPROTOCOL_TEST_MAIN -g protocol.c -o test_protocol_main
- */
+Simple test program for protocol functions.
+Compile: gcc -DPROTOCOL_TEST_MAIN -g protocol.c -o test_protocol_main
+*/
 int main(void) {
     char buffer[256];
     gf_request_t request;

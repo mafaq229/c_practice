@@ -1,13 +1,13 @@
 /*
- * server_single.c - Single-Threaded File Server (Part A)
- *
- * This is the simplest version of the server - handles one client at a time.
- * It implements the GETFILE protocol to serve files to clients.
- *
- * Usage: ./server_single [port]
- *
- * This is your starting point! Once this works, you can add multithreading.
- */
+server_single.c - Single-Threaded File Server (Part A)
+
+This is the simplest version of the server - handles one client at a time.
+It implements the GETFILE protocol to serve files to clients.
+
+Usage: ./server_single [port]
+
+This is your starting point! Once this works, you can add multithreading.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,19 +24,19 @@
 #include "../include/file_utils.h"
 
 /* ============================================================================
- * Global State
- * ============================================================================ */
+Global State
+============================================================================ */
 
 static volatile sig_atomic_t running = 1;
 static int server_fd = -1;
 
 /* ============================================================================
- * Signal Handler
- * ============================================================================ */
+Signal Handler
+============================================================================ */
 
 /*
- * Handle Ctrl+C for graceful shutdown
- */
+Handle Ctrl+C for graceful shutdown
+*/
 static void signal_handler(int sig) {
     (void)sig;
     running = 0;
@@ -48,12 +48,12 @@ static void signal_handler(int sig) {
 }
 
 /* ============================================================================
- * Request Handling
- * ============================================================================ */
+Request Handling
+============================================================================ */
 
 /*
- * send_error_response - Send an error response to the client
- */
+send_error_response - Send an error response to the client
+*/
 static int send_error_response(int client_fd, gf_status_t status) {
     /*
      * TODO: Implement this function
@@ -80,8 +80,8 @@ static int send_error_response(int client_fd, gf_status_t status) {
 }
 
 /*
- * handle_client - Handle a single client connection
- */
+handle_client - Handle a single client connection
+*/
 static void handle_client(int client_fd) {
     /*
      * TODO: Implement this function
@@ -164,12 +164,12 @@ static void handle_client(int client_fd) {
 }
 
 /* ============================================================================
- * Main Server Loop
- * ============================================================================ */
+Main Server Loop
+============================================================================ */
 
 /*
- * run_server - Main server loop
- */
+run_server - Main server loop
+*/
 static int run_server(int port) {
     /*
      * TODO: Implement the server main loop
@@ -228,8 +228,8 @@ static int run_server(int port) {
 }
 
 /* ============================================================================
- * Main Entry Point
- * ============================================================================ */
+Main Entry Point
+============================================================================ */
 
 int main(int argc, char *argv[]) {
     int port = DEFAULT_PORT;

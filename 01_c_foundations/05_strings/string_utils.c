@@ -1,20 +1,20 @@
 /*
- * CS-6200 Preparation - Module 05: String Utilities
- *
- * String handling in C is a common source of bugs. GIOS Project 1 requires
- * extensive string parsing for protocol headers.
- *
- * Compile: clang -Wall -Wextra -g string_utils.c -o string_utils
- * Run:     ./string_utils
- *
- * Topics covered:
- *   - C strings (null-terminated char arrays)
- *   - String library functions
- *   - Safe string handling
- *   - Common string pitfalls
- *
- * Difficulty: [EASY] to [MEDIUM]
- */
+CS-6200 Preparation - Module 05: String Utilities
+
+String handling in C is a common source of bugs. GIOS Project 1 requires
+extensive string parsing for protocol headers.
+
+Compile: clang -Wall -Wextra -g string_utils.c -o string_utils
+Run:     ./string_utils
+
+Topics covered:
+  - C strings (null-terminated char arrays)
+  - String library functions
+  - Safe string handling
+  - Common string pitfalls
+
+Difficulty: [EASY] to [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,17 +22,17 @@
 #include <ctype.h>
 
 /* ============================================================================
- * CONCEPT: C Strings
- * ============================================================================
- *
- * In C, strings are arrays of characters ending with '\0' (null terminator).
- *
- *   char str[] = "Hello";
- *   // Actually: ['H', 'e', 'l', 'l', 'o', '\0']
- *   // Size is 6, but strlen is 5
- *
- * CRITICAL: Always account for the null terminator!
- */
+CONCEPT: C Strings
+============================================================================
+
+In C, strings are arrays of characters ending with '\0' (null terminator).
+
+  char str[] = "Hello";
+  // Actually: ['H', 'e', 'l', 'l', 'o', '\0']
+  // Size is 6, but strlen is 5
+
+CRITICAL: Always account for the null terminator!
+*/
 
 void demonstrate_c_strings(void) {
     printf("\n=== C String Basics ===\n");
@@ -58,11 +58,11 @@ void demonstrate_c_strings(void) {
 }
 
 /* ============================================================================
- * EXERCISE 1: String Length [EASY]
- * ============================================================================
- *
- * TODO: Implement strlen from scratch.
- */
+EXERCISE 1: String Length [EASY]
+============================================================================
+
+TODO: Implement strlen from scratch.
+*/
 size_t my_strlen(const char *str) {
     /* TODO: Implement this function
      *
@@ -82,15 +82,15 @@ void exercise1_strlen(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: String Copy [MEDIUM]
- * ============================================================================
- *
- * TODO: Implement safe string copy.
- */
+EXERCISE 2: String Copy [MEDIUM]
+============================================================================
+
+TODO: Implement safe string copy.
+*/
 
 /*
- * UNSAFE version (like strcpy) - don't use this!
- */
+UNSAFE version (like strcpy) - don't use this!
+*/
 char *unsafe_strcpy(char *dest, const char *src) {
     char *original = dest;
     while ((*dest++ = *src++) != '\0');
@@ -98,10 +98,10 @@ char *unsafe_strcpy(char *dest, const char *src) {
 }
 
 /*
- * TODO: Implement safe string copy with size limit.
- * Copies at most n-1 characters and always null-terminates.
- * Returns number of characters that would have been copied (like snprintf).
- */
+TODO: Implement safe string copy with size limit.
+Copies at most n-1 characters and always null-terminates.
+Returns number of characters that would have been copied (like snprintf).
+*/
 size_t safe_strcpy(char *dest, const char *src, size_t dest_size) {
     /* TODO: Implement this function
      *
@@ -133,11 +133,11 @@ void exercise2_strcpy(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: String Comparison [EASY]
- * ============================================================================
- *
- * TODO: Implement strcmp from scratch.
- */
+EXERCISE 3: String Comparison [EASY]
+============================================================================
+
+TODO: Implement strcmp from scratch.
+*/
 int my_strcmp(const char *s1, const char *s2) {
     /* TODO: Implement this function
      *
@@ -152,8 +152,8 @@ int my_strcmp(const char *s1, const char *s2) {
 }
 
 /*
- * TODO: Implement case-insensitive comparison.
- */
+TODO: Implement case-insensitive comparison.
+*/
 int my_strcasecmp(const char *s1, const char *s2) {
     /* TODO: Implement this function
      *
@@ -180,11 +180,11 @@ void exercise3_strcmp(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: String Concatenation [MEDIUM]
- * ============================================================================
- *
- * TODO: Implement safe string concatenation.
- */
+EXERCISE 4: String Concatenation [MEDIUM]
+============================================================================
+
+TODO: Implement safe string concatenation.
+*/
 size_t safe_strcat(char *dest, const char *src, size_t dest_size) {
     /* TODO: Implement this function
      *
@@ -219,11 +219,11 @@ void exercise4_strcat(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: String Search [MEDIUM]
- * ============================================================================
- *
- * TODO: Implement strstr (find substring).
- */
+EXERCISE 5: String Search [MEDIUM]
+============================================================================
+
+TODO: Implement strstr (find substring).
+*/
 char *my_strstr(const char *haystack, const char *needle) {
     /* TODO: Implement this function
      *
@@ -253,11 +253,11 @@ void exercise5_strstr(void) {
 }
 
 /* ============================================================================
- * EXERCISE 6: Tokenization [MEDIUM]
- * ============================================================================
- *
- * strtok is tricky! Understand how it works.
- */
+EXERCISE 6: Tokenization [MEDIUM]
+============================================================================
+
+strtok is tricky! Understand how it works.
+*/
 void exercise6_strtok(void) {
     printf("\n=== Exercise 6: Tokenization (strtok) ===\n");
 
@@ -289,9 +289,9 @@ void exercise6_strtok(void) {
 }
 
 /* ============================================================================
- * EXERCISE 7: String to Number Conversion [MEDIUM]
- * ============================================================================
- */
+EXERCISE 7: String to Number Conversion [MEDIUM]
+============================================================================
+*/
 void exercise7_conversion(void) {
     printf("\n=== Exercise 7: String to Number ===\n");
 
@@ -319,9 +319,9 @@ void exercise7_conversion(void) {
 }
 
 /*
- * TODO: Implement safe integer parsing.
- * Returns 0 on success, -1 on failure.
- */
+TODO: Implement safe integer parsing.
+Returns 0 on success, -1 on failure.
+*/
 int safe_parse_int(const char *str, int *result) {
     /* TODO: Implement this function
      *
@@ -336,9 +336,9 @@ int safe_parse_int(const char *str, int *result) {
 }
 
 /* ============================================================================
- * COMMON STRING PITFALLS
- * ============================================================================
- */
+COMMON STRING PITFALLS
+============================================================================
+*/
 void common_pitfalls(void) {
     printf("\n=== Common String Pitfalls ===\n");
 
@@ -363,9 +363,9 @@ void common_pitfalls(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");
