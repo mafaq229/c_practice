@@ -1,29 +1,30 @@
 /*
- * CS-6200 Preparation - Module 04: Memory Leaks
- *
- * Memory leaks are one of the most common bugs in C programs.
- * GIOS projects are checked for memory leaks using Valgrind.
- *
- * Compile: clang -Wall -Wextra -g memory_leaks.c -o memory_leaks
- * Run:     ./memory_leaks
- *
- * Check for leaks (REQUIRED - use Docker on M4 Mac):
- *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *       valgrind --leak-check=full --show-leak-kinds=all ./memory_leaks
- *
- * Difficulty: [MEDIUM] to [HARD]
- */
+CS-6200 Preparation - Module 04: Memory Leaks
+
+Memory leaks are one of the most common bugs in C programs.
+GIOS projects are checked for memory leaks using Valgrind.
+
+Compile: clang -Wall -Wextra -g memory_leaks.c -o memory_leaks
+Run:     ./memory_leaks
+
+Check for leaks (REQUIRED - use Docker on M4 Mac):
+
+docker run --rm -v $(pwd):/code -w /code gios-prep \
+  sh -c "gcc -Wall -Wextra -g memory_leaks.c -o memory_leaks && valgrind --leak-check=full --show-leak-kinds=all ./memory_leaks"
+
+Difficulty: [MEDIUM] to [HARD]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * LEAK 1: Simple Leak - No free() [EASY]
- * ============================================================================
- *
- * TODO: Fix this function to free allocated memory.
- */
+LEAK 1: Simple Leak - No free() [EASY]
+============================================================================
+
+TODO: Fix this function to free allocated memory.
+*/
 void leak1_simple(void) {
     printf("\n=== Leak 1: Simple Leak ===\n");
 
@@ -38,14 +39,15 @@ void leak1_simple(void) {
 
     /* BUG: Memory is never freed! */
     /* TODO: Add free(data) here */
+    free(data);
 }
 
 /* ============================================================================
- * LEAK 2: Lost Pointer [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function - pointer is overwritten before free.
- */
+LEAK 2: Lost Pointer [MEDIUM]
+============================================================================
+
+TODO: Fix this function - pointer is overwritten before free.
+*/
 void leak2_lost_pointer(void) {
     printf("\n=== Leak 2: Lost Pointer ===\n");
 
@@ -53,6 +55,8 @@ void leak2_lost_pointer(void) {
     if (str == NULL) return;
     strcpy(str, "Hello, World!");
     printf("First: %s\n", str);
+
+    free(str);
 
     /* BUG: Overwriting pointer without freeing first allocation! */
     str = malloc(50);  /* First allocation is now leaked! */
@@ -66,11 +70,11 @@ void leak2_lost_pointer(void) {
 }
 
 /* ============================================================================
- * LEAK 3: Early Return [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix this function - early return causes leak.
- */
+LEAK 3: Early Return [MEDIUM]
+============================================================================
+
+TODO: Fix this function - early return causes leak.
+*/
 int leak3_early_return(int should_fail) {
     printf("\n=== Leak 3: Early Return ===\n");
 
@@ -80,6 +84,7 @@ int leak3_early_return(int should_fail) {
     if (should_fail) {
         printf("Simulating failure...\n");
         /* BUG: Early return without freeing buffer! */
+        free(buffer);
         return -1;  /* TODO: Free buffer before returning */
     }
 
@@ -92,11 +97,11 @@ int leak3_early_return(int should_fail) {
 }
 
 /* ============================================================================
- * LEAK 4: Struct with Nested Allocations [MEDIUM]
- * ============================================================================
- *
- * TODO: Fix the free function to properly free all nested allocations.
- */
+LEAK 4: Struct with Nested Allocations [MEDIUM]
+============================================================================
+
+TODO: Fix the free function to properly free all nested allocations.
+*/
 typedef struct {
     char *name;
     int *scores;
@@ -126,6 +131,9 @@ Student *student_create(const char *name, int num_scores) {
 
 void student_free_buggy(Student *s) {
     /* BUG: Only frees the struct, not the nested allocations! */
+    // free nested first since if we free s first, we lose access to s->name and s->scores
+    free(s->name);
+    free(s->scores);
     free(s);
 
     /* TODO: This should also free s->name and s->scores */
@@ -147,12 +155,13 @@ void leak4_nested_allocations(void) {
 }
 
 /* ============================================================================
- * LEAK 5: Array of Strings [HARD]
- * ============================================================================
- *
- * TODO: Implement proper cleanup for dynamically allocated string array.
- */
+LEAK 5: Array of Strings [HARD]
+============================================================================
+
+TODO: Implement proper cleanup for dynamically allocated string array.
+*/
 char **create_string_array(int count) {
+    // arr itself gets the address of the allocated block (the array of char *). *arr is the first element of that array
     char **arr = malloc(count * sizeof(char *));
     if (arr == NULL) return NULL;
 
@@ -161,6 +170,14 @@ char **create_string_array(int count) {
         if (arr[i] == NULL) {
             /* BUG: If allocation fails partway, we leak previous allocations! */
             /* TODO: Free all previously allocated strings before returning NULL */
+
+            // free each string we allocated 
+            for (int j = 0; j < i; j++) {
+                free(arr[j]); // arr[0] is just *arr
+            }
+            // Passing arr to free frees the block that holds the array of pointers (the addresses).
+            // free(arr) frees only the pointer array, not the strings.
+            free(arr);
             return NULL;
         }
         snprintf(arr[i], 32, "String %d", i);
@@ -171,6 +188,9 @@ char **create_string_array(int count) {
 
 void free_string_array_buggy(char **arr, int count) {
     /* BUG: Only frees the array pointer, not the strings! */
+    for (int i = 0; i < count; i++) {
+        free(arr[i]);
+    }
     free(arr);
 
     /* TODO: Also free each string in the array */
@@ -193,21 +213,25 @@ void leak5_string_array(void) {
 }
 
 /* ============================================================================
- * LEAK 6: Realloc Failure [HARD]
- * ============================================================================
- *
- * TODO: Fix this function - realloc failure causes leak.
- */
+LEAK 6: Realloc Failure [HARD]
+============================================================================
+
+TODO: Fix this function - realloc failure causes leak.
+*/
 int *resize_array_buggy(int *arr, int new_size) {
     /* BUG: If realloc fails, original array is leaked! */
-    arr = realloc(arr, new_size * sizeof(int));
-    return arr;
+    //arr = realloc(arr, new_size * sizeof(int));
+    //return arr;
 
     /* TODO: Use a temp pointer to preserve original on failure:
      *   int *temp = realloc(arr, new_size * sizeof(int));
      *   if (temp == NULL) return NULL;  // Original arr still valid!
      *   return temp;
      */
+    // relloc can move blocks. temp may be the same address as arr (if it could grow in place) or a different address (if it had to move)
+    int *temp = realloc(arr, new_size * sizeof(int));
+    if (temp == NULL) return NULL;
+    return temp;
 }
 
 void leak6_realloc_failure(void) {
@@ -235,22 +259,22 @@ void leak6_realloc_failure(void) {
 }
 
 /* ============================================================================
- * EXERCISE: Find and Fix All Leaks [HARD]
- * ============================================================================
- *
- * TODO: The functions below have memory leaks. Find and fix them.
- * Use Valgrind to verify your fixes:
- *
- *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *       valgrind --leak-check=full ./memory_leaks
- *
- * A clean Valgrind output shows:
- *   "All heap blocks were freed -- no leaks are possible"
- */
+EXERCISE: Find and Fix All Leaks [HARD]
+============================================================================
+
+TODO: The functions below have memory leaks. Find and fix them.
+Use Valgrind to verify your fixes:
+
+  docker run --rm -v $(pwd):/code -w /code gios-prep \
+      valgrind --leak-check=full ./memory_leaks
+
+A clean Valgrind output shows:
+  "All heap blocks were freed -- no leaks are possible"
+*/
 
 /*
- * TODO: Fix this function - multiple leaks possible.
- */
+TODO: Fix this function - multiple leaks possible.
+*/
 int *process_data_buggy(int n) {
     if (n <= 0) return NULL;
 
@@ -259,6 +283,8 @@ int *process_data_buggy(int n) {
 
     if (input == NULL || output == NULL) {
         /* BUG: If one allocation fails, the other might leak! */
+        free(input);
+        free(output);
         return NULL;
     }
 
@@ -266,14 +292,14 @@ int *process_data_buggy(int n) {
         input[i] = i;
         output[i] = input[i] * 2;
     }
-
+    free(input);
     /* BUG: input is never freed! */
     return output;
 }
 
 /*
- * TODO: Fix this function - complex control flow causes leaks.
- */
+TODO: Fix this function - complex control flow causes leaks.
+*/
 int complex_function_buggy(int option) {
     char *buffer1 = malloc(100);
     char *buffer2 = malloc(100);
@@ -281,13 +307,19 @@ int complex_function_buggy(int option) {
 
     if (buffer1 == NULL || buffer2 == NULL || numbers == NULL) {
         /* BUG: Partial allocations may leak! */
+        free(buffer1);
+        free(buffer2);
+        free(numbers);
         return -1;
     }
-
+    buffer1[0] = '\0';
     switch (option) {
         case 1:
             strcpy(buffer1, "Option 1");
             /* BUG: Early return - everything leaks! */
+            free(buffer1);
+            free(buffer2);
+            free(numbers);
             return 1;
 
         case 2:
@@ -297,6 +329,9 @@ int complex_function_buggy(int option) {
 
         default:
             /* BUG: Early return - everything leaks! */
+            free(buffer1);
+            free(buffer2);
+            free(numbers);
             return -1;
     }
 
@@ -312,33 +347,33 @@ int complex_function_buggy(int option) {
 }
 
 /* ============================================================================
- * VALGRIND CHEAT SHEET
- * ============================================================================
- *
- * Basic usage:
- *   valgrind --leak-check=full ./program
- *
- * Show all leak types:
- *   valgrind --leak-check=full --show-leak-kinds=all ./program
- *
- * Track origins of uninitialized values:
- *   valgrind --track-origins=yes ./program
- *
- * Interpreting output:
- *   - "definitely lost": Memory was allocated but never freed
- *   - "indirectly lost": Memory lost because pointer to it was lost
- *   - "still reachable": Memory still accessible at exit (not always a bug)
- *   - "possibly lost": Memory that might be lost
- *
- * Good output:
- *   "All heap blocks were freed -- no leaks are possible"
- *   "ERROR SUMMARY: 0 errors from 0 contexts"
- */
+VALGRIND CHEAT SHEET
+============================================================================
+
+Basic usage:
+  valgrind --leak-check=full ./program
+
+Show all leak types:
+  valgrind --leak-check=full --show-leak-kinds=all ./program
+
+Track origins of uninitialized values:
+  valgrind --track-origins=yes ./program
+
+Interpreting output:
+  - "definitely lost": Memory was allocated but never freed
+  - "indirectly lost": Memory lost because pointer to it was lost
+  - "still reachable": Memory still accessible at exit (not always a bug)
+  - "possibly lost": Memory that might be lost
+
+Good output:
+  "All heap blocks were freed -- no leaks are possible"
+  "ERROR SUMMARY: 0 errors from 0 contexts"
+*/
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");

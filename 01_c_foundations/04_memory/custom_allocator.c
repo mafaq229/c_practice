@@ -57,12 +57,13 @@ TODO: Initialize the pool.
 Mark all blocks as free.
 */
 void fixed_pool_init(FixedPool *pool) {
-    /* TODO: Implement this function
-     *
-     * Steps:
-     * 1. Set all used[] entries to 0
-     * 2. Set num_allocated to 0
-     */
+    // memset(pool->used, 0, sizeof(pool->used)); // fastest, simplest way to zero a byte array
+    // can use int below but size_t is the standard unsigned type for sizes and array indices. 
+    size_t count = sizeof(pool->used) / (pool->used[0]);
+    for (size_t i = 0; i < count; i++) {
+        pool->used[i] = 0;
+    }
+    pool->num_allocated = 0;
 }
 
 /*
@@ -80,8 +81,14 @@ void *fixed_pool_alloc(FixedPool *pool) {
      *
      * HINT: Block i starts at memory[i * BLOCK_SIZE]
      */
-
-    return NULL;  /* TODO: Fix this */
+    for (int i = 0; i < POOL_SIZE; i++) {
+        if (pool->used[i] == 0) {
+            pool->used[i] = 1;
+            pool->num_allocated++;
+            return &pool->memory[i * BLOCK_SIZE];
+        }
+    }
+    return NULL;
 }
 
 /*
@@ -97,6 +104,9 @@ void fixed_pool_free(FixedPool *pool, void *ptr) {
      *
      * HINT: Block index = (ptr - pool->memory) / BLOCK_SIZE
      */
+    int index = (int)(((uint8_t *)ptr - pool->memory) / BLOCK_SIZE);
+    pool->used[index] = 0;
+    pool->num_allocated--;
 }
 
 /*
@@ -167,8 +177,18 @@ Arena *arena_create(size_t capacity) {
      * 3. Set offset to 0
      * 4. Return arena (or NULL on failure)
      */
+    Arena *arena = malloc(sizeof(Arena)); // struct Arena *a; without typedef
+    if (!arena) return NULL;
 
-    return NULL;  /* TODO: Fix this */
+    arena->memory = malloc(capacity);
+    if (!arena->memory) {
+        free(arena);
+        return NULL;
+    }
+
+    arena->capacity = capacity;
+    arena->offset = 0;
+    return arena;  /* TODO: Fix this */
 }
 
 /*
@@ -186,8 +206,10 @@ void *arena_alloc(Arena *arena, size_t size) {
      *
      * HINT: void *ptr = arena->memory + arena->offset;
      */
-
-    return NULL;  /* TODO: Fix this */
+    if (arena->offset + size > arena->capacity) return NULL;
+    void *ptr = arena->memory + arena->offset; // ptr is pointed to memory address at offset
+    arena->offset += size;
+    return ptr;  /* TODO: Fix this */
 }
 
 /*
@@ -195,6 +217,7 @@ TODO: Reset the arena (free all allocations at once).
 */
 void arena_reset(Arena *arena) {
     /* TODO: Just set offset back to 0 */
+    arena->offset = 0;
 }
 
 /*
@@ -202,6 +225,8 @@ TODO: Destroy the arena.
 */
 void arena_destroy(Arena *arena) {
     /* TODO: Free memory buffer and arena struct */
+    free(arena->memory);
+    free(arena);
 }
 
 void exercise2_arena(void) {
@@ -277,8 +302,20 @@ FreeListAllocator *freelist_create(size_t capacity) {
      *
      * HINT: Cast memory to FreeBlock* to set up the initial free block
      */
-
-    return NULL;  /* TODO: Fix this */
+    FreeListAllocator *allocator = malloc(sizeof(FreeListAllocator));
+    if (!allocator) return NULL;
+    allocator->memory = malloc(capacity);
+    if (!allocator->memory) {
+        free(allocator);
+        return NULL;
+    }
+    allocator->capacity = capacity;
+    // Treat the start of the buffer as a FreeBlock header for the free list
+    FreeBlock *free_block = (FreeBlock *)allocator->memory;
+    free_block->size = capacity;
+    free_block->next = NULL;  
+    allocator->free_list = free_block;
+    return allocator;  /* TODO: Fix this */
 }
 
 /*
@@ -295,6 +332,37 @@ void *freelist_alloc(FreeListAllocator *alloc, size_t size) {
      *
      * This is complex! Start simple without splitting.
      */
+    // allocator needs space not just for the user’s data, but also to store a header (the block size).
+    size_t total_size = size + sizeof(size_t);
+    FreeBlock *prev = NULL;
+    FreeBlock *curr = alloc->free_list;
+
+    while (curr != NULL) {
+        if (curr->size >= total_size) {
+            size_t remaining_size = curr->size - total_size;
+            if (remaining_size >= sizeof(FreeBlock)) {
+                FreeBlock *remaining = (FreeBlock *)((uint8_t *)curr + total_size);
+                remaining->size = remaining_size;
+                remaining->next = curr->next;
+                if (prev != NULL) {
+                    prev->next = remaining;
+                } else {
+                    alloc->free_list = remaining;
+                }
+                *((size_t *)curr) = total_size;
+            } else {
+                if (prev != NULL) {
+                    prev->next = curr->next;
+                } else {
+                    alloc->free_list = curr->next;
+                }
+                *((size_t *)curr) = curr->size;
+            }
+            return (uint8_t *)curr + sizeof(size_t);
+        }
+        prev = curr;
+        curr = curr->next;
+    }
 
     return NULL;  /* TODO: Fix this */
 }
@@ -311,6 +379,15 @@ void freelist_free(FreeListAllocator *alloc, void *ptr) {
      *
      * Advanced: Coalesce with adjacent free blocks
      */
+    if (ptr == NULL) return;
+
+    uint8_t *block_start = (uint8_t *)ptr - sizeof(size_t);
+    size_t block_size = *((size_t *)block_start);
+    FreeBlock *block = (FreeBlock *)block_start;
+
+    block->size = block_size;
+    block->next = alloc->free_list;
+    alloc->free_list = block;
 }
 
 void freelist_destroy(FreeListAllocator *alloc) {

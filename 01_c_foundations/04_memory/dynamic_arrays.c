@@ -1,48 +1,49 @@
 /*
- * CS-6200 Preparation - Module 04: Dynamic Arrays
- *
- * Dynamic memory allocation is fundamental to systems programming.
- * This module covers malloc, calloc, realloc, and free.
- *
- * Compile: clang -Wall -Wextra -g dynamic_arrays.c -o dynamic_arrays
- * Run:     ./dynamic_arrays
- *
- * For memory checking (use Docker on M4 Mac):
- *   docker run --rm -v $(pwd):/code -w /code gios-prep \
- *       valgrind --leak-check=full ./dynamic_arrays
- *
- * Topics covered:
- *   - Stack vs Heap memory
- *   - malloc, calloc, realloc, free
- *   - Dynamic arrays (growable arrays)
- *   - Memory management best practices
- *
- * Difficulty: [MEDIUM]
- */
+CS-6200 Preparation - Module 04: Dynamic Arrays
+
+Dynamic memory allocation is fundamental to systems programming.
+This module covers malloc, calloc, realloc, and free.
+
+Compile: clang -Wall -Wextra -g dynamic_arrays.c -o dynamic_arrays
+Run:     ./dynamic_arrays
+
+For memory checking (use Docker on M4 Mac):
+
+docker run --rm -v $(pwd):/code -w /code gios-prep \
+  sh -c "gcc -Wall -Wextra -g dynamic_arrays.c -o dynamic_arrays && valgrind --leak-check=full ./dynamic_arrays"
+
+Topics covered:
+  - Stack vs Heap memory
+  - malloc, calloc, realloc, free
+  - Dynamic arrays (growable arrays)
+  - Memory management best practices
+
+Difficulty: [MEDIUM]
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
- * CONCEPT: Stack vs Heap Memory
- * ============================================================================
- *
- * STACK:
- *   - Automatic allocation/deallocation
- *   - Fixed size at compile time
- *   - Fast allocation
- *   - Limited size (usually a few MB)
- *   - Variables die when function returns
- *
- * HEAP:
- *   - Manual allocation (malloc/calloc)
- *   - Manual deallocation (free)
- *   - Size determined at runtime
- *   - Slower allocation
- *   - Large size available
- *   - Lives until explicitly freed
- */
+CONCEPT: Stack vs Heap Memory
+============================================================================
+
+STACK:
+  - Automatic allocation/deallocation
+  - Fixed size at compile time
+  - Fast allocation
+  - Limited size (usually a few MB)
+  - Variables die when function returns
+
+HEAP:
+  - Manual allocation (malloc/calloc)
+  - Manual deallocation (free)
+  - Size determined at runtime
+  - Slower allocation
+  - Large size available
+  - Lives until explicitly freed
+*/
 
 void demonstrate_stack_heap(void) {
     printf("\n=== Stack vs Heap Memory ===\n");
@@ -75,17 +76,17 @@ void demonstrate_stack_heap(void) {
 }
 
 /* ============================================================================
- * EXERCISE 1: malloc and free [EASY]
- * ============================================================================
- *
- * TODO: Complete the function to allocate and populate an array.
- */
+EXERCISE 1: malloc and free [EASY]
+============================================================================
+
+TODO: Complete the function to allocate and populate an array.
+*/
 
 /*
- * Allocate an array of n integers and fill with values 0 to n-1.
- * Returns NULL on failure.
- * Caller is responsible for freeing the returned array.
- */
+Allocate an array of n integers and fill with values 0 to n-1.
+Returns NULL on failure.
+Caller is responsible for freeing the returned array.
+*/
 int *create_sequence(int n) {
     /* TODO: Implement this function
      *
@@ -95,8 +96,14 @@ int *create_sequence(int n) {
      * 3. Fill array with values 0, 1, 2, ..., n-1
      * 4. Return the array
      */
+    int *array = malloc(n * sizeof(int));
+    if (array == NULL) return NULL;
+    
+    for (int i = 0; i < n; i++) {
+        array[i] = i;
+    }
 
-    return NULL;  /* TODO: Fix this */
+    return array;  /* TODO: Fix this */
 }
 
 void exercise1_malloc_free(void) {
@@ -120,23 +127,24 @@ void exercise1_malloc_free(void) {
 }
 
 /* ============================================================================
- * EXERCISE 2: calloc [EASY]
- * ============================================================================
- *
- * calloc allocates AND initializes memory to zero.
- * Syntax: calloc(count, size) allocates count * size bytes, zeroed.
- */
+EXERCISE 2: calloc [EASY]
+============================================================================
+
+calloc allocates AND initializes memory to zero.
+Syntax: calloc(count, size) allocates count * size bytes, zeroed.
+*/
 
 /*
- * TODO: Allocate a zeroed array using calloc.
- */
+TODO: Allocate a zeroed array using calloc.
+*/
 int *create_zeroed_array(int n) {
     /* TODO: Use calloc to allocate and return zeroed array
      *
      * HINT: calloc(n, sizeof(int)) allocates n integers, all set to 0
      */
+    int *array = calloc(n, sizeof(int));
 
-    return NULL;  /* TODO: Fix this */
+    return array;  /* TODO: Fix this */
 }
 
 void exercise2_calloc(void) {
@@ -156,18 +164,18 @@ void exercise2_calloc(void) {
 }
 
 /* ============================================================================
- * EXERCISE 3: realloc - Growing Arrays [MEDIUM]
- * ============================================================================
- *
- * realloc changes the size of allocated memory.
- * It may move the data to a new location!
- */
+EXERCISE 3: realloc - Growing Arrays [MEDIUM]
+============================================================================
+
+realloc changes the size of allocated memory.
+It may move the data to a new location!
+*/
 
 /*
- * TODO: Implement a function to grow an array.
- * Returns new array pointer (may be different from old).
- * Returns NULL on failure (original array unchanged).
- */
+TODO: Implement a function to grow an array.
+Returns new array pointer (may be different from old).
+Returns NULL on failure (original array unchanged).
+*/
 int *grow_array(int *arr, int old_size, int new_size) {
     /* TODO: Implement this function
      *
@@ -180,8 +188,12 @@ int *grow_array(int *arr, int old_size, int new_size) {
      * IMPORTANT: Don't use the old pointer after realloc succeeds!
      *            realloc may have moved the data.
      */
-
-    return NULL;  /* TODO: Fix this */
+    int *new_arr = realloc(arr, (new_size * sizeof(int)));
+    if (new_arr == NULL) return NULL;
+    for (int i = old_size; i < new_size; i++) {
+        new_arr[i] = 0;
+    }
+    return new_arr;  /* TODO: Fix this */
 }
 
 void exercise3_realloc(void) {
@@ -217,12 +229,12 @@ void exercise3_realloc(void) {
 }
 
 /* ============================================================================
- * EXERCISE 4: Dynamic Array (Vector) [HARD]
- * ============================================================================
- *
- * This is a complete implementation of a growable array (like std::vector).
- * This pattern is VERY common in systems programming.
- */
+EXERCISE 4: Dynamic Array (Vector) [HARD]
+============================================================================
+
+This is a complete implementation of a growable array (like std::vector).
+This pattern is VERY common in systems programming.
+*/
 
 typedef struct {
     int *data;      /* Pointer to array data */
@@ -231,9 +243,9 @@ typedef struct {
 } DynamicArray;
 
 /*
- * TODO: Initialize a dynamic array with given initial capacity.
- * Returns 0 on success, -1 on failure.
- */
+TODO: Initialize a dynamic array with given initial capacity.
+Returns 0 on success, -1 on failure.
+*/
 int da_init(DynamicArray *da, int initial_capacity) {
     /* TODO: Implement this function
      *
@@ -243,15 +255,20 @@ int da_init(DynamicArray *da, int initial_capacity) {
      * 3. Set capacity to initial_capacity
      * 4. Return 0 on success, -1 on failure
      */
-
-    return -1;  /* TODO: Fix this */
+    da->data = calloc(initial_capacity, sizeof(int));
+    if (da->data == NULL) {
+        return -1;
+    }
+    da->size = 0;
+    da->capacity = initial_capacity;
+    return 0;
 }
 
 /*
- * TODO: Add an element to the end of the array.
- * Grows the array if necessary (double the capacity).
- * Returns 0 on success, -1 on failure.
- */
+TODO: Add an element to the end of the array.
+Grows the array if necessary (double the capacity).
+Returns 0 on success, -1 on failure.
+*/
 int da_append(DynamicArray *da, int value) {
     /* TODO: Implement this function
      *
@@ -268,24 +285,32 @@ int da_append(DynamicArray *da, int value) {
      *   da->data = new_data;
      *   da->capacity = new_capacity;
      */
-
-    return -1;  /* TODO: Fix this */
+    if (da->size == da->capacity) {
+        int new_capacity = da->capacity * 2;
+        int *new_data = realloc(da->data, new_capacity * sizeof(int));
+        if (new_data == NULL) return -1;
+        da->data = new_data;
+        da->capacity = new_capacity;
+    }
+    da->data[da->size] = value;
+    da->size++;
+    return 0;  /* TODO: Fix this */
 }
 
 /*
- * TODO: Get element at index.
- * Returns the value, or -1 if index is out of bounds.
- * (In real code, you'd use a different error mechanism)
- */
+TODO: Get element at index.
+Returns the value, or -1 if index is out of bounds.
+(In real code, you'd use a different error mechanism)
+*/
 int da_get(DynamicArray *da, int index) {
     /* TODO: Implement this function */
-
-    return -1;  /* TODO: Fix this */
+    if (index < 0 || index >= da->size) return -1;
+    return da->data[index];  /* TODO: Fix this */
 }
 
 /*
- * TODO: Free the dynamic array.
- */
+TODO: Free the dynamic array.
+*/
 void da_free(DynamicArray *da) {
     /* TODO: Implement this function
      *
@@ -294,11 +319,15 @@ void da_free(DynamicArray *da) {
      * 2. Set data to NULL
      * 3. Set size and capacity to 0
      */
+    free(da->data);
+    da->data = NULL;
+    da->size = 0;
+    da->capacity = 0;
 }
 
 /*
- * Print the dynamic array (provided)
- */
+Print the dynamic array (provided)
+*/
 void da_print(DynamicArray *da) {
     printf("[");
     for (int i = 0; i < da->size; i++) {
@@ -346,22 +375,23 @@ void exercise4_dynamic_array(void) {
 }
 
 /* ============================================================================
- * EXERCISE 5: Memory Management Patterns [MEDIUM]
- * ============================================================================
- *
- * Common patterns for safe memory management in C.
- */
+EXERCISE 5: Memory Management Patterns [MEDIUM]
+============================================================================
+
+Common patterns for safe memory management in C.
+*/
 
 /*
- * Pattern 1: Create/Destroy pairs
- * Always pair allocation functions with deallocation functions.
- */
+Pattern 1: Create/Destroy pairs
+Always pair allocation functions with deallocation functions.
+*/
 typedef struct {
     char *name;
     int *values;
     int count;
 } Resource;
 
+// * is part of the return type. It means the function returns a pointer to Resource, not a Resource value
 Resource *resource_create(const char *name, int count) {
     Resource *r = malloc(sizeof(Resource));
     if (r == NULL) return NULL;
@@ -391,16 +421,19 @@ void resource_destroy(Resource *r) {
 }
 
 /*
- * Pattern 2: Cleanup on error using goto
- * This pattern avoids duplicating cleanup code.
- */
+Pattern 2: Cleanup on error using goto
+This pattern avoids duplicating cleanup code.
+*/
 int process_data(int size) {
     int result = -1;
 
-    int *buffer1 = malloc(size * sizeof(int));
+    int *buffer1 = NULL;
+    int *buffer2 = NULL;
+
+    buffer1 = malloc(size * sizeof(int));
     if (buffer1 == NULL) goto cleanup;
 
-    int *buffer2 = malloc(size * sizeof(int));
+    buffer2 = malloc(size * sizeof(int));
     if (buffer2 == NULL) goto cleanup;
 
     /* Do processing... */
@@ -442,9 +475,9 @@ void exercise5_patterns(void) {
 }
 
 /* ============================================================================
- * MAIN FUNCTION
- * ============================================================================
- */
+MAIN FUNCTION
+============================================================================
+*/
 int main(void) {
     printf("\n");
     printf("================================================\n");
