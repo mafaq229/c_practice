@@ -20,6 +20,8 @@ Difficulty: [EASY] to [MEDIUM]
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
+#include <limits.h>
 
 /* ============================================================================
 CONCEPT: C Strings
@@ -69,8 +71,11 @@ size_t my_strlen(const char *str) {
      * Count characters until you hit '\0'.
      * Don't count the '\0' itself.
      */
-
-    return 0;  /* TODO: Fix this */
+    size_t count = 0;
+    while (str[count] != '\0') { // always use '' (char literal) instead of "" (string literal)
+        count++;
+    }
+    return count;  /* TODO: Fix this */
 }
 
 void exercise1_strlen(void) {
@@ -93,7 +98,7 @@ UNSAFE version (like strcpy) - don't use this!
 */
 char *unsafe_strcpy(char *dest, const char *src) {
     char *original = dest;
-    while ((*dest++ = *src++) != '\0');
+    while ((*dest++ = *src++) != '\0'); // assigns the character from src into dest, then moves both pointers forward by 1.
     return original;
 }
 
@@ -111,8 +116,14 @@ size_t safe_strcpy(char *dest, const char *src, size_t dest_size) {
      * 3. Always add null terminator
      * 4. Return total length of src (even if truncated)
      */
-
-    return 0;  /* TODO: Fix this */
+    if (dest_size == 0) return strlen(src);
+    size_t i = 0;
+    while (i + 1 < dest_size && src[i] != '\0') {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = '\0';
+    return strlen(src);
 }
 
 void exercise2_strcpy(void) {
@@ -147,8 +158,11 @@ int my_strcmp(const char *s1, const char *s2) {
      *   0 if s1 == s2
      *   > 0 if s1 > s2
      */
-
-    return 0;  /* TODO: Fix this */
+    while(*s1 != '\0' && *s2 != '\0' && *s1 == *s2) {
+        s1++;
+        s2++;
+    }
+    return (unsigned char)*s1 - (unsigned char)*s2;
 }
 
 /*
@@ -159,8 +173,15 @@ int my_strcasecmp(const char *s1, const char *s2) {
      *
      * HINT: Use tolower() from <ctype.h>
      */
-
-    return 0;  /* TODO: Fix this */
+    while (*s1 != '\0' && *s2 != '\0') {
+        unsigned char c1 = (unsigned char)*s1;
+        unsigned char c2 = (unsigned char)*s2;
+        int diff = tolower(c1) - tolower(c2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
 }
 
 void exercise3_strcmp(void) {
@@ -197,8 +218,21 @@ size_t safe_strcat(char *dest, const char *src, size_t dest_size) {
      * 3. Copy as much of src as fits
      * 4. Return total length (dest + src)
      */
+    size_t dest_len = strlen(dest);
+    size_t src_len = strlen(src);
 
-    return 0;  /* TODO: Fix this */
+    if (dest_len >= dest_size) {
+        return dest_len + src_len;
+    }
+
+    size_t i = 0;
+    size_t space = dest_size - dest_len - 1; // -1 since last value is '\0' null terminator
+    while (i < space && src[i] != '\0') {
+        dest[dest_len + i] = src[i];
+        i++;
+    }
+    dest[dest_len + i] = '\0';
+    return dest_len + src_len;
 }
 
 void exercise4_strcat(void) {
@@ -232,8 +266,24 @@ char *my_strstr(const char *haystack, const char *needle) {
      *
      * HINT: For each position in haystack, check if needle matches starting there.
      */
+    // Empty needle matches at the start of haystack
+    if (*needle == '\0') return (char *)haystack;
 
-    return NULL;  /* TODO: Fix this */
+    for (const char *h = haystack; *h != '\0'; h++) {
+        /* Try to match needle starting at this position in haystack. */
+        const char *h_it = h;
+        const char *n_it = needle;
+        while (*h_it != '\0' && *n_it != '\0' && *h_it == *n_it) {
+            h_it++;
+            n_it++;
+        }
+        /* If we reached the end of needle, we found a full match. */
+        if (*n_it == '\0') {
+            return (char *)h;
+        }
+    }
+
+    return NULL;
 }
 
 void exercise5_strstr(void) {
@@ -304,7 +354,7 @@ void exercise7_conversion(void) {
     printf("atoi(\"abc\") = %d (no error indication!)\n", i2);
     printf("atoi(\"123abc\") = %d\n", i3);
 
-    /* strtol - better, with error checking */
+    /* strtol - better, with error checking: 10 for decimal, 16 for hexadecimal */
     char *endptr;
     long l1 = strtol("123", &endptr, 10);
     long l2 = strtol("abc", &endptr, 10);
@@ -331,8 +381,18 @@ int safe_parse_int(const char *str, int *result) {
      * 3. Check if endptr points to end of string
      * 4. Check for overflow
      */
+    if (str == NULL || *str == '\0' || result == NULL) return -1;
 
-    return -1;  /* TODO: Fix this */
+    errno = 0;
+    char *endptr = NULL;
+    /* Convert string to long (base 10); endptr points to first non-digit. */
+    long value = strtol(str, &endptr, 10);
+
+    if (endptr == str || *endptr != '\0') return -1;
+    if (errno == ERANGE || value < INT_MIN || value > INT_MAX) return -1;
+
+    *result = (int)value;
+    return 0;
 }
 
 /* ============================================================================

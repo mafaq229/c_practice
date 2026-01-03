@@ -74,8 +74,15 @@ int buffer_init(Buffer *buf, size_t capacity) {
      * 3. Set capacity
      * 4. Return 0 on success, -1 on failure
      */
+    if (buf == NULL || capacity == 0) return -1;
 
-    return -1;  /* TODO: Fix this */
+    /* Allocate the backing storage for the buffer. */
+    buf->data = (uint8_t *)malloc(capacity);
+    if (buf->data == NULL) return -1;
+
+    buf->length = 0;
+    buf->capacity = capacity;
+    return 0;
 }
 
 /*
@@ -83,6 +90,11 @@ TODO: Free buffer resources.
 */
 void buffer_free(Buffer *buf) {
     /* TODO: Implement this function */
+    if (buf == NULL) return;
+    free(buf->data);
+    buf->data = NULL;
+    buf->length = 0;
+    buf->capacity = 0;
 }
 
 /*
@@ -99,8 +111,24 @@ int buffer_append(Buffer *buf, const void *data, size_t len) {
      * 4. Update length
      * 5. Return 0 on success, -1 on failure
      */
+    if (buf == NULL || data == NULL) return -1;
+    if (len == 0) return 0;
 
-    return -1;  /* TODO: Fix this */
+    /* Grow the buffer if needed. */
+    size_t needed = buf->length + len;
+    if (needed > buf->capacity) {
+        size_t new_capacity = buf->capacity * 2;
+        if (new_capacity < needed) new_capacity = needed;
+        uint8_t *new_data = (uint8_t *)realloc(buf->data, new_capacity);
+        if (new_data == NULL) return -1;
+        buf->data = new_data;
+        buf->capacity = new_capacity;
+    }
+
+    /* Copy the new bytes to the end. */
+    memcpy(buf->data + buf->length, data, len);
+    buf->length += len;
+    return 0;
 }
 
 /*
@@ -108,6 +136,8 @@ TODO: Reset buffer (keep allocation, just clear data).
 */
 void buffer_reset(Buffer *buf) {
     /* TODO: Implement this function */
+    if (buf == NULL) return;
+    buf->length = 0;
 }
 
 void exercise1_buffer_struct(void) {
@@ -151,13 +181,23 @@ typedef struct {
     size_t count; /* Number of bytes stored */
 } CircularBuffer;
 
+/* Forward declarations for helper functions used before their definitions. */
+size_t cbuf_available(const CircularBuffer *cb);
+size_t cbuf_free_space(const CircularBuffer *cb);
+
 /*
 TODO: Initialize circular buffer.
 */
 int cbuf_init(CircularBuffer *cb, size_t capacity) {
     /* TODO: Implement this function */
-
-    return -1;  /* TODO: Fix this */
+    if (cb == NULL || capacity == 0) return -1;
+    cb->data = (uint8_t *)malloc(capacity);
+    if (cb->data == NULL) return -1;
+    cb->capacity = capacity;
+    cb->head = 0;
+    cb->tail = 0;
+    cb->count = 0;
+    return 0;
 }
 
 /*
@@ -170,8 +210,28 @@ size_t cbuf_write(CircularBuffer *cb, const void *data, size_t len) {
      * Key insight: Handle wrap-around at capacity.
      * Only write as much as there's free space.
      */
+    if (cb == NULL || data == NULL || len == 0) return 0;
 
-    return 0;  /* TODO: Fix this */
+    size_t to_write = len;
+    if (to_write > cbuf_free_space(cb)) {
+        to_write = cbuf_free_space(cb);
+    }
+
+    /* Write in two parts if we wrap around the end. */
+    size_t first_part = cb->capacity - cb->tail;
+    if (first_part > to_write) first_part = to_write;
+    memcpy(cb->data + cb->tail, data, first_part);
+    cb->tail = (cb->tail + first_part) % cb->capacity;
+    cb->count += first_part;
+
+    size_t remaining = to_write - first_part;
+    if (remaining > 0) {
+        memcpy(cb->data + cb->tail, (const uint8_t *)data + first_part, remaining);
+        cb->tail = (cb->tail + remaining) % cb->capacity;
+        cb->count += remaining;
+    }
+
+    return to_write;
 }
 
 /*
@@ -184,8 +244,28 @@ size_t cbuf_read(CircularBuffer *cb, void *dest, size_t len) {
      * Key insight: Handle wrap-around at capacity.
      * Only read as much as there's data.
      */
+    if (cb == NULL || dest == NULL || len == 0) return 0;
 
-    return 0;  /* TODO: Fix this */
+    size_t to_read = len;
+    if (to_read > cbuf_available(cb)) {
+        to_read = cbuf_available(cb);
+    }
+
+    /* Read in two parts if we wrap around the end. */
+    size_t first_part = cb->capacity - cb->head;
+    if (first_part > to_read) first_part = to_read;
+    memcpy(dest, cb->data + cb->head, first_part);
+    cb->head = (cb->head + first_part) % cb->capacity;
+    cb->count -= first_part;
+
+    size_t remaining = to_read - first_part;
+    if (remaining > 0) {
+        memcpy((uint8_t *)dest + first_part, cb->data + cb->head, remaining);
+        cb->head = (cb->head + remaining) % cb->capacity;
+        cb->count -= remaining;
+    }
+
+    return to_read;
 }
 
 /*
@@ -282,8 +362,19 @@ Packet *packet_create(uint8_t type, const void *payload, size_t payload_len) {
      * 3. Copy payload
      * 4. Return packet
      */
+    if (payload_len > 65535) return NULL; /* uint16_t max */
 
-    return NULL;  /* TODO: Fix this */
+    size_t total_size = PACKET_HEADER_SIZE + payload_len;
+    Packet *pkt = (Packet *)malloc(total_size);
+    if (pkt == NULL) return NULL;
+
+    pkt->length = (uint16_t)payload_len;
+    pkt->type = type;
+    if (payload_len > 0 && payload != NULL) {
+        memcpy(pkt->payload, payload, payload_len);
+    }
+
+    return pkt;
 }
 
 /*
@@ -300,8 +391,15 @@ int packet_parse(const uint8_t *raw_data, size_t raw_len, Packet **packet) {
      * 3. Check if raw_len >= PACKET_HEADER_SIZE + packet->length
      * 4. Set *packet
      */
+    if (raw_data == NULL || packet == NULL) return -1;
+    if (raw_len < PACKET_HEADER_SIZE) return -1;
 
-    return -1;  /* TODO: Fix this */
+    Packet *pkt = (Packet *)raw_data;
+    size_t total_size = PACKET_HEADER_SIZE + pkt->length;
+    if (raw_len < total_size) return -1;
+
+    *packet = pkt;
+    return 0;
 }
 
 void exercise3_packet_buffer(void) {
