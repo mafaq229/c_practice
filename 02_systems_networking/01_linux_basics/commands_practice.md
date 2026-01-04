@@ -7,55 +7,55 @@ Complete these exercises to build command line proficiency needed for GIOS.
 ### Exercise 1: Navigation
 ```bash
 # TODO: Navigate to your home directory
-cd ???
+cd ~
 
 # TODO: List all files including hidden ones
-ls ???
+ls -a
 
 # TODO: Show current directory
-???
+pwd
 
 # TODO: Create a directory called 'test_dir'
-mkdir ???
+mkdir test_dir
 
 # TODO: Navigate into test_dir
-cd ???
+cd test_dir
 ```
 
 ### Exercise 2: File Creation and Viewing
 ```bash
 # TODO: Create an empty file called 'example.txt'
-touch ???
+touch example.txt
 
-# TODO: Write "Hello, World!" to the file (overwrite)
-echo "Hello, World!" ??? example.txt
+# TODO: Write "Hello, World" to the file (overwrite)
+echo "Hello, World" > example.txt
 
 # TODO: Append "Another line" to the file
-echo "Another line" ??? example.txt
+echo "Another line" >> example.txt
 
 # TODO: View the file contents
-cat ???
+cat filename.txt
 
 # TODO: View just the first 5 lines of a file
-head -n ??? /etc/passwd
+head -n 5 /etc/passwd
 
 # TODO: View just the last 5 lines
-tail ??? /etc/passwd
+tail -n 5 /etc/passwd
 ```
 
 ### Exercise 3: File Permissions
 ```bash
 # TODO: Show detailed file info including permissions
-ls ??? example.txt
+ls -l example.txt
 
 # TODO: Make the file executable
-chmod ??? example.txt
+chmod +x example.txt
 
 # TODO: Make the file readable only by owner
-chmod ??? example.txt
+chmod u=r example.txt # 400 does the same but alsp clears group/other permissions. (u=r, go=)
 
 # TODO: Restore read/write for owner
-chmod ??? example.txt
+chmod u=rw example.txt # 600 does the same but alsp clears group/other (u=rw,go=)
 ```
 
 ## Process Management
@@ -63,13 +63,14 @@ chmod ??? example.txt
 ### Exercise 4: Viewing Processes
 ```bash
 # TODO: Show all running processes
-ps ???
+ps aux
 
 # TODO: Show processes in a tree format
-ps ???
+ps auxf # or ps aux --forest or ps -ax -o pid,ppid,command
+
 
 # TODO: Find processes by name (e.g., find all 'bash' processes)
-ps aux | grep ???
+ps aux | grep bash # zsh
 
 # TODO: Show real-time process info
 top
@@ -79,19 +80,19 @@ top
 ### Exercise 5: Process Control
 ```bash
 # TODO: Run a command in the background
-sleep 60 ???
+sleep 60 &
 
 # TODO: List background jobs
-???
+jobs # ps shows processes (all or a subset, depending on flags). jobs shows background/suspended jobs started from the current shell only.
 
 # TODO: Bring a background job to foreground
-fg ???
+fg %1 # if there is a job numered 1 in my current shell. use "jobs"
 
 # TODO: Kill a process by PID
-kill ???
+kill [PID] # PID from ps aux
 
 # TODO: Force kill a process
-kill ??? [PID]
+kill -9 [PID]
 ```
 
 ## Searching
@@ -99,66 +100,73 @@ kill ??? [PID]
 ### Exercise 6: Finding Files
 ```bash
 # TODO: Find all .c files in current directory tree
-find . -name "???"
+find . -name "*.c"
 
 # TODO: Find all files modified in last 24 hours
-find . -mtime ???
+find . -mtime -1
 
 # TODO: Find all files larger than 1MB
-find . -size ???
+find . -size +1M
 
 # TODO: Find all directories named 'test'
-find . -type ??? -name "test"
+find . -type d -name "test"
 ```
 
 ### Exercise 7: Searching File Contents
 ```bash
 # TODO: Search for 'TODO' in all .c files
-grep ??? "TODO" *.c
+grep -r "TODO" *.c
 
 # TODO: Search recursively in all subdirectories
-grep ??? "TODO" .
+grep -r "TODO" .
 
 # TODO: Show line numbers with matches
-grep ??? "TODO" *.c
+grep -n "TODO" *.c
 
 # TODO: Case-insensitive search
-grep ??? "error" *.c
+grep -i "error" *.c
 
 # TODO: Show 2 lines before and after each match
-grep ??? "TODO" *.c
+grep -C 2 "TODO" *.c
 ```
+
+# Exercise 10
+ip addr
+ping -c 3 google.com
+ss -tlnp
+curl -O http://example.com/file
+wget http://example.com/file
 
 ## Pipes and Redirection
 
 ### Exercise 8: Pipes
 ```bash
 # TODO: Count number of files in current directory
-ls | wc ???
+ls | wc -l
 
 # TODO: Find all .c files and count them
-find . -name "*.c" | wc ???
+find . -name "*.c" | wc -l
 
 # TODO: List processes and find ones using most CPU
-ps aux | sort ??? | head
+ps aux | sort -k3 -rn | head
 
 # TODO: Get unique values from a file
-cat file.txt | sort | ???
+cat file.txt | sort | uniq
 ```
 
 ### Exercise 9: Redirection
 ```bash
 # TODO: Redirect stdout to a file (overwrite)
-echo "test" ??? output.txt
+echo "test" > output.txt
 
 # TODO: Redirect stdout to a file (append)
-echo "test" ??? output.txt
+echo "test" >> output.txt
 
 # TODO: Redirect stderr to a file
-./program ??? error.log
+./program 2> error.log
 
 # TODO: Redirect both stdout and stderr to a file
-./program ??? all.log ???
+./program > all.log 2>&1
 ```
 
 ## Network Commands
@@ -168,20 +176,20 @@ echo "test" ??? output.txt
 # TODO: Show network interfaces
 ifconfig
 # or
-ip ???
+ip addr
 
 # TODO: Check if a host is reachable
-ping -c 3 ???
+ping -c 3 google.com
 
 # TODO: Check which ports are listening
 netstat -tlnp
 # or
-ss ???
+ss -tlnp
 
 # TODO: Download a file
-curl -O ???
+curl -O http://example.com/file
 # or
-wget ???
+wget http://example.com/file
 ```
 
 ## Answers Key
