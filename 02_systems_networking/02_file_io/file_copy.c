@@ -41,8 +41,45 @@ int copy_file_lowlevel(const char *src_path, const char *dst_path) {
      * IMPORTANT: write() may not write all bytes! Loop until all are written.
      */
 
-    printf("TODO: Implement copy_file_lowlevel\n");
-    return -1;  /* TODO: Fix this */
+    // Single-line comment uses //; block comment uses /* ... */ and can span lines.
+    int src_file = open(src_path, O_RDONLY);
+    if (src_file < 0) return -1;
+    // write only access + create if not exists + truc to 0 if file exists flags. 
+    // 0644 is file permissions used only if the file is created. Octal: rw-r--r-- (owner: read+write, group: read, others: read)
+    // third argument is only required if we pass O_CREAT flag
+    int dst_file = open(dst_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (dst_file < 0) {
+        close(src_file);
+        return -1;
+    }
+    char buf[BUFFER_SIZE];  // arrays “decay” to a pointer to their first element
+    ssize_t read_chunk; // signed type for sizes and byte counts (unsigned is size_t). read and write can return -1
+    while ((read_chunk = read(src_file, buf, sizeof(buf))) > 0) {
+        ssize_t total_written = 0;
+        while (total_written < read_chunk) {
+            // Advance the buffer pointer past bytes already written (buf); write the remaining bytes from buffer (nbyte).
+            ssize_t write_chunk = write(dst_file, buf + total_written,
+                                        (size_t)(read_chunk - total_written));
+            if (write_chunk < 0) {
+                // EINTR means the syscall was interrupted by a signal; retry.
+                if (errno == EINTR) continue;
+                close(src_file);
+                close(dst_file);
+                return -1;
+            }
+            total_written += write_chunk;
+        }
+    }
+
+    if (read_chunk == -1) {
+        close(src_file);
+        close(dst_file);
+        return -1;
+    }
+
+    close(src_file);
+    close(dst_file);
+    return 0;  /* TODO: Fix this */
 }
 
 /*

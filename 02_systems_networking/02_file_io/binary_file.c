@@ -10,6 +10,7 @@ Run:     ./binary_file
 Difficulty: [MEDIUM]
 */
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +22,9 @@ EXERCISE 1: Write and Read Structs
 */
 
 /* A simple record structure */
+// tells the __attribute__((packed)) (GCC/Clang) tells the compiler not to add padding between struct fields. 
+// That makes the struct layout tight (no alignment gaps), which is useful for binary file formats or network protocols. 
+// Tradeoff: unaligned accesses can be slower or even fault on some architectures.
 typedef struct {
     uint32_t id;
     char name[32];
@@ -41,9 +45,27 @@ int write_records(const char *filename, Record *records, int count) {
      * 4. Close file
      * 5. Return 0 on success
      */
+    FILE *f = fopen(filename, "wb");
+    if (!f) { 
+        perror("fopen"); 
+        return -1; 
+    }
+    uint32_t count_u32 = (uint32_t)count;
+    size_t wrote = fwrite(&count_u32, sizeof(count_u32), 1, f);
+    if (wrote != 1) {
+        perror("fwrite count");
+        fclose(f);
+        return -1;
+    }
+    wrote = fwrite(records, sizeof(Record), (size_t)count, f);
+    if (wrote != (size_t)count) {
+        perror("fwrite records");
+        fclose(f);
+        return -1;
+    }
 
-    printf("TODO: Implement write_records\n");
-    return -1;  /* TODO: Fix this */
+    fclose(f);
+    return 0;
 }
 
 /*
@@ -62,10 +84,38 @@ int read_records(const char *filename, Record **records) {
      * 5. Close file
      * 6. Return count
      */
+    FILE *f = fopen(filename, "rb");
+    if (!f) { 
+        perror("fopen"); 
+        return -1; 
+    }
+    
+    uint32_t count_u32; // 32 bits i.e. 4 bytes
+    size_t rCount = fread(&count_u32, sizeof(count_u32), 1, f);
+    if (rCount != 1) {
+        perror("fread count");
+        fclose(f);
+        return -1;
+    }
 
-    printf("TODO: Implement read_records\n");
-    *records = NULL;
-    return -1;  /* TODO: Fix this */
+    *records = malloc((size_t)count_u32 * sizeof(Record));
+    if (*records == NULL) {
+        perror("malloc");
+        fclose(f);
+        return -1;
+    }
+
+    size_t read = fread(*records, sizeof(Record), (size_t)count_u32, f);
+    if (read != (size_t)count_u32) {
+        perror("fread records");
+        free(*records);
+        *records = NULL;
+        fclose(f);
+        return -1;
+    }
+
+    fclose(f);
+    return (int)count_u32;
 }
 
 void test_records(void) {
@@ -134,8 +184,36 @@ int write_file_with_header(const char *filename, Record *records, int count) {
      * 5. Close file
      */
 
-    printf("TODO: Implement write_file_with_header\n");
-    return -1;  /* TODO: Fix this */
+    FileHeader header;
+    header.magic = MAGIC_NUMBER;
+    header.version = VERSION;
+    header.record_count = (uint32_t)count;
+    // It fills the reserved bytes in the header with zero.
+    // those bytes are padding for future use. Zeroing them keeps the file format deterministic
+    memset(header.reserved, 0, sizeof(header.reserved));
+
+    FILE *f = fopen(filename, "wb");
+    if (!f) {
+        perror("fopen");
+        return -1;
+    }
+
+    size_t wrote = fwrite(&header, sizeof(header), 1, f);
+    if (wrote != 1) {
+        perror("fwrite header");
+        fclose(f);
+        return -1;
+    }
+
+    wrote = fwrite(records, sizeof(Record), (size_t)count, f);
+    if (wrote != (size_t)count) {
+        perror("fwrite records");
+        fclose(f);
+        return -1;
+    }
+
+    fclose(f);
+    return 0;
 }
 
 /*
@@ -153,9 +231,49 @@ int read_file_with_header(const char *filename, Record **records) {
      * 6. Return count
      */
 
-    printf("TODO: Implement read_file_with_header\n");
-    *records = NULL;
-    return -1;  /* TODO: Fix this */
+    FILE *f = fopen(filename, "rb");
+    if (!f) {
+        perror("fopen");
+        return -1;
+    }
+
+    FileHeader header;
+    size_t read = fread(&header, sizeof(header), 1, f);
+    if (read != 1) {
+        perror("fread header");
+        fclose(f);
+        return -1;
+    }
+
+    if (header.magic != MAGIC_NUMBER) {
+        fprintf(stderr, "Invalid magic number\n");
+        fclose(f);
+        return -1;
+    }
+    if (header.version != VERSION) {
+        fprintf(stderr, "Unsupported version\n");
+        fclose(f);
+        return -1;
+    }
+
+    *records = malloc((size_t)header.record_count * sizeof(Record));
+    if (*records == NULL) {
+        perror("malloc");
+        fclose(f);
+        return -1;
+    }
+
+    read = fread(*records, sizeof(Record), (size_t)header.record_count, f);
+    if (read != (size_t)header.record_count) {
+        perror("fread records");
+        free(*records);
+        *records = NULL;
+        fclose(f);
+        return -1;
+    }
+
+    fclose(f);
+    return (int)header.record_count;
 }
 
 void test_header(void) {
