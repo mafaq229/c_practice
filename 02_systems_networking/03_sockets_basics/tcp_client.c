@@ -45,6 +45,7 @@ int connect_to_server(const char *host, int port) {
      * 4. Return socket fd
      */
 
+    // AF_INET is for IPv4, SOCK_STREAM is for TCP
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         perror("socket");
@@ -53,10 +54,25 @@ int connect_to_server(const char *host, int port) {
 
     /* TODO: Connect to server */
     /* Your code here... */
+    struct sockaddr_in addr = {
+        .sin_family = AF_INET,
+        .sin_port = htons(port) // Convert port to network byte order
+    };
 
-    printf("TODO: Implement connect() in connect_to_server\n");
-    close(sockfd);
-    return -1;  /* TODO: Return sockfd when implemented */
+    // inet_pton converts the IP address from text to binary form
+    if (inet_pton(AF_INET, host, &addr.sin_addr) <= 0) {
+        perror("inet_pton");
+        close(sockfd);
+        return -1;
+    }
+
+    // first connection is is made then checked for errors
+    if (connect(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+        perror("connect");
+        close(sockfd);
+        return -1;
+    }
+    return sockfd; // return the connected socket file descriptor
 }
 
 /*

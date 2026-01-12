@@ -25,6 +25,8 @@ Difficulty: [MEDIUM]
 #define BUFFER_SIZE 4096
 #define BACKLOG 10
 
+ssize_t send_all(int fd, const void *buf, size_t len);
+
 /* Global for signal handler */
 volatile sig_atomic_t running = 1;
 
@@ -58,13 +60,20 @@ int create_server_socket(int port) {
      * 6. Return socket fd
      */
 
+    //  domain (address family): AF_INET: IPv4 Internet protocols
+    //  type (socket semantics): SOCK_STREAM means a byte-stream socket (TCP)
+    // protocol: 0 means to use the default protocol for the given (domain/family+type) socket type 
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         perror("socket");
         return -1;
     }
 
-    /* Allow address reuse (prevents "Address already in use" error) */
+    /* Allow address reuse (prevents "Address already in use" error). typically call this before bind */
+    // level (which layer option belongs to): SOL_SOCKET means the option is at the socket API level
+    // option name: SO_REUSEADDR allows reuse of local addresses
+    // option value: pointer to the value to set (1 to enable / 0 to disable)
+    // option length: size of the option value
     int opt = 1;
     if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
         perror("setsockopt");
@@ -75,9 +84,26 @@ int create_server_socket(int port) {
     /* TODO: Bind and listen */
     /* Your code here... */
 
-    printf("TODO: Complete bind() and listen() in create_server_socket\n");
-    close(sockfd);
-    return -1;  /* TODO: Return sockfd instead when implemented */
+    struct sockaddr_in addr = {
+        .sin_family = AF_INET, // IPv4 address family
+        .sin_addr.s_addr = INADDR_ANY, // “bind to all local IP addresses” (listen on any interface)
+        .sin_port = htons(port) // Convert port number to network byte order
+    };
+
+    if (bind(sockfd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
+        perror("bind");
+        close(sockfd);
+        return -1;
+    }
+
+    if (listen(sockfd, BACKLOG) < 0) {
+        perror("listen");
+        close(sockfd);
+        return -1;
+    }
+
+    // return open socket file descriptor
+    return sockfd;
 }
 
 /*
@@ -107,8 +133,19 @@ void handle_client(int client_fd, struct sockaddr_in *client_addr) {
 
     /* TODO: Implement echo loop */
     /* Your code here... */
+    ssize_t n;
 
-    printf("TODO: Implement echo loop in handle_client\n");
+    while ((n = recv(client_fd, buffer, sizeof(buffer), 0)) > 0) {
+        // send_all to ensure all data received is sent back
+        if (send_all(client_fd, buffer, (size_t)n) < 0) {
+            perror("send");
+            break;
+        }
+    }
+
+    if (n < 0) {
+        perror("recv");
+    }
 
     printf("Client disconnected: %s:%d\n", client_ip, client_port);
     close(client_fd);
